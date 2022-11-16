@@ -1,0 +1,38 @@
+{
+  "name": "city-guide",
+  "version": "1.0.0",
+  "description": "an interactive map site that allows users to see points of interest in a city and follow routes specific to their desires",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index",
+    "dev": "ts-node src/index.ts",
+    "build": "tsc --project ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WildCodeSchool/2209-wns-shamir-city-guide-back.git"
+  },
+  "author": "Bardinet-Langlois Thibault",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WildCodeSchool/2209-wns-shamir-city-guide-back/issues"
+  },
+  "homepage": "https://github.com/WildCodeSchool/2209-wns-shamir-city-guide-back#readme",
+  "dependencies": {
+    "apollo-server": "^3.11.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "pg": "^8.8.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.9.1",
+    "type-graphql": "^1.1.1",
+    "typeorm": "^0.3.10",
+    "typescript": "^4.9.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/node": "^18.11.9",
+    "@types/reflect-metadata": "^0.1.0",
+    "ts-node-dev": "^2.0.0"
+  }
+}
