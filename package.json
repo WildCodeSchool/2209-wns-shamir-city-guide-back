@@ -4,8 +4,7 @@
   "description": "an interactive map site that allows users to see points of interest in a city and follow routes specific to their desires",
   "main": "index.js",
   "scripts": {
-    "start": "node dist/index",
-    "dev": "ts-node src/index.ts",
+    "start": "ts-node-dev src/index.ts",
     "build": "tsc --project ./"
   },
   "repository": {
@@ -19,7 +18,7 @@
   },
   "homepage": "https://github.com/WildCodeSchool/2209-wns-shamir-city-guide-back#readme",
   "dependencies": {
-    "apollo-server": "^3.11.1",
+    "apollo-server": "^3.10.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "pg": "^8.8.0",

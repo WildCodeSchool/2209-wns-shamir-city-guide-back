@@ -5,8 +5,11 @@ import * as TagService from "../../dao/service/tag.service";
 @Resolver(Tag)
 export class TagResolver {
   @Query(() => [Tag])
-  async getAllTag(): Promise<Tag[]> {
-    return await TagService.getAll();
+  async getAllTags(): Promise<Tag[]> {
+    const tags: Tag[] = await TagService.getAll();
+    console.log("TAGS =>", tags);
+
+    return tags;
   }
 
   @Query(() => Tag)

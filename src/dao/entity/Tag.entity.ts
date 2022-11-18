@@ -11,8 +11,4 @@ export default class Tag {
   @Field()
   @Column()
   name: string;
-
-  @Field()
-  @Column()
-  note: string;
 }
