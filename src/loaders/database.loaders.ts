@@ -3,6 +3,7 @@ import config from "../config";
 
 export class DatabaseLoader {
   public static openConnection = async () => {
+    console.log("DB NAME =>", config.database.name);
     console.log("DB PASSWORD =>", config.database.password);
     databaseConfig
       .initialize()

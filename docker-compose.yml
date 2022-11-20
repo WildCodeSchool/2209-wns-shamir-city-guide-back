@@ -2,6 +2,8 @@ version: "3.8"
 
 services:
   server:
+    container_name: graphql_server_container
+    image: graphql_server_image
     build:
       dockerfile: "Dockerfile"
     volumes:
@@ -13,6 +15,7 @@ services:
         condition: service_healthy
 
   database:
+    container_name: postgresql_container
     image: postgres
     restart: always
     environment:
@@ -20,6 +23,8 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: city_guid
       PGDATA: /var/lib/postgresql/data/customDataFolder
+    ports:
+      - "5432:5432"
     volumes:
       - ./dbData:/var/lib/postgresql/data/customDataFolder
     healthcheck:
@@ -30,10 +35,24 @@ services:
       start_period: 30s
 
   adminer:
+    container_name: adminer_container
     image: adminer
     restart: always
     ports:
-      - 8081:8080
+      - 8080:8080
+    depends_on:
+      database:
+        condition: service_healthy
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: wilder@wilder.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - "4050:80"
     depends_on:
       database:
         condition: service_healthy
