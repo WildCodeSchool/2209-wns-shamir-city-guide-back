@@ -28,5 +28,5 @@ export default class Category {
   @OneToMany(() => Circuit, (circuit) => circuit.category, {
     eager: true,
   })
-  circuit: Circuit[];
+  circuits: Circuit[];
 }

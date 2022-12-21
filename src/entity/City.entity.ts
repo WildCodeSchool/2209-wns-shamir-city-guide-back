@@ -26,5 +26,5 @@ export default class City {
   picture: string;
 
   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city)
-  pointOfInterest: PointOfInterest[];
+  pointsOfInterest: PointOfInterest[];
 }

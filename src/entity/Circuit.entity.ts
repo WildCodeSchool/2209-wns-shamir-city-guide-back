@@ -1,7 +1,9 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
 import City from "./Category.entity";
 import Category from "./Category.entity";
+import PointOfInterest from "./PointOfInterest.entity";
+import { JoinTable } from "typeorm";
 
 
 @ObjectType()
@@ -26,6 +28,9 @@ export default class Circuit {
   @Column()
   price: number;
 
-  @ManyToOne(() => City, (city) => city.circuit, { eager:true,}) city: City;
-  @ManyToOne(() => Category, (category) => category.circuit, { eager:true}) category: Category;
+  @ManyToOne(() => City, (city) => city.circuits, { eager:true,}) city: City;
+  @ManyToOne(() => Category, (category) => category.circuits, { eager:true}) category: Category;
+
+  @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.circuits)@JoinTable()
+  pointsOfInterest: PointOfInterest[]
 }

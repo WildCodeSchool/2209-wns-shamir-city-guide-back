@@ -1,7 +1,8 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
 import City from "./City.entity";
 import Type from "./Type.entity";
+import Circuit from "./Circuit.entity";
 
 
 @ObjectType()
@@ -30,7 +31,9 @@ export default class PointOfInterest {
   @Column()
   icon: string;
 
-  @ManyToOne(() => City, (city) => city.pointOfInterest, { eager:true, }) city: City;
-  @ManyToOne(() => Type, (type) => type.pointOfInterest, { eager:true,}) type: Type;
+  @ManyToOne(() => City, (city) => city.pointsOfInterest, { eager:true, }) city: City;
+  @ManyToOne(() => Type, (type) => type.pointsOfInterest, { eager:true,}) type: Type;
 
+  @ManyToMany(() => Circuit, (circuit) => circuit.pointsOfInterest)
+  circuits: Circuit[]
 }

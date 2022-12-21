@@ -22,5 +22,5 @@ export default class Type {
   color: string;
     
   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.type)
-  pointOfInterest: PointOfInterest[];
+  pointsOfInterest: PointOfInterest[];
 }
