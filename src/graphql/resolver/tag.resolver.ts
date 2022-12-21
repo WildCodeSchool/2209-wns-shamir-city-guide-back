@@ -7,7 +7,7 @@ export class TagResolver {
   @Query(() => [Tag])
   async getAllTags(): Promise<Tag[]> {
     const tags: Tag[] = await TagService.getAll();
-    console.log("TAGw =>", tags);
+    console.log("TAGwxz =>", tags);
  
     return tags;
   }
