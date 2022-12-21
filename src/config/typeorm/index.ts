@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
 import config from "..";
-import Tag from "../../dao/entity/Tag.entity";
+import Tag from "../../entity/Tag.entity";
 
 const databaseConfig = new DataSource({
   type: "postgres",

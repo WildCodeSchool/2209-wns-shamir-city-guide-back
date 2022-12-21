@@ -1,10 +1,16 @@
 version: "3.8"
 
 services:
-  back:
+  server:
+    container_name: graphql_server_container
+    image: graphql_server_image
     build:
       dockerfile: "Dockerfile.prod"
-    volumes:
-      - ./dbData:/var/lib/postgresql/data/customDataFolder
+      target: production
+    command: npm start
     ports:
-      - 80:5002
+      - 4000:4000
+    depends_on:
+      database:
+        condition: service_healthy
+  

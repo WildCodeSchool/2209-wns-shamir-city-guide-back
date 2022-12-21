@@ -1,4 +1,4 @@
-import loaders from "./loaders";
+import loaders from "./loader";
 
 const startServer = async (): Promise<void> => {
   await loaders();

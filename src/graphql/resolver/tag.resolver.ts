@@ -1,6 +1,6 @@
 import { Resolver, Arg, Mutation, Query } from "type-graphql";
-import Tag from "../../dao/entity/Tag.entity";
-import * as TagService from "../../dao/service/tag.service";
+import Tag from "../../entity/Tag.entity";
+import * as TagService from "../../service/tag.service";
 
 @Resolver(Tag)
 export class TagResolver {
@@ -8,8 +8,14 @@ export class TagResolver {
   async getAllTags(): Promise<Tag[]> {
     const tags: Tag[] = await TagService.getAll();
     console.log("TAGS =>", tags);
-
+ 
     return tags;
+  }
+
+  @Query(() => String)
+  async getStatus(): Promise<string> {
+ 
+    return "Hello";
   }
 
   @Query(() => Tag)
@@ -17,7 +23,7 @@ export class TagResolver {
     return await TagService.getById(id);
   }
 
-  @Query(() => Tag)
+  @Query(() => Tag) 
   async getTagByName(@Arg("name") name: string): Promise<Tag | null> {
     return await TagService.getByName(name);
   }

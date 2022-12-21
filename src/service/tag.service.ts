@@ -1,6 +1,6 @@
 import Tag from "../entity/Tag.entity";
-import databaseConfig from "../../config/typeorm";
-import { CustomError } from "../../utils/CustomError.utils";
+import databaseConfig from "../config/typeorm";
+import { CustomError } from "../utils/CustomError.utils";
 const tagRepository = databaseConfig.getRepository(Tag);
 
 /**

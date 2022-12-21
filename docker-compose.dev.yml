@@ -5,9 +5,11 @@ services:
     container_name: graphql_server_container
     image: graphql_server_image
     build:
-      dockerfile: "Dockerfile"
+      dockerfile: "Dockerfile.dev"
+      target: development
     volumes:
       - ./:/app:rw,cached
+    command: npm run dev
     ports:
       - 4000:4000
     depends_on:
