@@ -7,9 +7,15 @@ export class TagResolver {
   @Query(() => [Tag])
   async getAllTags(): Promise<Tag[]> {
     const tags: Tag[] = await TagService.getAll();
-    console.log("TAGS =>", tags);
+    console.log("TAGw =>", tags);
  
     return tags;
+  }
+
+  @Query(() => [Tag])
+  async getTagByIdAndName(@Arg("id") id: number, @Arg("name") name: string): Promise<Tag | null> {
+    const tag: Tag | null = await TagService.getByIdAndName(id, name);
+    return tag;
   }
 
   @Query(() => String)
