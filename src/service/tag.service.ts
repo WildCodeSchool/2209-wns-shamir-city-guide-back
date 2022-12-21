@@ -1,16 +1,31 @@
 import Tag from "../entity/Tag.entity";
-import databaseConfig from "../config/typeorm";
 import { CustomError } from "../utils/CustomError.utils";
-const tagRepository = databaseConfig.getRepository(Tag);
+import { TagRepository } from "../repository/tag.repository";
 
 /**
- * Returns all tag from database
+ * Returns all tags from database
  * @returns Tag[]
  */
 export const getAll = async (): Promise<Array<Tag>> => {
-  const tags = await tagRepository.find();
+  const tags = await TagRepository.find();
   if (tags !== null) {
     return tags;
+  } else {
+    throw new CustomError(
+      500,
+      `There is a problem to load tags from the database`
+    );
+  }
+};
+
+/**
+ * Returns all tags from database
+ * @returns Tag[]
+ */
+export const getByIdAndName = async (id: number, name: string): Promise<Tag | null> => {
+  const tag: Tag | null = await TagRepository.findByIdAndByName(id, name);
+  if (tag !== null) {
+    return tag;
   } else {
     throw new CustomError(
       500,
@@ -26,7 +41,7 @@ export const getAll = async (): Promise<Array<Tag>> => {
  * @returns tag if exist null otherwise
  */
 export const getById = async (id: number): Promise<Tag | null> => {
-  const isTagExist = await tagRepository.findOneBy({
+  const isTagExist = await TagRepository.findOneBy({
     id: id,
   });
 
@@ -47,7 +62,7 @@ export const getById = async (id: number): Promise<Tag | null> => {
  */
 export const getByName = async (name: string): Promise<Tag | null> => {
   try {
-    const retrievedTag = await tagRepository.findOneBy({
+    const retrievedTag = await TagRepository.findOneBy({
       name,
     });
     if (retrievedTag && Object.keys(retrievedTag).length > 0) {
@@ -75,7 +90,7 @@ export const verifyIfNotExistByName = async (
   name: string
 ): Promise<boolean> => {
   try {
-    const retrievedTag = await tagRepository.findOneBy({
+    const retrievedTag = await TagRepository.findOneBy({
       name,
     });
     if (retrievedTag && Object.keys(retrievedTag).length > 0) {
@@ -102,7 +117,7 @@ export const create = async (name: string): Promise<Tag | null | undefined> => {
     const isTagNotExist = await verifyIfNotExistByName(name);
     if (isTagNotExist) {
       try {
-        const createdTag = await tagRepository.save({ name });
+        const createdTag = await TagRepository.save({ name });
         return createdTag;
       } catch (e) {
         throw new Error("creation-error");
@@ -140,7 +155,7 @@ export const update = async (
       Object.keys(tagToUpdate).length > 0
     ) {
       const updatedTag = { ...tagToUpdate, name };
-      return await tagRepository.save(updatedTag);
+      return await TagRepository.save(updatedTag);
     }
   } catch (e) {
     if (e instanceof Error) {
@@ -164,7 +179,7 @@ export const deleteTag = async (tagId: number): Promise<Tag | undefined> => {
   try {
     const tagToRemove = await getById(tagId);
     if (tagToRemove && Object.keys(tagToRemove).length > 0) {
-      return await tagRepository.remove(tagToRemove);
+      return await TagRepository.remove(tagToRemove);
     }
   } catch (e) {
     throw new CustomError(
