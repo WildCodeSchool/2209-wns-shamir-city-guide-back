@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
-//import City from "./";
-//import Circuit from "./";
+import City from "./Category.entity";
+import Category from "./Category.entity";
 
 
 @ObjectType()
@@ -26,7 +26,6 @@ export default class Circuit {
   @Column()
   price: number;
 
-//@ManyToOne(() => City, (city) => city.circuit, { eager:true,}) city: City;
-//@ManyToOne(() => category, (category) => category.circuit, { eager:true}) category: Category;
-
+  @ManyToOne(() => City, (city) => city.circuit, { eager:true,}) city: City;
+  @ManyToOne(() => Category, (category) => category.circuit, { eager:true}) category: Category;
 }

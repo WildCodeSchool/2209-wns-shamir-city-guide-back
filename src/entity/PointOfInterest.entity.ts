@@ -1,12 +1,12 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
-//import City from "./";
-//import Type from "./";
+import City from "./City.entity";
+import Type from "./Type.entity";
 
 
 @ObjectType()
 @Entity()
-export default class pointOfInterest {
+export default class PointOfInterest {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -30,7 +30,7 @@ export default class pointOfInterest {
   @Column()
   icon: string;
 
-  //@ManyToOne(() => City, (city) => city.pointOfInteres, { eager:true, }) city: City;
- //@ManyToOne(() => Type, (type) => type.pointOfInterest, { eager:true,}) type: Type;
+  @ManyToOne(() => City, (city) => city.pointOfInterest, { eager:true, }) city: City;
+  @ManyToOne(() => Type, (type) => type.pointOfInterest, { eager:true,}) type: Type;
 
 }
