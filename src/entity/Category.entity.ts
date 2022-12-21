@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
-// import { Circuit } from "../entity/Circuit.ts";
+import Circuit from "./Circuit.entity"
 
 @ObjectType()
 @Entity()
@@ -25,8 +25,8 @@ export default class Category {
   @Column()
   icon: string;
 
-//   @OneToMany(() => Circuit, (circuit) => circuit.category, {
-//     eager: true,
-//   })
-// circuits: Circuit[];
+   @OneToMany(() => Circuit, (circuit) => circuit.category, {
+     eager: true,
+   })
+ circuits: Circuit[];
 }
