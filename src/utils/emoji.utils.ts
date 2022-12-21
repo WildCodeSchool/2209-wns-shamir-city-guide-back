@@ -1,0 +1,12 @@
+export const shocked = '😨';
+export const oups = '😓';
+export const unhappy = '😟';
+export const enraged = '😠';
+export const error = '😡';
+export const surprises = '😮';
+export const happy = '😀';
+export const lover = '😍';
+export const wink = '😉';
+export const proud = '😎';
+export const cool = '🤘🤞';
+export const rocket = '🚀';

@@ -7,21 +7,32 @@ export class TagResolver {
   @Query(() => [Tag])
   async getAllTags(): Promise<Tag[]> {
     const tags: Tag[] = await TagService.getAll();
-    console.log("TAGw =>", tags);
+    console.log("TAGwxz =>", tags);
  
     return tags;
   }
 
-  @Query(() => [Tag])
-  async getTagByIdAndName(@Arg("id") id: number, @Arg("name") name: string): Promise<Tag | null> {
+  @Query(() => Tag)
+  async getTagByIdAndName(
+    @Arg("id") id: number, 
+    @Arg("name") name: string
+  ): Promise<Tag | null> {
     const tag: Tag | null = await TagService.getByIdAndName(id, name);
+    return tag;
+  }
+
+  @Query(() => Tag)
+  async getTagByNameAndIcon(
+    @Arg("name") name: string, 
+    @Arg("icon") icon: string
+  ): Promise<Tag | null> {
+    const tag: Tag | null = await TagService.getByNameAndIcon(name, icon);
     return tag;
   }
 
   @Query(() => String)
   async getStatus(): Promise<string> {
- 
-    return "Hello";
+    return `🚀 Hello world! 😎`;
   }
 
   @Query(() => Tag)
@@ -35,16 +46,20 @@ export class TagResolver {
   }
 
   @Mutation(() => Tag)
-  async createTag(@Arg("name") name: string): Promise<Tag | null | undefined> {
-    return await TagService.create(name);
+  async createTag(
+    @Arg("name") name: string,
+    @Arg("icon") icon: string,
+  ): Promise<Tag | null | undefined> {
+    return await TagService.create(name, icon);
   }
 
   @Mutation(() => Tag)
   async updateTag(
     @Arg("id") id: number,
-    @Arg("name") name: string
+    @Arg("name") name: string,
+    @Arg("icon") icon: string,
   ): Promise<Tag | null | undefined> {
-    return await TagService.update(id, name);
+    return await TagService.update(id, name, icon);
   }
 
   @Mutation(() => Tag)

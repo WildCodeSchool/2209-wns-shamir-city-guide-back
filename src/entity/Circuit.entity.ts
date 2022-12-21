@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, ManyToMany, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
 import City from "./Category.entity";
 import Category from "./Category.entity";
@@ -28,9 +28,19 @@ export default class Circuit {
   @Column()
   price: number;
 
-  @ManyToOne(() => City, (city) => city.circuits, { eager:true,}) city: City;
-  @ManyToOne(() => Category, (category) => category.circuits, { eager:true}) category: Category;
+  @ManyToOne(() => City, (city) => city.circuits, { eager:true,}) 
+  @JoinColumn({ name: "city_id" })
+  city: City;
 
-  @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.circuits)@JoinTable()
+  @ManyToOne(() => Category, (category) => category.circuits, { eager:true})
+  @JoinColumn({ name: "categorie_id" })
+  category: Category;
+
+  @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.circuits)
+  @JoinTable({ 
+    name: 'circuit_point_of_interest',
+    joinColumn: {name: "circuit_id"},
+    inverseJoinColumn: {name: "point_of_interest_id"}
+  })
   pointsOfInterest: PointOfInterest[]
 }

@@ -19,8 +19,10 @@ export const getAll = async (): Promise<Array<Tag>> => {
 };
 
 /**
- * Returns all tags from database
- * @returns Tag[]
+ * Returns tag by id and name
+ * @param {number} id
+ * @param {string} name
+ * @returns Tag
  */
 export const getByIdAndName = async (id: number, name: string): Promise<Tag | null> => {
   const tag: Tag | null = await TagRepository.findByIdAndByName(id, name);
@@ -29,7 +31,25 @@ export const getByIdAndName = async (id: number, name: string): Promise<Tag | nu
   } else {
     throw new CustomError(
       500,
-      `There is a problem to load tags from the database`
+      `There is a problem to load the tag with the id ${id} and the name ${name} from the database`
+    );
+  }
+};
+
+/**
+ * Returns tag by name and icon
+ * @param {string} name
+ * @param {string} icon
+ * @returns Tag
+ */
+export const getByNameAndIcon = async (name: string, icon: string): Promise<Tag | null> => {
+  const tag: Tag | null = await TagRepository.findByNameAndByIcon(name, icon);
+  if (tag !== null) {
+    return tag;
+  } else {
+    throw new CustomError(
+      500,
+      `There is a problem to load the tag with the name ${name} and the icon ${icon} from the database`
     );
   }
 };
@@ -112,12 +132,12 @@ export const verifyIfNotExistByName = async (
  * @param name tag name 
     @returns tag the created tag
 */
-export const create = async (name: string): Promise<Tag | null | undefined> => {
+export const create = async (name: string, icon: string): Promise<Tag | null | undefined> => {
   try {
     const isTagNotExist = await verifyIfNotExistByName(name);
     if (isTagNotExist) {
       try {
-        const createdTag = await TagRepository.save({ name });
+        const createdTag = await TagRepository.save({ name, icon });
         return createdTag;
       } catch (e) {
         throw new Error("creation-error");
@@ -143,7 +163,8 @@ export const create = async (name: string): Promise<Tag | null | undefined> => {
  */
 export const update = async (
   tagId: number,
-  name: string
+  name: string,
+  icon: string
 ): Promise<Tag | undefined> => {
   try {
     const isNameAlreadyExist = await verifyIfNotExistByName(name);
@@ -154,7 +175,7 @@ export const update = async (
       tagToUpdate !== null &&
       Object.keys(tagToUpdate).length > 0
     ) {
-      const updatedTag = { ...tagToUpdate, name };
+      const updatedTag = { ...tagToUpdate, name, icon };
       return await TagRepository.save(updatedTag);
     }
   } catch (e) {
