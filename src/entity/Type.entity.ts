@@ -1,6 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
-// import { PointOfInterest } from "../entity/PointOfInterest.ts";
+import PointOfInterest from "./PointOfInterest.entity";
 
 @ObjectType()
 @Entity()
@@ -20,7 +20,7 @@ export default class Type {
   @Field()
   @Column()
   color: string;
-
-  //   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.type)
-//   pointOfInterest: PointOfInterest[];
+    
+  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.type)
+  pointOfInterest: PointOfInterest[];
 }

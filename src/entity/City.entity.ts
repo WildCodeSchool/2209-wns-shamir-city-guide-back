@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
-// import { PointOfInterest } from "../entity/PointOfInterest.ts";
+import PointOfInterest from "./PointOfInterest.entity";
 
 @ObjectType()
 @Entity()
@@ -25,6 +25,6 @@ export default class City {
   @Column()
   picture: string;
 
-//   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city)
-//   pointOfInterest: PointOfInterest[];
+  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city)
+  pointOfInterest: PointOfInterest[];
 }
