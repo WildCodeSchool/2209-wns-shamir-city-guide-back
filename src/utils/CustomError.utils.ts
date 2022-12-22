@@ -1,8 +1,8 @@
-import { oups, shocked } from "./emoji.utils";
+import { emojiOups, emojiShocked } from "./emoji.utils";
 
 export class CustomError extends Error {
   status = 400;
-  message = `${oups}${shocked} Ouups!!Something went wrong\n`;
+  message = `${emojiOups}${emojiShocked} Ouups!!Something went wrong\n`;
 
   constructor(status: number, message: string | undefined) {
     super(message);

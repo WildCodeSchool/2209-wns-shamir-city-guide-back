@@ -6,11 +6,11 @@
 
 3 - `cd 2209-wns-shamir-city-guide-back && npm i` to download and install all dependencies the project needs.
 
-5 - You have to copy the .template.env content on a src/config/.env (you have to create this .env file because it is in the .gitignore and we don't want to expose our environment variables publicly).
+5 - You have to copy the .template.env content to a .env at the root of the project (you have to create this .env file because it is in the .gitignore and we don't want to expose our environment variables publicly).
 
 6 - To launch the back application with postgresql we use docker, you don't have to install postgresql on our computer.
 In the terminal launch: `docker compose -f docker-compose.dev.yml up --build`
-Waiting...and..waiting...and.. after a while, you can use the Graphql application at the url 'http://localhost:4000'. You can connect to Adminer to see your database state at the url 'http://localhost:8080' with userName => 'wilderDB' and password => 'password', select PostgreSQL as Sytem, tape 'database' as Server, 'wilderDB' as User, 'password' as password and 'city_guid' as database.
+Waiting...and.. after a while, you can use the Graphql application at the url 'http://localhost:4000'. You can connect to Adminer to see your database state at the url 'http://localhost:8080' with userName => 'wilderDB' and password => 'password', select PostgreSQL as Sytem, tape 'database' as Server, 'wilderDB' as User, 'password' as password and 'city_guid' as database.
 
 7 - To build a new feature you need to create a new branch from the main branch and move there. So when you're on the dev branch, in the terminal run `git checkout -b nameNewBranch`
 
