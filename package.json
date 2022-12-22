@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc --project ./",
     "start": "npm run build && node dist/src/server.js",
-    "dev": "ts-node-dev --poll --respawn src/server.ts",
+    "dev": "ts-node-dev src/server.ts",
     "test": "jest --watchAll"
   },
   "repository": {
