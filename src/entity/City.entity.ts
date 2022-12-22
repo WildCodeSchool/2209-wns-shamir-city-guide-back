@@ -10,19 +10,33 @@ export default class City {
   id: number;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   name: string;
 
   @Field()
-  @Column({type: "decimal", precision: 10, scale: 2, default: 0})
+  @Column({
+    type: "decimal", 
+    precision: 10, 
+    scale: 2, 
+    default: 0,
+  })
   latitude: number;
 
   @Field()
-  @Column({type: "decimal", precision: 10, scale: 2, default: 0})
+  @Column({
+    type: "decimal", 
+    precision: 10, 
+    scale: 2, 
+    default: 0
+  })
   longitude: number;
 
   @Field()
-  @Column()
+  @Column({
+    nullable: true
+  })
   picture: string;
 
   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city)

@@ -13,11 +13,15 @@ export default class Circuit {
   id: number;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   name: string;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   picture: string;
 
   @Field()
@@ -25,7 +29,9 @@ export default class Circuit {
   description: string;
 
   @Field()
-  @Column()
+  @Column({
+    nullable: true
+  })
   price: number;
 
   @ManyToOne(() => City, (city) => city.circuits, { eager:true,}) 

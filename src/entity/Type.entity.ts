@@ -10,15 +10,21 @@ export default class Type {
   id: number;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   name: string;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   logo: string;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   color: string;
     
   @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.type)

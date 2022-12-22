@@ -14,24 +14,40 @@ export default class PointOfInterest {
   id: number;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   name: string;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   address: string;
 
   @Field()
-  @Column()
+  @Column({
+    type: "decimal", 
+    precision: 10, 
+    scale: 2, 
+    default: 0
+  })
   latitude: number;
 
   @Field()
-  @Column()
+  @Column({
+    type: "decimal", 
+    precision: 10, 
+    scale: 2, 
+    default: 0
+  })
   longitude: number;
 
   @Field()
-  @Column()
-  icon: string;
+  @Column({
+    unique: true
+  })
+  picture: string;
 
   @ManyToOne(() => City, (city) => city.pointsOfInterest, { eager:true, }) 
   @JoinColumn({ name: "city_id" })

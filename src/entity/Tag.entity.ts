@@ -10,11 +10,15 @@ export default class Tag {
   id: number;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   name: string;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   icon: string;
 
   @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.tags)

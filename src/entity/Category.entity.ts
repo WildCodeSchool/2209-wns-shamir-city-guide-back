@@ -10,19 +10,21 @@ export default class Category {
   id: number;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   name: string;
 
   @Field()
-  @Column()
-  picture: string;
-
-  @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   color: string;
 
   @Field()
-  @Column()
+  @Column({
+    unique: true
+  })
   icon: string;
 
 
