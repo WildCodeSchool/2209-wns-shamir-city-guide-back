@@ -11,8 +11,6 @@ export class TagResolver {
   
   @Query(() => [Tag])
   async getAllTags(): Promise<Tag[]> {
-    console.log("COUCOU");
-    
     const tags: Tag[] = await TagService.getAll();
     return tags;
   }
@@ -40,7 +38,7 @@ export class TagResolver {
   async createTag(
     @Arg("name") name: string,
     @Arg("icon") icon: string,
-  ): Promise<Tag | null | undefined> {
+  ): Promise<Tag> {
     return await TagService.create(name, icon);
   }
 
@@ -49,12 +47,12 @@ export class TagResolver {
     @Arg("id") id: number,
     @Arg("name") name: string,
     @Arg("icon") icon: string,
-  ): Promise<Tag | null | undefined> {
+  ): Promise<Tag> {
     return await TagService.update(id, name, icon);
   }
 
   @Mutation(() => Tag)
-  async deleteTag(@Arg("id") id: number): Promise<Tag | undefined> {
+  async deleteTag(@Arg("id") id: number): Promise<Tag> {
     return await TagService.deleteTag(id);
   }
 }
