@@ -20,5 +20,4 @@ const databaseConfig = new DataSource({
   synchronize: true,
 });
 
-
 export default databaseConfig;
