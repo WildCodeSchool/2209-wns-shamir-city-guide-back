@@ -7,8 +7,6 @@ export class TagResolver {
   @Query(() => String)
   async getStatus(): Promise<string> {
     return `🚀 Hello world! 😎`;
-<<<<<<< HEAD
-=======
   }
   
   @Query(() => [Tag])
@@ -26,64 +24,15 @@ export class TagResolver {
   ): Promise<Tag | null> {
     const tag: Tag | null = await TagService.getByIdAndName(id, name);
     return tag;
-    return tags;
->>>>>>> f1b492dede9b29bf5a52645080d7b17aca169cb0
-  }
-  
-  @Query(() => [Tag])
-  async getAllTags(): Promise<Tag[]> {
-    console.log("COUCOU");
-    
-    const tags: Tag[] = await TagService.getAll();
-<<<<<<< HEAD
-      return tags;
-=======
-    return tags;
->>>>>>> f802739fdfdf07b92abe3163e36810c34aac5a0c
   }
 
   @Query(() => Tag)
-  async getTagByIdAndName(
-    @Arg("id") id: number, 
-    @Arg("name") name: string
-  ): Promise<Tag | null> {
-    const tag: Tag | null = await TagService.getByIdAndName(id, name);
-    return tag;
-  }
-
-  @Query(() => Tag)
-  async getTagByNameAndIcon(
-    @Arg("name") name: string, 
-    @Arg("icon") icon: string
-  ): Promise<Tag | null> {
-    const tag: Tag | null = await TagService.getByNameAndIcon(name, icon);
-    return tag;
-  }
-
-
-  @Query(() => [Tag])
-  async getTagByIdAndName(@Arg("id") id: number, @Arg("name") name: string): Promise<Tag | null> {
-    const tag: Tag | null = await TagService.getByIdAndName(id, name);
-    return tag;
-  }
-
-  @Query(() => Tag)
-  async getTagByNameAndIcon(
-    @Arg("name") name: string, 
-    @Arg("icon") icon: string
-  ): Promise<Tag | null> {
-    const tag: Tag | null = await TagService.getByNameAndIcon(name, icon);
-    return tag;
-  }
-
-
-  @Query(() => Tag)
-  async getTagById(@Arg("id") id: number): Promise<Tag | null> {
+  async getTagById(@Arg("id") id: number): Promise<Tag> {
     return await TagService.getById(id);
   }
 
   @Query(() => Tag) 
-  async getTagByName(@Arg("name") name: string): Promise<Tag | null> {
+  async getTagByName(@Arg("name") name: string): Promise<Tag> {
     return await TagService.getByName(name);
   }
 
