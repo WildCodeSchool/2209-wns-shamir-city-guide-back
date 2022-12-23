@@ -4,11 +4,16 @@ import * as TagService from "../../service/tag.service";
 
 @Resolver(Tag)
 export class TagResolver {
+  @Query(() => String)
+  async getStatus(): Promise<string> {
+    return `🚀 Hello world! 😎`;
+  }
+  
   @Query(() => [Tag])
   async getAllTags(): Promise<Tag[]> {
+    console.log("COUCOU");
+    
     const tags: Tag[] = await TagService.getAll();
-    console.log("TAGS =>", tags);
- 
     return tags;
   }
 
@@ -30,10 +35,6 @@ export class TagResolver {
     return tag;
   }
 
-  @Query(() => String)
-  async getStatus(): Promise<string> {
-    return `🚀 Hello world! 😎`;
-  }
 
   @Query(() => Tag)
   async getTagById(@Arg("id") id: number): Promise<Tag | null> {
