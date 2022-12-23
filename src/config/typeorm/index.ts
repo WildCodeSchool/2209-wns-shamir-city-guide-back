@@ -14,7 +14,6 @@ const databaseConfig = new DataSource({
   username: config.database.user,
   password: config.database.password!,
   database: config.database.name!,
-  logging: true,
   entities: [Category, Circuit, City, PointOfInterest, Tag, Type],
   subscribers: [],
   migrations: [],

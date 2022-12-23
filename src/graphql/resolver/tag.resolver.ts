@@ -24,32 +24,15 @@ export class TagResolver {
   ): Promise<Tag | null> {
     const tag: Tag | null = await TagService.getByIdAndName(id, name);
     return tag;
-    return tags;
-  }
-
-  @Query(() => [Tag])
-  async getTagByIdAndName(@Arg("id") id: number, @Arg("name") name: string): Promise<Tag | null> {
-    const tag: Tag | null = await TagService.getByIdAndName(id, name);
-    return tag;
   }
 
   @Query(() => Tag)
-  async getTagByNameAndIcon(
-    @Arg("name") name: string, 
-    @Arg("icon") icon: string
-  ): Promise<Tag | null> {
-    const tag: Tag | null = await TagService.getByNameAndIcon(name, icon);
-    return tag;
-  }
-
-
-  @Query(() => Tag)
-  async getTagById(@Arg("id") id: number): Promise<Tag | null> {
+  async getTagById(@Arg("id") id: number): Promise<Tag> {
     return await TagService.getById(id);
   }
 
   @Query(() => Tag) 
-  async getTagByName(@Arg("name") name: string): Promise<Tag | null> {
+  async getTagByName(@Arg("name") name: string): Promise<Tag> {
     return await TagService.getByName(name);
   }
 
