@@ -24,6 +24,13 @@ export class TagResolver {
   ): Promise<Tag | null> {
     const tag: Tag | null = await TagService.getByIdAndName(id, name);
     return tag;
+    return tags;
+  }
+
+  @Query(() => [Tag])
+  async getTagByIdAndName(@Arg("id") id: number, @Arg("name") name: string): Promise<Tag | null> {
+    const tag: Tag | null = await TagService.getByIdAndName(id, name);
+    return tag;
   }
 
   @Query(() => Tag)
