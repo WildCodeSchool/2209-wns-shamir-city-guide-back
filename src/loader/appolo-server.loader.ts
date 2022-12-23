@@ -2,11 +2,15 @@ import { ApolloServer } from "apollo-server";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { TagResolver } from "../graphql/resolver/tag.resolver";
+import { CityResolver } from "../graphql/resolver/city.resolver";
 import { emojiRocket } from "../utils/emoji.utils";
 
 export const startAppoloServer = async (): Promise<any> => {
   const schema = await buildSchema({
-    resolvers: [TagResolver],
+    resolvers: [
+      CityResolver,
+      TagResolver
+    ],
   });
 
   const server = new ApolloServer({ schema });
