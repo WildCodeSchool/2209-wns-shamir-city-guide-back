@@ -6,7 +6,5 @@ export class DatabaseLoader {
   public static openConnection = async () => {
     await databaseConfig.initialize();
     console.log(`${emojiCool} Database ${config.database.name} is connected and is running on port ${config.database.port}  ${emojiProud}${emojiWink}`)
-    await databaseConfig.initialize();
-    console.log(`Database ${config.database.name} is connected and is running on port ${config.database.port}`)
   };
 }

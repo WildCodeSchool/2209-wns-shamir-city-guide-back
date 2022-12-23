@@ -27,10 +27,6 @@ export const getByIdAndName = async (id: number, name: string): Promise<Tag | nu
   try {
     return await TagRepository.findByIdAndByName(id, name);
   } catch (e) {
-  const tags = await TagRepository.find();
-  if (tags !== null) {
-    return tags;
-  } else {
     throw new CustomError(
       500,
       `There is a problem to load the tag with the id ${id} and the name ${name} from the database`
@@ -38,74 +34,38 @@ export const getByIdAndName = async (id: number, name: string): Promise<Tag | nu
   }
 };
 
-/**
- * Returns tag by name and icon
- * @param {string} name
- * @param {string} icon
- * @returns Tag
- */
-export const getByNameAndIcon = async (name: string, icon: string): Promise<Tag | null> => {
-  try {
-    return await TagRepository.findByNameAndByIcon(name, icon);
-  } catch (e) {
-
- * Returns all tags from database
- * @returns Tag[]
- */
-export const getByIdAndName = async (id: number, name: string): Promise<Tag | null> => {
-  const tag: Tag | null = await TagRepository.findByIdAndByName(id, name);
-  if (tag !== null) {
-    return tag;
-  } else {
-    throw new CustomError(
-      500,
-      `There is a problem to load tags from the database`
-    );
-  }
-};
-
-/**
- * Returns a tag by its id from database
- *
- * @param {number} id The id to use to retrieve a specific tag
- * @returns tag if exist null otherwise
- */
-export const getById = async (id: number): Promise<Tag | null> => {
-  const isTagExist = await TagRepository.findOneBy({
-    id: id,
-  });
-
-  if (isTagExist && Object.keys(isTagExist).length > 0) {
-    return isTagExist;
-  } else {
-    throw new CustomError(
-      500,
-      `There is a problem to load the tag with the name ${name} and the icon ${icon} from the database`
-    );
-  }
-};
 
 /**
  * Returns a tag by its id from database
  * @param {number} id The id to use to retrieve a specific tag
  * @returns tag if exist null otherwise
  */
-export const getById = async (id: number): Promise<Tag | null> => {
+export const getById = async (id: number): Promise<Tag> => {
   try {
     const isTagExist = await TagRepository.findOneBy({id});
     if (isTagExist && Object.keys(isTagExist).length > 0) return isTagExist;
     else throw new Error("id-not-found");
-    const retrievedTag = await TagRepository.findOneBy({
-      name,
-    });
-    if (retrievedTag && Object.keys(retrievedTag).length > 0) {
-      return retrievedTag;
-    } else {
-      throw new Error("id-not-found");
-    }
   } catch (e) {
     if (e instanceof Error && e.message === "not-found") {
       throw new CustomError(401, `The tag with the id ${id} doesn't exist in database`);
+    }
+    throw new CustomError(500, `Internal connection error`);
+  }
+};
+
+/**
+ * Returns a tag by its name from database
+ * @param {string} name The name to use to retrieve a specific tag
+ * @returns tag if exist null otherwise
+ */
+export const getByName = async (name: string): Promise<Tag> => {
+  try {
+    const isTagExist = await TagRepository.findOneBy({name});
+    if (isTagExist && Object.keys(isTagExist).length > 0) return isTagExist;
+    else throw new Error("name-not-found");
+  } catch (e) {
+    if (e instanceof Error && e.message === "name-not-found") {
+      throw new CustomError(401, `The tag with the name ${name} doesn't exist in database`);
     }
     throw new CustomError(500, `Internal connection error`);
   }
@@ -115,7 +75,8 @@ export const getById = async (id: number): Promise<Tag | null> => {
 /**
  * Create and return a tag
  * @param name tag name 
-    @returns tag the created tag
+ * @param icon tag icon
+ * @returns tag the created tag
 */
 export const create = async (name: string, icon: string): Promise<Tag | null | undefined> => {
   try {
@@ -140,7 +101,8 @@ export const create = async (name: string, icon: string): Promise<Tag | null | u
 /**
  * Update a tag in database and return it
  * @param {number} id existing tag id
- * @param {string} name new tag name
+ * @param {string} name tag name
+ * @param {string} icon tag icon
  * @returns updated tag
  */
 export const update = async (
