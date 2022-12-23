@@ -11,7 +11,7 @@ export class CategoryResolver {
   }
 
   @Query(() => Category)
-  async getCategoryByName(@Arg("name") name: string): Promise<Category> {
+  async getCategoryByName(@Arg("name") name: string): Promise<Category | null> {
     return await CategoryService.getByName(name);
   }
 
