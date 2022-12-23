@@ -11,7 +11,7 @@ export class CategoryResolver {
   }
 
   @Query(() => Category)
-  async getCategoryByName(@Arg("name") name: string): Promise<Category | null> {
+  async getCategoryByName(@Arg("name") name: string): Promise<Category> {
     return await CategoryService.getByName(name);
   }
 
@@ -34,18 +34,17 @@ export class CategoryResolver {
     return await CategoryService.create(name, color, icon);
   }
 
-  @Mutation(() => Category)
-  async updateCategory(
-    @Arg("id") id: number,
-    @Arg("name") name: string,
-    @Arg("color") color: string,
-    @Arg("icon") icon: string
-  ): Promise<Category> {
-    return await CategoryService.create(name, color, icon);
-  }
+  // @Mutation(() => Category)
+  // async updateCategory(
+  //   @Arg("id") id: number,
+  //   @Arg("name") name: string,
+  //   @Arg("color") color: string,
+  //   @Arg("icon") icon: string
+  // ): Promise<Category> {
+  //   return await CategoryService.create(name, color, icon);
+  // }
 
-  @Mutation(() => Category)
-  async deleteCategory(@Arg("id") id: number): Promise<Category> {
-    return await CategoryService.deleteCategory(id);
+  //@Mutation(() => Category)
+  //async deleteCategory(@Arg("id") id: number): Promise<Category> {
+    //return await CategoryService.deleteCategory(id);
   }
-}

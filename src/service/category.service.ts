@@ -1,17 +1,16 @@
 import Category from "../entity/Category.entity";
 import { CustomError } from "../utils/CustomError.utils";
 import { CategoryRepository } from "../repository/category.repository";
-import { Repository } from "typeorm";
 
 /**
  * Returns all categories from database
  * @returns Category[]
  */
 export const getAll = async (): Promise<Category[]> => {
-  const categories = await CategoryRepository.find();
-  if (categories !== null) {
+  try {
+    const categories = await CategoryRepository.find();
     return categories;
-  } else {
+  } catch (e) {
     throw new CustomError(
       500,
       `There is a problem to load categories from the database`
@@ -24,27 +23,28 @@ export const getAll = async (): Promise<Category[]> => {
  * @param {string} name
  * @returns Category
  */
-export const getByName = async (
-  name: string
-): Promise<Category | null> => {
-  const isNameExist = await CategoryRepository.findOneBy({name});
-  if (isNameExist !== null) {
-    return isNameExist;
-  } else {
-    throw new CustomError(
-      500,
-      `This category with name ${name} does not exist`
-    );
+export const getByName = async (name: string): Promise<Category> => {
+  try {
+    const isNameExist = await CategoryRepository.findOneBy({ name });
+    if (isNameExist) return isNameExist;
+    else throw new Error("name-not-found");
+  } catch (e) {
+    if (e instanceof Error && e.message === "name-not-found") {
+      throw new CustomError(400, `The name ${name} doesn't exist`);
+    }
+    throw new CustomError(500, `Internal connection error`);
   }
 };
 
+
+//reprendre try catch
 /**
  * Returns category by id
  * @param {number} id
  * @returns isCategoryExist
  */
 export const getById = async (id: number): Promise<Category> => {
-  const isCategoryExist = await CategoryRepository.findOneBy({id});
+  const isCategoryExist = await CategoryRepository.findOneBy({ id });
   if (isCategoryExist !== null) {
     return isCategoryExist;
   } else {
@@ -58,7 +58,7 @@ export const getById = async (id: number): Promise<Category> => {
  * @returns category
  */
 export const getByIcon = async (icon: string): Promise<Category> => {
-  const isIconExist = await CategoryRepository.findOneBy({icon});
+  const isIconExist = await CategoryRepository.findOneBy({ icon });
   if (isIconExist !== null) {
     return isIconExist;
   } else {
@@ -71,12 +71,15 @@ export const getByIcon = async (icon: string): Promise<Category> => {
  * @param name color icon
     @returns the created category
 */
-export const create = async (name:string, color: string, icon: string) : Promise<Category> => {
-      const category: Category | null = await getByName(name);
-    if (category !== null) {
-      return category;
-    } else {
-      return await repository.save({ name, color, icon });
-    }
-}
-
+export const create = async (
+  name: string,
+  color: string,
+  icon: string
+): Promise<Category> => {
+  const category: Category | null = await getByName(name);
+  if (category !== null) {
+    return category;
+  } else {
+    return await CategoryRepository.save({ name, color, icon });
+  }
+};
