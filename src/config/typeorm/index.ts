@@ -19,3 +19,6 @@ const databaseConfig = new DataSource({
   migrations: [],
   synchronize: true,
 });
+
+
+export default databaseConfig;
