@@ -10,8 +10,12 @@
 
 6 - To launch the back application with postgresql we use docker, you don't have to install postgresql on our computer.
 In the terminal launch: `docker compose -f docker-compose.dev.yml up --build`
+<<<<<<< HEAD
 Waiting...and.. after a while, you can use the Graphql application at the url 'http://localhost:4000'. You can connect to Adminer to see your database state at the url 'http://localhost:8080' with userName => 'wilderDB' and password => 'password', select PostgreSQL as Sytem, tape 'database' as Server, 'wilderDB' as User, 'password' as password and 'city_guid' as database.
+=======
+>>>>>>> f1b492dede9b29bf5a52645080d7b17aca169cb0
 
+Waiting...and.. after a while, you can use the Graphql application at the url 'http://localhost:4000'. You can connect to Adminer to see your database state at the url 'http://localhost:8080' with userName => 'wilderDB' and password => 'password', select PostgreSQL as Sytem, tape 'database' as Server, 'wilderDB' as User, 'password' as password and 'city_guid' as database.
 7 - To build a new feature you need to create a new branch from the main branch and move there. So when you're on the dev branch, in the terminal run `git checkout -b nameNewBranch`
 
 

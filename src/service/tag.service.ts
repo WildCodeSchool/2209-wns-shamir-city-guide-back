@@ -3,6 +3,10 @@ import { CustomError } from "../utils/CustomError.utils";
 import { TagRepository } from "../repository/tag.repository";
 import { QueryFailedError } from "typeorm";
 import { retrieveKeyFromDbErrorMessage } from "../utils/string.utils";
+<<<<<<< HEAD
+=======
+
+>>>>>>> f1b492dede9b29bf5a52645080d7b17aca169cb0
 
 /**
  * Returns all tags from database
@@ -26,6 +30,13 @@ export const getByIdAndName = async (id: number, name: string): Promise<Tag | nu
   try {
     return await TagRepository.findByIdAndByName(id, name);
   } catch (e) {
+<<<<<<< HEAD
+=======
+  const tags = await TagRepository.find();
+  if (tags !== null) {
+    return tags;
+  } else {
+>>>>>>> f1b492dede9b29bf5a52645080d7b17aca169cb0
     throw new CustomError(
       500,
       `There is a problem to load the tag with the id ${id} and the name ${name} from the database`
@@ -43,9 +54,24 @@ export const getByNameAndIcon = async (name: string, icon: string): Promise<Tag 
   try {
     return await TagRepository.findByNameAndByIcon(name, icon);
   } catch (e) {
+<<<<<<< HEAD
     throw new CustomError(
       500,
       `There is a problem to load the tag with the name ${name} and the icon ${icon} from the database`
+=======
+
+ * Returns all tags from database
+ * @returns Tag[]
+ */
+export const getByIdAndName = async (id: number, name: string): Promise<Tag | null> => {
+  const tag: Tag | null = await TagRepository.findByIdAndByName(id, name);
+  if (tag !== null) {
+    return tag;
+  } else {
+    throw new CustomError(
+      500,
+      `There is a problem to load tags from the database`
+>>>>>>> f1b492dede9b29bf5a52645080d7b17aca169cb0
     );
   }
 };
@@ -56,6 +82,7 @@ export const getByNameAndIcon = async (name: string, icon: string): Promise<Tag 
  * @returns tag if exist null otherwise
  */
 export const getById = async (id: number): Promise<Tag | null> => {
+<<<<<<< HEAD
   try {
     const isTagExist = await TagRepository.findOneBy({id});
     if (isTagExist && Object.keys(isTagExist).length > 0) return isTagExist;
@@ -65,22 +92,52 @@ export const getById = async (id: number): Promise<Tag | null> => {
       throw new CustomError(401, `The tag with the id ${id} doesn't exist in database`);
     }
     throw new CustomError(500, `Internal connection error`);
+=======
+  const isTagExist = await TagRepository.findOneBy({
+    id: id,
+  });
+
+  if (isTagExist && Object.keys(isTagExist).length > 0) {
+    return isTagExist;
+  } else {
+    throw new CustomError(
+      500,
+      `There is a problem to load the tag with the name ${name} and the icon ${icon} from the database`
+    );
+>>>>>>> f1b492dede9b29bf5a52645080d7b17aca169cb0
   }
 };
 
 /**
- * Retrieve a tag by name.
- * @param name tag name
- * @returns the tag if exist null otherwise
+ * Returns a tag by its id from database
+ * @param {number} id The id to use to retrieve a specific tag
+ * @returns tag if exist null otherwise
  */
-export const getByName = async (name: string): Promise<Tag | null> => {
+export const getById = async (id: number): Promise<Tag | null> => {
   try {
+<<<<<<< HEAD
     const retrievedTag = await TagRepository.findOneBy({name});
     if (retrievedTag && Object.keys(retrievedTag).length > 0) return retrievedTag;
     else throw new Error("name-not-found");
   } catch (e) {
     if (e instanceof Error && e.message === "name-not-found") {
       throw new CustomError(426, `The tag with the name ${name} doesn't exist in database`);
+=======
+    const isTagExist = await TagRepository.findOneBy({id});
+    if (isTagExist && Object.keys(isTagExist).length > 0) return isTagExist;
+    else throw new Error("id-not-found");
+    const retrievedTag = await TagRepository.findOneBy({
+      name,
+    });
+    if (retrievedTag && Object.keys(retrievedTag).length > 0) {
+      return retrievedTag;
+    } else {
+      throw new Error("id-not-found");
+    }
+  } catch (e) {
+    if (e instanceof Error && e.message === "not-found") {
+      throw new CustomError(401, `The tag with the id ${id} doesn't exist in database`);
+>>>>>>> f1b492dede9b29bf5a52645080d7b17aca169cb0
     }
     throw new CustomError(500, `Internal connection error`);
   }
