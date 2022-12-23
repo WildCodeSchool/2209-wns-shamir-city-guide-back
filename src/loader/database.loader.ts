@@ -1,16 +1,12 @@
 import databaseConfig from "../config/typeorm";
 import config from "../config";
+import { emojiProud, emojiWink, emojiCool } from "../utils/emoji.utils";
 
 export class DatabaseLoader {
   public static openConnection = async () => {
-    console.log("DB NAME =>", config.database.name);
-    console.log("DB PASSWORD =>", config.database.password);
-    await databaseConfig.initialize()
-      console.log(`Database ${config.database.name} is connected and is running on port ${config.database.port}`)
-        
-      // .catch((err) => {
-      //   console.error(err);
-      //   throw new Error("Unable to connect to database");
-      // });
+    await databaseConfig.initialize();
+    console.log(`${emojiCool} Database ${config.database.name} is connected and is running on port ${config.database.port}  ${emojiProud}${emojiWink}`)
+    await databaseConfig.initialize();
+    console.log(`Database ${config.database.name} is connected and is running on port ${config.database.port}`)
   };
 }

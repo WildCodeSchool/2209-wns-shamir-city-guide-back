@@ -1,0 +1,16 @@
+export const emojiShocked = '😨';
+export const emojiOups = '😓';
+export const emojiUnhappy = '😟';
+export const emojiEnraged = '😠';
+export const emojiFurious = '😡';
+export const emojiForbidden = '⛔';
+export const emojiExclamation = '❗';
+export const emojiInterrogation = '❓';
+export const emojiSurprised = '😮';
+export const emojiHappy = '😀';
+export const emojiLover = '😍';
+export const emojiWink = '😉';
+export const emojiProud = '😎';
+export const emojiCool = '🤘🤞';
+export const emojiRocket = '🚀';
+export const emojiWarning = '⚠️';

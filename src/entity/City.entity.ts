@@ -1,0 +1,44 @@
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ObjectType, Field, ID } from "type-graphql";
+import PointOfInterest from "./PointOfInterest.entity";
+
+@ObjectType()
+@Entity()
+export default class City {
+  @Field(() => ID)
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Field()
+  @Column({
+    unique: true
+  })
+  name: string;
+
+  @Field()
+  @Column({
+    type: "decimal", 
+    precision: 10, 
+    scale: 2, 
+    default: 0,
+  })
+  latitude: number;
+
+  @Field()
+  @Column({
+    type: "decimal", 
+    precision: 10, 
+    scale: 2, 
+    default: 0
+  })
+  longitude: number;
+
+  @Field()
+  @Column({
+    nullable: true
+  })
+  picture: string;
+
+  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city)
+  pointsOfInterest: PointOfInterest[];
+}
