@@ -18,24 +18,6 @@ export const getAll = async (): Promise<Array<Tag>> => {
 };
 
 /**
- * Returns tag by id and name
- * @param {number} id tag id
- * @param {string} name tag name
- * @returns Tag
- */
-export const getByIdAndName = async (id: number, name: string): Promise<Tag | null> => {
-  try {
-    return await TagRepository.findByIdAndByName(id, name);
-  } catch (e) {
-    throw new CustomError(
-      500,
-      `There is a problem to load the tag with the id ${id} and the name ${name} from the database`
-    );
-  }
-};
-
-
-/**
  * Returns a tag by its id from database
  * @param {number} id The id to use to retrieve a specific tag
  * @returns tag if exist null otherwise

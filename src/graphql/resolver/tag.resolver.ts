@@ -1,6 +1,7 @@
 import { Resolver, Arg, Mutation, Query } from "type-graphql";
 import Tag from "../../entity/Tag.entity";
 import * as TagService from "../../service/tag.service";
+import { formatString } from "../../utils/string.utils";
 
 @Resolver(Tag)
 export class TagResolver {
@@ -16,22 +17,13 @@ export class TagResolver {
   }
 
   @Query(() => Tag)
-  async getTagByIdAndName(
-    @Arg("id") id: number, 
-    @Arg("name") name: string
-  ): Promise<Tag | null> {
-    const tag: Tag | null = await TagService.getByIdAndName(id, name);
-    return tag;
-  }
-
-  @Query(() => Tag)
   async getTagById(@Arg("id") id: number): Promise<Tag> {
     return await TagService.getById(id);
   }
 
   @Query(() => Tag) 
   async getTagByName(@Arg("name") name: string): Promise<Tag> {
-    return await TagService.getByName(name);
+    return await TagService.getByName(formatString(name));
   }
 
   @Mutation(() => Tag)
@@ -39,7 +31,7 @@ export class TagResolver {
     @Arg("name") name: string,
     @Arg("icon") icon: string,
   ): Promise<Tag> {
-    return await TagService.create(name, icon);
+    return await TagService.create(formatString(name), icon);
   }
 
   @Mutation(() => Tag)
@@ -48,7 +40,7 @@ export class TagResolver {
     @Arg("name") name: string,
     @Arg("icon") icon: string,
   ): Promise<Tag> {
-    return await TagService.update(id, name, icon);
+    return await TagService.update(id, formatString(name), icon);
   }
 
   @Mutation(() => Tag)

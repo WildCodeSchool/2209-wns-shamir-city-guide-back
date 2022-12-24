@@ -29,7 +29,7 @@ export const getById = async (id: number): Promise<City> => {
     else throw new Error("id-not-found");
   } catch (e) {
     if (e instanceof Error && e.message === "id-not-found") {
-      throw new CustomError(401, `The tag with the id ${id} doesn't exist in database`);
+      throw new CustomError(400, `The tag with the id ${id} doesn't exist in database`);
     }
     throw new CustomError(500, `Internal connection error`);
   }
@@ -63,14 +63,20 @@ export const getByName = async (name: string): Promise<City> => {
 */
 export const create = async (
   name: string, 
-  latitude: number,
-  longitude: number,
+  latitude: string,
+  longitude: string,
   picture: string
 ): Promise<City> => {
   try {
+    const isLocationAlreadyExist = await CityRepository.findByLatitudeAndByLongitude(latitude, longitude);
+    if (isLocationAlreadyExist) throw new Error("location-already-exist");
+    
     const createdCity = await CityRepository.save({name, latitude, longitude, picture});
     return createdCity;
   } catch (e) {
+    if (e instanceof Error && e.message === "location-already-exist") {
+      throw new CustomError(400, 'This location already exist in database');
+    }
     if (e instanceof QueryFailedError && e.driverError.detail?.length) {
       const errorKey = retrieveKeyFromDbErrorMessage(e.driverError.detail);
       switch (errorKey) {
@@ -100,27 +106,38 @@ export const create = async (
 export const update = async (
   id: number,
   name: string, 
-  latitude: number,
-  longitude: number,
+  latitude: string,
+  longitude: string,
   picture: string
 ): Promise<City> => {
   try {
-    const cityToUpdate = await CityRepository.findOneBy({id});
-    if (cityToUpdate) {
-      return await CityRepository.save({...cityToUpdate, name, latitude, longitude, picture});
-    } else throw new Error("id-not-found");
+    // Check if the id is present in database
+    const isIdExistInDB = await CityRepository.findOneBy({id});
+    if (!isIdExistInDB) throw new Error("id-not-found") 
+
+    // Check name the name is already present in database
+    const isNameAlreadyInDB = await CityRepository.findByNameAndIfNotID(id, name);
+    if (isNameAlreadyInDB) throw new Error("name-already-in-db")
+
+    // If the latitude and longitude change we have to verify if the new location isn't stocked in database
+    // Check if the latitude and longitude are in database for all different id
+    if (isIdExistInDB.latitude !== latitude || isIdExistInDB.longitude !== longitude) {
+      console.log("STEP LOCATION");
+      const isLocationAlreadyExist = await CityRepository.findByLatitudeAndByLongitudeAndIfNotID(id, latitude, longitude);
+      console.log("IS LOCATION ALREADU USED =>", isLocationAlreadyExist);
+      
+      if (isLocationAlreadyExist) throw new Error("location-already-in-db");
+    }
+    return await CityRepository.save({...isIdExistInDB, name, latitude, longitude, picture});
+    
   } catch (e) {
-    if (e instanceof Error && e.message === "id-not-found") {
-      throw new CustomError(400, `The city with the id ${id} doesn't exist in database`);
-    } else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      const errorKey = retrieveKeyFromDbErrorMessage(e.driverError.detail);
-      switch (errorKey) {
-        case "name":
-          throw new CustomError(400, `The name ${name} is already used, you have to choose another one`);
-        case "picture":
-          throw new CustomError(400, `The picture ${picture} is already used, you have to choose another one or rename it`);
-        default:
-          throw new CustomError(400, `There is a problem during the city ${name} update, retry later please`);
+    if (e instanceof Error) {
+      if (e.message === "id-not-found") {
+        throw new CustomError(400, `The city with the id ${id} doesn't exist in database`);
+      } else if (e.message === "name-already-in-db") {
+        throw new CustomError(400, `The city with the name ${name} already exist in database`);
+      } else if (e.message === "location-already-in-db") {
+        throw new CustomError(400, `The city with the latitude ${latitude} and longitude ${longitude} already exist in database`);
       }
     } 
     throw new CustomError(
@@ -138,8 +155,11 @@ export const update = async (
 export const deleteCity = async (id: number): Promise<City> => {
   try {
     const cityToRemove = await CityRepository.findOneBy({id});
+    console.log("city to remove =>", cityToRemove);
     if (cityToRemove) {
-      return await CityRepository.remove(cityToRemove);
+      const deletedCity = await CityRepository.remove(cityToRemove);
+      console.log("deleted city =>", deletedCity);
+      return cityToRemove;
     } else throw new Error("id-not-found");
   } catch (e) {
     if (e instanceof Error && e.message === "id-not-found") {

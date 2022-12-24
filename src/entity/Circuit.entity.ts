@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne, ManyToMany, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
-import City from "./Category.entity";
+import City from "./City.entity";
 import Category from "./Category.entity";
 import PointOfInterest from "./PointOfInterest.entity";
 import { JoinTable } from "typeorm";
@@ -13,15 +13,11 @@ export default class Circuit {
   id: number;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   name: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   picture: string;
 
   @Field()
@@ -29,17 +25,19 @@ export default class Circuit {
   description: string;
 
   @Field()
-  @Column({
-    nullable: true
-  })
+  @Column({nullable: true})
   price: number;
 
-  @ManyToOne(() => City, (city) => city.circuits, { eager:true,}) 
+  @ManyToOne(() => City, (city) => city.circuits) 
   @JoinColumn({ name: "city_id" })
   city: City;
 
-  @ManyToOne(() => Category, (category) => category.circuits, { eager:true})
-  @JoinColumn({ name: "categorie_id" })
+  @ManyToOne(
+    () => Category, 
+    (category) => category.circuits, 
+    { eager:true}
+  )
+  @JoinColumn({ name: "category_id" })
   category: Category;
 
   @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.circuits)
@@ -47,6 +45,6 @@ export default class Circuit {
     name: 'circuit_point_of_interest',
     joinColumn: {name: "circuit_id"},
     inverseJoinColumn: {name: "point_of_interest_id"}
-  })
+  }) 
   pointsOfInterest: PointOfInterest[]
 }

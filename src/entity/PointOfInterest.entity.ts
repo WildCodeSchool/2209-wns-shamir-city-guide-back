@@ -14,47 +14,31 @@ export default class PointOfInterest {
   id: number;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   name: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true})
   address: string;
 
   @Field()
-  @Column({
-    type: "decimal", 
-    precision: 10, 
-    scale: 2, 
-    default: 0
-  })
-  latitude: number;
+  @Column({length: 255})
+  latitude: string;
 
   @Field()
-  @Column({
-    type: "decimal", 
-    precision: 10, 
-    scale: 2, 
-    default: 0
-  })
-  longitude: number;
+  @Column({length: 255})
+  longitude: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   picture: string;
 
-  @ManyToOne(() => City, (city) => city.pointsOfInterest, { eager:true, }) 
-  @JoinColumn({ name: "city_id" })
+  @ManyToOne(() => City, (city) => city.pointsOfInterest) 
+  @JoinColumn({name: "city_id"})
   city: City;
 
-  @ManyToOne(() => Type, (type) => type.pointsOfInterest, { eager:true,}) 
-  @JoinColumn({ name: "type_id" })
+  @ManyToOne(() => Type, (type) => type.pointsOfInterest) 
+  @JoinColumn({name: "type_id"})
   type: Type;
 
   @ManyToMany(() => Circuit, (circuit) => circuit.pointsOfInterest)
