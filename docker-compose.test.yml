@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   server:
-    container_name: city_guid_server_dev
+    container_name: city_guid_server_test
     image: graphql_server_image
     build:
       dockerfile: "Dockerfile"
@@ -10,53 +10,53 @@ services:
     volumes:
       - ./:/app:rw,cached
     environment:
-      - NODE_ENV=development
-    command: npm run dev
+      - NODE_ENV=test
+    command: npm run test
     ports:
       - 4000:4000
     depends_on:
-      database_dev:
+      database_test:
         condition: service_healthy
 
-  database_dev:
-    container_name: city_guid_postgresql_dev
+  database_test:
+    container_name: city_guid_pg_test
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: wilder_dev
-      POSTGRES_PASSWORD: password_dev
-      POSTGRES_DB: city_guid_dev
+      POSTGRES_USER: wilder_test
+      POSTGRES_PASSWORD: password_test
+      POSTGRES_DB: city_guid_test
       PGDATA: /var/lib/postgresql/data/customDataFolder
     ports:
       - "5432:5432"
     volumes:
-      - ./db_dev:/var/lib/postgresql/data/customDataFolder
+      - ./db_test:/var/lib/postgresql/data/customDataFolder
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d city_guid_dev -U wilder_dev"]
+      test: ["CMD-SHELL", "pg_isready -d city_guid_test -U wilder_test"]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 30s
 
   adminer:
-    container_name: city_guid_adminer_dev
+    container_name: city_guid_adminer_test
     image: adminer
     restart: always
     ports:
       - 8080:8080
     depends_on:
-      database_dev:
+      database_test:
         condition: service_healthy
 
   pgadmin:
-    container_name: city_guid_pgadmin4_dev
+    container_name: city_guid_pgadmin4_test
     image: dpage/pgadmin4
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: dev@dev.com
-      PGADMIN_DEFAULT_PASSWORD: dev
+      PGADMIN_DEFAULT_EMAIL: test@test.com
+      PGADMIN_DEFAULT_PASSWORD: test
     ports:
       - "4050:80"
     depends_on:
-      database_dev:
+      database_test:
         condition: service_healthy

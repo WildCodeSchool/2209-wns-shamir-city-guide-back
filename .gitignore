@@ -1,4 +1,5 @@
-/dbData
+/db_dev
+/db_test
 /dist
 /node_modules
 .env

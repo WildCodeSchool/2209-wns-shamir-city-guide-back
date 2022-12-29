@@ -14,9 +14,9 @@ export default class Tag {
   name: string;
 
   @Field()
-  @Column({unique: true})
+  @Column()
   icon: string;
-
-  @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.tags)
-  pointsOfInterest: PointOfInterest[];
+  
+  @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest?.tags)
+  pointsOfInterest?: PointOfInterest[];
 }

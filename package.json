@@ -7,7 +7,7 @@
     "build": "tsc --project ./",
     "start": "npm run build && node dist/src/server.js",
     "dev": "ts-node-dev src/server.ts",
-    "test": "jest --watchAll"
+    "test": "jest --watchAll --detectOpenHandles"
   },
   "repository": {
     "type": "git",

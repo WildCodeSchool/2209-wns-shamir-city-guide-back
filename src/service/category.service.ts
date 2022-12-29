@@ -1,5 +1,5 @@
 import Category from "../entity/Category.entity";
-import { CustomError } from "../utils/CustomError.utils";
+import { CustomError } from "../utils/error/CustomError.utils.error";
 import { CategoryRepository } from "../repository/category.repository";
 
 /**

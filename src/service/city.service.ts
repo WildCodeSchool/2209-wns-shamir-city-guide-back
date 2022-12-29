@@ -1,26 +1,35 @@
 import City from "../entity/City.entity";
-import { CustomError } from "../utils/CustomError.utils";
+import { CustomError } from "../utils/error/CustomError.utils.error";
 import { CityRepository } from "../repository/city.repository";
 import { QueryFailedError } from "typeorm";
 import { retrieveKeyFromDbErrorMessage } from "../utils/string.utils";
+import { 
+  InternalServerError, 
+  NotFoundError, 
+  BadRequestError, 
+  UnprocessableEntityError 
+} from "../utils/error/interfaces.utils.error";
 
 
 /**
  * Returns all cities from database
- * @returns City[]
+ * @returns City[] | error 500
  */
 export const getAll = async (): Promise<Array<City>> => {
   try {
     return await CityRepository.find();
   } catch (e) {
-    throw new CustomError(500, `There is a problem to load cities from the database`);
+    throw new CustomError(
+      new InternalServerError(), 
+      `There is a problem to load cities from the database`
+    );
   }
 };
 
 /**
  * Returns a city by its id from database
  * @param {number} id The id to use to retrieve a specific city
- * @returns city if exist null otherwise
+ * @returns city | 404 not found | 500 Internal Server Error
  */
 export const getById = async (id: number): Promise<City> => {
   try {
@@ -29,16 +38,19 @@ export const getById = async (id: number): Promise<City> => {
     else throw new Error("id-not-found");
   } catch (e) {
     if (e instanceof Error && e.message === "id-not-found") {
-      throw new CustomError(400, `The tag with the id ${id} doesn't exist in database`);
+      throw new CustomError(
+        new NotFoundError(), 
+        `The tag with the id ${id} doesn't exist in database`
+      );
     }
-    throw new CustomError(500, `Internal connection error`);
+    throw new CustomError(new InternalServerError(), `Internal connection error`);
   }
 };
 
 /**
  * Returns a city by its name from database
  * @param {string} name The name to use to retrieve a specific city
- * @returns city if exist null otherwise
+ * @returns city | 404 not found | 500 Internal Server Error
  */
 export const getByName = async (name: string): Promise<City> => {
   try {
@@ -47,9 +59,12 @@ export const getByName = async (name: string): Promise<City> => {
     else throw new Error("name-not-found");
   } catch (e) {
     if (e instanceof Error && e.message === "name-not-found") {
-      throw new CustomError(400, `The city with the name ${name} doesn't exist in database`);
+      throw new CustomError(
+        new NotFoundError(), 
+        `The city with the name ${name} doesn't exist in database`
+      );
     }
-    throw new CustomError(500, `Internal connection error`);
+    throw new CustomError(new InternalServerError(), `Internal connection error`);
   }
 };
 
@@ -59,7 +74,7 @@ export const getByName = async (name: string): Promise<City> => {
  * @param {string} latitude city latitude
  * @param {string} longitude city longitude
  * @param {string} picture city picture
- * @returns city the created city
+ * @returns city the created city | 422 Unprocessable Entity | 500 Internal Server Error
 */
 export const create = async (
   name: string, 
@@ -75,21 +90,28 @@ export const create = async (
     return createdCity;
   } catch (e) {
     if (e instanceof Error && e.message === "location-already-exist") {
-      throw new CustomError(400, 'This location already exist in database');
+      throw new CustomError(
+        new UnprocessableEntityError(), 
+        'This location already exist in database'
+      );
     }
     if (e instanceof QueryFailedError && e.driverError.detail?.length) {
       const errorKey = retrieveKeyFromDbErrorMessage(e.driverError.detail);
       switch (errorKey) {
         case "name":
-          throw new CustomError(400, `The name ${name} is already used, you have to choose another one`);
-        case "picture":
-          throw new CustomError(400, `The picture ${picture} is already used, you have to choose another one or rename it`);
-        default:
-          throw new CustomError(400, `There is a problem during the city creation, retry later please`);
+          throw new CustomError(
+            new UnprocessableEntityError(), 
+            `The name ${name} is already used, you have to choose another one`
+          );
+          default:
+          throw new CustomError(
+            new BadRequestError(), 
+            `There is a problem during the city ${name} creation`
+          );
       }
     } 
     throw new CustomError(
-      500, 
+      new InternalServerError(), 
       `Problem to create the city ${name}, there is probably an internal error in the database server`
     );
   }
@@ -101,7 +123,7 @@ export const create = async (
  * @param {string} latitude city latitude
  * @param {string} longitude city longitude
  * @param {string} picture city picture
- * @returns updated city
+ * @returns updated city | 404 Not Found | 422 Unprocessable Entity | 500 Internal Server Error
  */
 export const update = async (
   id: number,
@@ -122,10 +144,7 @@ export const update = async (
     // If the latitude and longitude change we have to verify if the new location isn't stocked in database
     // Check if the latitude and longitude are in database for all different id
     if (isIdExistInDB.latitude !== latitude || isIdExistInDB.longitude !== longitude) {
-      console.log("STEP LOCATION");
-      const isLocationAlreadyExist = await CityRepository.findByLatitudeAndByLongitudeAndIfNotID(id, latitude, longitude);
-      console.log("IS LOCATION ALREADU USED =>", isLocationAlreadyExist);
-      
+      const isLocationAlreadyExist = await CityRepository.findByLatitudeAndByLongitudeIfNotID(id, latitude, longitude);
       if (isLocationAlreadyExist) throw new Error("location-already-in-db");
     }
     return await CityRepository.save({...isIdExistInDB, name, latitude, longitude, picture});
@@ -133,15 +152,24 @@ export const update = async (
   } catch (e) {
     if (e instanceof Error) {
       if (e.message === "id-not-found") {
-        throw new CustomError(400, `The city with the id ${id} doesn't exist in database`);
+        throw new CustomError(
+          new NotFoundError(), 
+          `The city with the id ${id} doesn't exist in database`
+        );
       } else if (e.message === "name-already-in-db") {
-        throw new CustomError(400, `The city with the name ${name} already exist in database`);
+        throw new CustomError(
+          new UnprocessableEntityError(), 
+          `The city with the name ${name} already exist in database`
+        );
       } else if (e.message === "location-already-in-db") {
-        throw new CustomError(400, `The city with the latitude ${latitude} and longitude ${longitude} already exist in database`);
+        throw new CustomError(
+          new UnprocessableEntityError(), 
+          `The city with the latitude ${latitude} and longitude ${longitude} already exist in database`
+        );
       }
     } 
     throw new CustomError(
-      500,
+      new InternalServerError(),
       `Problem to update city with id ${id}, there is probably an internal error in the database server`
     );
   }
@@ -150,23 +178,24 @@ export const update = async (
 /**
  * Delete a city by its id in database
  * @param {number} id city id
- * @returns deleted city
+ * @returns deleted city | 404 Not Found | 500 Internal Server Error
  */
 export const deleteCity = async (id: number): Promise<City> => {
   try {
     const cityToRemove = await CityRepository.findOneBy({id});
-    console.log("city to remove =>", cityToRemove);
     if (cityToRemove) {
-      const deletedCity = await CityRepository.remove(cityToRemove);
-      console.log("deleted city =>", deletedCity);
+      await CityRepository.remove(cityToRemove);
       return cityToRemove;
     } else throw new Error("id-not-found");
   } catch (e) {
     if (e instanceof Error && e.message === "id-not-found") {
-      throw new CustomError(400, `The city with the id ${id} doesn't exist in database`);
+      throw new CustomError(
+        new NotFoundError(), 
+        `The city with the id ${id} doesn't exist in database`
+      );
     } 
     throw new CustomError(
-      500,
+      new InternalServerError(),
       `Problem to remove city with id ${id}, there is probably an internal error in the database server`
     );
   }

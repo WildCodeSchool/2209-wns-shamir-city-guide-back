@@ -1,14 +1,48 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-export default {
-  server_port: process.env.SERVER_PORT,
+const environnement =  process.env.NODE_ENV;
+console.log("Actual environment : ", environnement);
+
+type Configuration = {
+  secret: string | undefined
+  database: Database | undefined
+}
+
+type Database = {
+  port: string | undefined
+  name: string | undefined
+  user: string | undefined
+  password: string | undefined
+  host: string | undefined
+}
+
+const developmentConfiguration: Configuration = {
   secret: process.env.SERVER_SECRET,
   database: {
     port: process.env.DB_PORT,
-    name: process.env.DB_NAME,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    host_dev: process.env.DB_HOST_DEV,
+    name: process.env.DB_NAME_DEV,
+    user: process.env.DB_USER_DEV,
+    password: process.env.DB_PASSWORD_DEV,
+    host: process.env.DB_HOST_DEV,
   },
 }
+
+const testConfiguration: Configuration = {
+  secret: process.env.SERVER_SECRET,
+  database: {
+    port: process.env.DB_PORT,
+    name: process.env.DB_NAME_TEST,
+    user: process.env.DB_USER_TEST,
+    password: process.env.DB_PASSWORD_TEST,
+    host: process.env.DB_HOST_TEST,
+  },
+}
+
+let configuration: Configuration | undefined;
+
+if (environnement === 'development') configuration = developmentConfiguration;
+else if (environnement === 'test') configuration = testConfiguration;
+
+export default configuration;
+

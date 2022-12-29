@@ -42,13 +42,13 @@ export default class PointOfInterest {
   type: Type;
 
   @ManyToMany(() => Circuit, (circuit) => circuit.pointsOfInterest)
-  circuits: Circuit[]
-
+  circuits?: Circuit[]
+  
   @ManyToMany(() => Tag, (tag) => tag.pointsOfInterest)
   @JoinTable({ 
     name: 'point_of_interest_tag',
     joinColumn: {name: "point_of_interest_id"},
     inverseJoinColumn: {name: "tag_id"}
   })
-  tags: Tag[];
+  tags?: Tag[];
 }

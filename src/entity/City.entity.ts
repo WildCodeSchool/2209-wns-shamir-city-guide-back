@@ -26,17 +26,19 @@ export default class City {
   @Column({length: 255})
   picture: string;
 
+  @Field(() => [Circuit])
   @OneToMany(
     () => Circuit, 
     (circuit) => circuit.city, 
     {eager: true}
   )
-  circuits: Circuit[];
+  circuits?: Circuit[];
 
+  @Field(() => [PointOfInterest])
   @OneToMany(
     () => PointOfInterest, 
     (pointOfInterest) => pointOfInterest.city, 
     { eager:true }
   )
-  pointsOfInterest: PointOfInterest[];
+  pointsOfInterest?: PointOfInterest[];
 }

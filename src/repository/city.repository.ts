@@ -15,7 +15,7 @@ export const CityRepository = databaseConfig.getRepository(City)
                 .andWhere("id != :id", {id})
                 .getOne()
         },
-        async findByLatitudeAndByLongitudeAndIfNotID(id: number, latitude: string, longitude: string): Promise<City | null> {
+        async findByLatitudeAndByLongitudeIfNotID(id: number, latitude: string, longitude: string): Promise<City | null> {
             return this.createQueryBuilder("city")
                 .where("latitude = :latitude AND longitude = :longitude", {latitude, longitude})
                 .andWhere("id != :id", {id})
