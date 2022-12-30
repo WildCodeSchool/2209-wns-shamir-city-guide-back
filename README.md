@@ -28,4 +28,5 @@ Now pgAdmin is listenning on your postgres container ip address, you can see the
 
 ** TESTS **
 To run tests with jest we can use the command `docker compose -f docker-compose.test.yml up`, which create a new database a new volume db_test to save your manipulations. If some authorization problems are raised you have to change the folder's owner to root : `sudo chown root 2209-wns-shamir-city-guide-back`,  and you can run the above command again.
+To choose wich kind of test you want to launch you can modify at the line 14 of the docker-compose.test.yml the 'command' instruction, you can choose between `npm run test:unit` for unit tests, `npm run test:integration` for integration tests and `npm run test:functionnal` for functionnal tests.
 

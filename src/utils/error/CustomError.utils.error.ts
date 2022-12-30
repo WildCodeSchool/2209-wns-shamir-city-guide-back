@@ -12,7 +12,6 @@ import {
 } from "../emoji.utils";
 
 export class CustomError extends Error {
-  /* */
   statusCodeClass: string;
   statusCode: number;
   statusCodeMessage: string;

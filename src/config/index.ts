@@ -1,8 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
+import { docker, laptop } from '../utils/emoji.utils';
 
 const environnement =  process.env.NODE_ENV;
-console.log("Actual environment : ", environnement);
+console.log(`${docker} Actual environment: ${environnement} ${laptop}`);
 
 type Configuration = {
   secret: string | undefined

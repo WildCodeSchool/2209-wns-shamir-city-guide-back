@@ -7,10 +7,12 @@
     "build": "tsc --project ./",
     "start": "npm run build && node dist/src/server.js",
     "dev": "ts-node-dev src/server.ts",
-    "test": "jest --watchAll --detectOpenHandles"
+    "test:unit": "jest --watchAll src/test/unit --verbose --detectOpenHandles --colors",
+    "test:integration": "jest --watchAll src/test/integration --verbose --detectOpenHandles --colors",
+    "test:functionnal": "jest --watchAll src/test/functionnal --verbose --detectOpenHandles --colors"
   },
   "repository": {
-    "type": "git",
+    "type": "git", 
     "url": "git+https://github.com/WildCodeSchool/2209-wns-shamir-city-guide-back.git"
   },
   "author": "Bardinet-Langlois Thibault",

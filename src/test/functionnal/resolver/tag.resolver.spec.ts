@@ -4,9 +4,14 @@ import { DatabaseLoader } from "../../../loader/database.loader";
 
 
 describe("Tag resolver", () => {
-    it("Should retrieve a tag by its id", async () => {
+    let server: ApolloServer;
+
+    beforeAll(async () => {
         await DatabaseLoader.openConnection();
-        const server: ApolloServer = await startAppoloServer();
+        server = await startAppoloServer();
+    });
+    
+    it("Should retrieve a tag by its id", async () => {
 
         const getTagById = gql`
             query GetTagById {

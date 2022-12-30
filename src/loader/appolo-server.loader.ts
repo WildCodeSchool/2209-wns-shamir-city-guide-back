@@ -3,7 +3,6 @@ import "reflect-metadata";
 import { buildSchema } from "type-graphql";
 import { TagResolver } from "../graphql/resolver/tag.resolver";
 import { CityResolver } from "../graphql/resolver/city.resolver";
-import { emojiRocket } from "../utils/emoji.utils";
 
 export const startAppoloServer = async (): Promise<ApolloServer> => {
   const schema = await buildSchema({
@@ -17,9 +16,6 @@ export const startAppoloServer = async (): Promise<ApolloServer> => {
     schema 
   });
 
-  server.listen().then(({ url }) => {
-    console.log(`${emojiRocket}  Appolo server ready at ${url}`);
-  });
-
+  // We don't use server.listen here because we want to avoid the error "listen EADDRINUSE: address already in use :::4000" when we will run the tests
   return server;
 };
