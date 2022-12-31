@@ -5,28 +5,29 @@ import { FunctionsFlag } from "../utils/constants.utils";
 import { UnprocessableEntityError } from "../utils/error/interfaces.utils.error";
 
 // Error messages
-const idEqual0Error = "The tag id have to be superior than 0";
-const nameTooShortError = "The given name length for the tag is too short. The minimal length is 1 character, but actual is 0";
-const nameTooLongError = "The given name length for the tag is too long. The maximal length is $constraint1 character";
-const iconTooLongError = "The given icon length for the tag is too long. The maximal length is $constraint1 character";
+export const flagErrorMessage = "wrong flag provided",
+    idEqual0ErrorMessage = "The tag id have to be superior than 0",  
+    nameTooShortErrorMessage = "The given name length for the tag is too short. The minimal length is 1 character, but actual is 0",
+    nameTooLongErrorMessage = "The given name length for the tag is too long. The maximal length is 255 character",
+    iconTooLongErrorMessage = "The given icon length for the tag is too long. The maximal length is 255 character";
 
 @InputType()
-export class TagById {
+export class TagByIdInput {
     @Field()
     @Min(0, {
-        message: idEqual0Error
+        message: idEqual0ErrorMessage
     })
     id: number
 }
 
 @InputType()
-export class TagByName {
+export class TagByNameInput {
     @Field()
     @MinLength(1, {
-        message: nameTooShortError
+        message: nameTooShortErrorMessage
     })
     @MaxLength(255, {
-        message: nameTooLongError
+        message: nameTooLongErrorMessage
     })
     name: string
 }
@@ -35,16 +36,16 @@ export class TagByName {
 export class TagCreationInput {
     @Field()
     @MinLength(1, {
-        message: nameTooShortError,
+        message: nameTooShortErrorMessage,
     })
     @MaxLength(255, {
-        message: nameTooLongError
+        message: nameTooLongErrorMessage
     })
     name: string
 
     @Field()
     @MaxLength(255, {
-        message: iconTooLongError
+        message: iconTooLongErrorMessage
     })
     icon: string
 }
@@ -53,7 +54,7 @@ export class TagCreationInput {
 export class TagUpdateInput extends TagCreationInput {
     @Field()
     @Min(1, {
-        message: idEqual0Error
+        message: idEqual0ErrorMessage
     })
     id: number
 }
@@ -70,15 +71,15 @@ export type TagTypeValidator = {
  * @param {CustomTagType} data 
  * @returns void
 */
-export const validateTagInput = async (flag: string, data: TagTypeValidator): Promise<void> => {
+export const validateTagInput = async (flag: string, data: TagTypeValidator): Promise<string> => {
     let tag;
     switch (flag) {
         case FunctionsFlag.GETBYID:
-            tag = new TagById();
+            tag = new TagByIdInput();
             if (data.id) tag.id = data.id;
             break;
         case FunctionsFlag.GETBYNAME:
-            tag = new TagByName();
+            tag = new TagByNameInput();
             data.name && data.name.length > 0 ? tag.name = data.name : tag.name = '';
             break;
         case FunctionsFlag.CREATE:
@@ -93,7 +94,7 @@ export const validateTagInput = async (flag: string, data: TagTypeValidator): Pr
             data.icon && data.icon.length > 0 ? tag.icon = data.icon : tag.icon = '';
             break;
         default:
-            return;
+            throw new CustomError(new UnprocessableEntityError(), flagErrorMessage);
     }
 
     let errorMessage = '';
@@ -114,4 +115,5 @@ export const validateTagInput = async (flag: string, data: TagTypeValidator): Pr
             }
         }
     }
+    return 'compliant data';
 }

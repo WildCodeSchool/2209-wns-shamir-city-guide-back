@@ -9,5 +9,7 @@ export const retrieveKeyFromDbErrorMessage = (errorMessage: string): string =>
  * @param {string} stringToFormat the string to format, 'xxxXX' || 'xxxxxx'
  * @returns {string}            the formatted string => 'Xxxxxxx'
 */
-export const formatString = (stringToFormat: string): string =>
-    stringToFormat.charAt(0).toUpperCase() +  stringToFormat.slice(1);  
+export const formatString = (stringToFormat: string): string => {
+    const str = stringToFormat.trim();  
+    return str.charAt(0).toUpperCase() +  str.slice(1);
+}
