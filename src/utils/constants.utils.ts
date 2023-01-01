@@ -1,3 +1,10 @@
+/* Constants for environments */
+export const enum Environments {
+    TEST="test",
+    DEVELOPMENT="development",
+    PRODUCTION="production"
+}
+
 /* Constants for errors and responses */
 export const enum StatusCode {
     OK = 200,

@@ -38,7 +38,7 @@ export class CustomError extends Error {
       this.message = message;
     } else if (this.statusCode >= StatusCode.INTERNAL_SERVER_ERROR) {
       this.emoji = emojiShocked + emojiSurprised + emojiWarning;
-      this.message = ` Ouups!!Something went wrong\n` + this.message;
+      this.message = `${emojiShocked} Ouups!!Something went wrong\n` + this.message;
     }
     // 👇️ because we are extending a built-in class
     Object.setPrototypeOf(this, CustomError.prototype);

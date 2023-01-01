@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
 dotenv.config();
-import { docker, laptop } from '../utils/emoji.utils';
+import { emojiDocker, emojiLaptop } from '../utils/emoji.utils';
 
-const environnement =  process.env.NODE_ENV;
-console.log(`${docker} Actual environment: ${environnement} ${laptop}`);
+const environment =  process.env.NODE_ENV;
+console.log(`${emojiDocker} Actual environment: ${environment} ${emojiLaptop}`);
 
 type Configuration = {
+  environment: string | undefined
   secret: string | undefined
   database: Database | undefined
 }
@@ -19,6 +20,7 @@ type Database = {
 }
 
 const developmentConfiguration: Configuration = {
+  environment:  process.env.NODE_ENV,
   secret: process.env.SERVER_SECRET,
   database: {
     port: process.env.DB_PORT,
@@ -30,6 +32,7 @@ const developmentConfiguration: Configuration = {
 }
 
 const testConfiguration: Configuration = {
+  environment: process.env.NODE_ENV,
   secret: process.env.SERVER_SECRET,
   database: {
     port: process.env.DB_PORT,
@@ -42,8 +45,8 @@ const testConfiguration: Configuration = {
 
 let configuration: Configuration | undefined;
 
-if (environnement === 'development') configuration = developmentConfiguration;
-else if (environnement === 'test') configuration = testConfiguration;
+if (environment === 'development') configuration = developmentConfiguration;
+else if (environment === 'test') configuration = testConfiguration;
 
 export default configuration;
 

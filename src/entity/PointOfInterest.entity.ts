@@ -33,11 +33,16 @@ export default class PointOfInterest {
   @Column({unique: true, length: 255})
   picture: string;
 
-  @ManyToOne(() => City, (city) => city.pointsOfInterest) 
+  @ManyToOne(() => City, (city) => city.pointsOfInterest, { 
+    onDelete: 'CASCADE'
+   }) 
   @JoinColumn({name: "city_id"})
   city: City;
 
-  @ManyToOne(() => Type, (type) => type.pointsOfInterest) 
+  @ManyToOne(() => Type, (type) => type.pointsOfInterest, { 
+    onDelete: 'SET NULL',
+    nullable: true, 
+  }) 
   @JoinColumn({name: "type_id"})
   type: Type;
 

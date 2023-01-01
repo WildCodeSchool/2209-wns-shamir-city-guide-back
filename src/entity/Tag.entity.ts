@@ -7,7 +7,7 @@ import PointOfInterest from "./PointOfInterest.entity";
 export default class Tag {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Field()
   @Column({unique: true})

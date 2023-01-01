@@ -28,14 +28,17 @@ export default class Circuit {
   @Column({nullable: true})
   price: number;
 
-  @ManyToOne(() => City, (city) => city.circuits) 
+  @ManyToOne(() => City, (city) => city.circuits, {
+    onDelete: 'CASCADE'
+  }) 
   @JoinColumn({ name: "city_id" })
   city: City;
 
-  @ManyToOne(
-    () => Category, 
-    (category) => category.circuits, 
-    { eager:true}
+  @ManyToOne(() => Category, (category) => category.circuits, { 
+      eager:true,
+      onDelete: 'SET NULL',
+      nullable: true
+    }
   )
   @JoinColumn({ name: "category_id" })
   category: Category;

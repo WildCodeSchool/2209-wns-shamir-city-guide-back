@@ -37,13 +37,13 @@ export class TagResolver {
     @Arg("icon") icon: string,
   ): Promise<Tag> {
     const dataToVerify: TagTypeValidator = {
-      name,
-      icon
+      name: name.trim(),
+      icon: icon.trim()
     } 
     await validateTagInput(FunctionsFlag.CREATE, dataToVerify);
     const data = new Tag();
-    data.name = name;
-    data.icon = icon;
+    data.name = name.trim();
+    data.icon = icon.trim();
     return await TagService.create(data);
   }
 
@@ -55,14 +55,14 @@ export class TagResolver {
   ): Promise<Tag> {
     const dataToVerify: TagTypeValidator = {
       id,
-      name,
-      icon
+      name: name.trim(),
+      icon: icon.trim()
     } 
     await validateTagInput(FunctionsFlag.UPDATE, dataToVerify);
     const data = new Tag();
     data.id = id;
-    data.name = name;
-    data.icon = icon;
+    data.name = name.trim();
+    data.icon = icon.trim();
     return await TagService.update(data);
   }
 
