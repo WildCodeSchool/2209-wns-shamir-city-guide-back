@@ -9,7 +9,7 @@ import {
     nameTooShortErrorMessage, 
     nameTooLongErrorMessage, 
     iconTooLongErrorMessage 
-} from "../../../validator/tag.validator";
+} from "../../../validator/messages.validator";
 import { 
     StatusCodeClass, 
     StatusCodeMessage, 
@@ -92,7 +92,7 @@ describe("functionnal/resolver/tag.resolver suite of tests", () => {
         expect(tag.errors).toBeDefined();
         expect(tag.data?.getTagById).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe("The tag with the id 10 doesn't exist in database"); 
+            expect(tag?.errors[0]?.message).toBe("Le tag avec l'id 10 n'existe pas en base de données"); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
@@ -142,7 +142,7 @@ describe("functionnal/resolver/tag.resolver suite of tests", () => {
         expect(tag.errors).toBeDefined();
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe("The tag with the name lorem doesn't exist in database"); 
+            expect(tag?.errors[0]?.message).toBe("Le tag avec le nom lorem n'existe pas en base de données"); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
@@ -399,7 +399,7 @@ describe("functionnal/resolver/tag.resolver suite of tests", () => {
         if (tag.errors) expect(tag.errors).toBeDefined();
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe("The tag with the id 10 doesn't exist in database");  
+            expect(tag?.errors[0]?.message).toBe("Le tag avec l'id 10 n'existe pas en base de données");  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     

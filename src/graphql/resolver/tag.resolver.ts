@@ -1,8 +1,8 @@
 import { Resolver, Arg, Mutation, Query } from "type-graphql";
 import Tag from "../../entity/Tag.entity";
-import { TagTypeValidator, validateTagInput } from "../../validator/tag.validator";
+import { validateIdInput, validateNameInput } from "../../validator/common.validator";
 import * as TagService from "../../service/tag.service";
-import { FunctionsFlag } from "../../utils/constants.utils";
+import { validateCreationTagInput, validateUpdateTagInput } from "../../validator/entity/tag.validator.entity";
 
 
 @Resolver(Tag)
@@ -19,16 +19,14 @@ export class TagResolver {
 
   @Query(() => Tag)
   async getTagById(@Arg("id") id: number): Promise<Tag> {
-    const dataToVerify: TagTypeValidator = {id};
-    await validateTagInput(FunctionsFlag.GETBYID, dataToVerify);
-    return await TagService.getById(id);
+    const verifiedId: number = await validateIdInput(id);
+    return await TagService.getById(verifiedId);
   }
 
   @Query(() => Tag) 
-  async getTagByName(@Arg("name") name: string): Promise<Tag> {
-    const dataToVerify: TagTypeValidator = {name};  
-    await validateTagInput(FunctionsFlag.GETBYNAME, dataToVerify);
-    return await TagService.getByName(name);
+  async getTagByName(@Arg("name") name: string): Promise<Tag> {  
+    const verifiedName: string = await validateNameInput(name);
+    return await TagService.getByName(verifiedName);
   }
 
   @Mutation(() => Tag)
@@ -36,15 +34,8 @@ export class TagResolver {
     @Arg("name") name: string,
     @Arg("icon") icon: string,
   ): Promise<Tag> {
-    const dataToVerify: TagTypeValidator = {
-      name: name.trim(),
-      icon: icon.trim()
-    } 
-    await validateTagInput(FunctionsFlag.CREATE, dataToVerify);
-    const data = new Tag();
-    data.name = name.trim();
-    data.icon = icon.trim();
-    return await TagService.create(data);
+    const verifiedData: Tag = await validateCreationTagInput(name, icon);
+    return await TagService.create(verifiedData);
   }
 
   @Mutation(() => Tag)
@@ -53,23 +44,13 @@ export class TagResolver {
     @Arg("name") name: string,
     @Arg("icon") icon: string,
   ): Promise<Tag> {
-    const dataToVerify: TagTypeValidator = {
-      id,
-      name: name.trim(),
-      icon: icon.trim()
-    } 
-    await validateTagInput(FunctionsFlag.UPDATE, dataToVerify);
-    const data = new Tag();
-    data.id = id;
-    data.name = name.trim();
-    data.icon = icon.trim();
-    return await TagService.update(data);
+    const verifiedData: Tag = await validateUpdateTagInput(id, name, icon);
+    return await TagService.update(verifiedData);
   }
 
   @Mutation(() => Tag)
   async deleteTag(@Arg("id") id: number): Promise<Tag> {
-    const dataToVerify: TagTypeValidator = {id};
-    await validateTagInput(FunctionsFlag.GETBYID, dataToVerify);
-    return await TagService.deleteTag(id);
+    const verifiedData = await validateIdInput(id);
+    return await TagService.deleteTag(verifiedData);
   }
 }

@@ -55,7 +55,7 @@ describe("integration/service/tag.service suite of tests", () => {
             await getTagById(0);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("The tag with the id 0 doesn't exist in database");
+                expect(e.message).toBe("Le tag avec l'id 0 n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -65,7 +65,11 @@ describe("integration/service/tag.service suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new NotFoundError(), "The tag with the id 0 doesn't exist in database"))
+            expect(e).toStrictEqual(
+                new CustomError(
+                    new NotFoundError(), 
+                    "Le tag avec l'id 0 n'existe pas en base de données"
+            ))
         }
     });
 
@@ -74,7 +78,7 @@ describe("integration/service/tag.service suite of tests", () => {
             await getTagById(10);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("The tag with the id 10 doesn't exist in database");
+                expect(e.message).toBe("Le tag avec l'id 10 n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -84,7 +88,11 @@ describe("integration/service/tag.service suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new NotFoundError(), "The tag with the id 10 doesn't exist in database"))
+            expect(e).toStrictEqual(
+                new CustomError(
+                    new NotFoundError(), 
+                    "Le tag avec l'id 10 n'existe pas en base de données"
+                ))
         }
     });
 
@@ -109,7 +117,7 @@ describe("integration/service/tag.service suite of tests", () => {
             await getTagByName("");
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("The tag with the name  doesn't exist in database");
+                expect(e.message).toBe("Le tag avec le nom  n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -119,7 +127,11 @@ describe("integration/service/tag.service suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new NotFoundError(), "The tag with the name  doesn't exist in database"))
+            expect(e).toStrictEqual(
+                new CustomError(
+                    new NotFoundError(), 
+                    "Le tag avec le nom  n'existe pas en base de données"
+                ))
         }
     });
 
@@ -128,7 +140,7 @@ describe("integration/service/tag.service suite of tests", () => {
             await getTagByName("Se mettre au vert");
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("The tag with the name Se mettre au vert doesn't exist in database");
+                expect(e.message).toBe("Le tag avec le nom Se mettre au vert n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -138,7 +150,11 @@ describe("integration/service/tag.service suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new NotFoundError(), "The tag with the name Se mettre au vert doesn't exist in database"))
+            expect(e).toStrictEqual(
+                new CustomError(
+                    new NotFoundError(), 
+                    "Le tag avec le nom Se mettre au vert n'existe pas en base de données"
+                ))
         }
     });
 
@@ -182,7 +198,7 @@ describe("integration/service/tag.service suite of tests", () => {
             await update({ id: 10, name: "new Tag", icon: 'icon.png' });
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("The tag with the id 10 doesn't exist in database");
+                expect(e.message).toBe("Le tag avec l'id 10 n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -192,14 +208,17 @@ describe("integration/service/tag.service suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new NotFoundError(), "The tag with the id 10 doesn't exist in database"))
+            expect(e).toStrictEqual(
+                new CustomError(
+                    new NotFoundError(), 
+                    "Le tag avec l'id 10 n'existe pas en base de données"
+                ))
         }
     });
 
     // DELETE
     it("Should delete a tag and returns it", async () => {
         const tag: Tag = await deleteTag(6);
-        console.log("deleted tag =>", tag);
         expect(tag).not.toBeUndefined();
         expect(tag).toBeDefined();
         expect(tag && typeof tag === 'object').toBe(true);
@@ -219,7 +238,7 @@ describe("integration/service/tag.service suite of tests", () => {
             await deleteTag(10);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("The tag with the id 10 doesn't exist in database");
+                expect(e.message).toBe("Le tag avec l'id 10 n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -229,7 +248,11 @@ describe("integration/service/tag.service suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new NotFoundError(), "The tag with the id 10 doesn't exist in database"))
+            expect(e).toStrictEqual(
+                new CustomError(
+                    new NotFoundError(), 
+                    "Le tag avec l'id 10 n'existe pas en base de données"
+                ))
         }
     });
 });

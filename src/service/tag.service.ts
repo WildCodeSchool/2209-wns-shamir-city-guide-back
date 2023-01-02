@@ -21,7 +21,7 @@ export const getAll = async (): Promise<Array<Tag>> => {
   } catch (e) {
     throw new CustomError(
       new InternalServerError(), 
-      `There is a problem to load tags from the database`
+      `Problème de connexion interne, les tags n'ont pas été chargés`
     );
   }
 };
@@ -40,10 +40,13 @@ export const getById = async (id: number): Promise<Tag> => {
     if (e instanceof Error && e.message === "id-not-found") {
       throw new CustomError(
         new NotFoundError(), 
-        `The tag with the id ${id} doesn't exist in database`
+        `Le tag avec l'id ${id} n'existe pas en base de données`
       );
     }
-    throw new CustomError(new InternalServerError(), `Internal connection error`);
+    throw new CustomError(
+      new InternalServerError(), 
+      `Problème de connexion interne, le tag n'a pas été chargé`
+    );
   }
 };
 
@@ -62,10 +65,13 @@ export const getByName = async (name: string): Promise<Tag> => {
     if (e instanceof Error && e.message === "name-not-found") {      
       throw new CustomError(
         new NotFoundError(), 
-        `The tag with the name ${name} doesn't exist in database`
+        `Le tag avec le nom ${name} n'existe pas en base de données`
       );
     }
-    throw new CustomError(new InternalServerError(), `Internal connection error`);
+    throw new CustomError(
+      new InternalServerError(), 
+      `Problème de connexion interne, le tag ${name} n'a pas été chargé`
+    );
   }
 };
 
@@ -88,18 +94,18 @@ export const create = async (data: Tag): Promise<Tag> => {
         case "name":
           throw new CustomError(
             new UnprocessableEntityError(), 
-            `The name ${name} is already used, you have to choose another one`
+            `Le nom ${name} est déjà utilisé, vous devez en choisir un autre`
           );
         default:
           throw new CustomError(
             new BadRequestError(), 
-            `There is a problem during the tag creation, retry later please`
+            `Il y a un problème lors de la création du tag ou dans le format de la requête`
           );
       }
     } 
     throw new CustomError(
       new InternalServerError(), 
-      `Problem to create the tage ${name}, there is probably an internal error in database server`
+      `Problème de connexion interne, le tag ${name} n'a pas été créé`
     );
   }
 };
@@ -121,7 +127,7 @@ export const update = async (data: Tag): Promise<Tag> => {
     if (e instanceof Error && e.message === "id-not-found") {
       throw new CustomError(
         new NotFoundError(), 
-        `The tag with the id ${id} doesn't exist in database`
+        `Le tag avec l'id ${id} n'existe pas en base de données`
       );
     } else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
       const errorKey = retrieveKeyFromDbErrorMessage(e.driverError.detail);
@@ -129,18 +135,18 @@ export const update = async (data: Tag): Promise<Tag> => {
         case "name":
           throw new CustomError(
             new UnprocessableEntityError(), 
-            `The name ${name} is already used, you have to choose another one`
+            `Le nom ${name} est déjà utilisé, vous devez en choisir un autre`
           );
         default:
           throw new CustomError(
             new BadRequestError(), 
-            `There is a problem during the tag ${name} update, retry later please`
+            `Il y a un problème lors de la création du tag ou dans le format de la requête`
           );
       }
     } 
     throw new CustomError(
       new InternalServerError(),
-      `Problem to update tag with id ${id}, there is probably an internal error in database server`
+      `Problème de connexion interne, le tag n'a pas été mis à jour`
     );
   }
 };
@@ -160,12 +166,12 @@ export const deleteTag = async (id: number): Promise<Tag> => {
     if (e instanceof Error && e.message === "id-not-found") {
       throw new CustomError(
         new NotFoundError(), 
-        `The tag with the id ${id} doesn't exist in database`
+        `Le tag avec l'id ${id} n'existe pas en base de données`
       );
     } 
     throw new CustomError(
       new InternalServerError(),
-      `Problem to remove tag with id ${id}, there is probably an internal error in database server`
+      `Problème de connexion interne, le tag n'a pas été supprimé`
     );
   }
 };
