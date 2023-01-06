@@ -14,57 +14,46 @@ export default class PointOfInterest {
   id: number;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   name: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true})
   address: string;
 
   @Field()
-  @Column({
-    type: "decimal", 
-    precision: 10, 
-    scale: 2, 
-    default: 0
-  })
-  latitude: number;
+  @Column({length: 255})
+  latitude: string;
 
   @Field()
-  @Column({
-    type: "decimal", 
-    precision: 10, 
-    scale: 2, 
-    default: 0
-  })
-  longitude: number;
+  @Column({length: 255})
+  longitude: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   picture: string;
 
-  @ManyToOne(() => City, (city) => city.pointsOfInterest, { eager:true, }) 
-  @JoinColumn({ name: "city_id" })
+  @ManyToOne(() => City, (city) => city.pointsOfInterest, { 
+    onDelete: 'CASCADE'
+   }) 
+  @JoinColumn({name: "city_id"})
   city: City;
 
-  @ManyToOne(() => Type, (type) => type.pointsOfInterest, { eager:true,}) 
-  @JoinColumn({ name: "type_id" })
+  @ManyToOne(() => Type, (type) => type.pointsOfInterest, { 
+    onDelete: 'SET NULL',
+    nullable: true, 
+  }) 
+  @JoinColumn({name: "type_id"})
   type: Type;
 
   @ManyToMany(() => Circuit, (circuit) => circuit.pointsOfInterest)
-  circuits: Circuit[]
-
+  circuits?: Circuit[]
+  
   @ManyToMany(() => Tag, (tag) => tag.pointsOfInterest)
   @JoinTable({ 
     name: 'point_of_interest_tag',
     joinColumn: {name: "point_of_interest_id"},
     inverseJoinColumn: {name: "tag_id"}
   })
-  tags: Tag[];
+  tags?: Tag[];
 }

@@ -10,23 +10,21 @@ export default class Type {
   id: number;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   name: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   logo: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   color: string;
     
-  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.type)
+  @OneToMany(
+    () => PointOfInterest, 
+    (pointOfInterest) => pointOfInterest.type, 
+    { eager:true }
+  )
   pointsOfInterest: PointOfInterest[];
 }
