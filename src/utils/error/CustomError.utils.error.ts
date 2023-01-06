@@ -26,7 +26,7 @@ export class CustomError extends Error {
     
     if (this.statusCode === StatusCode.BAD_REQUEST) {
       this.emoji = emojiOups + emojiShocked
-      this.message = ` Ouups!!Something went wrong\n` + this.message;
+      this.message = `Ouups!!Something went wrong\n` + this.message;
     } else if (this.statusCode === StatusCode.UNAUTHORIZED || this.statusCode === StatusCode.FORBIDDEN) {
       this.emoji = emojiFurious + emojiForbidden + emojiEnraged;
       this.message = message;

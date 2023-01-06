@@ -2,18 +2,15 @@ import Tag from "../entity/Tag.entity";
 import { TagRepository } from "../repository/tag.repository";
 import { QueryFailedError } from "typeorm";
 import { retrieveKeyFromDbErrorMessage, formatString } from "../utils/string.utils";
+import { TagErrorsFlag, handleTagError } from "../utils/error/handleError/tag.utils.error";
 import { CustomError } from "../utils/error/CustomError.utils.error";
-import { 
-  InternalServerError, 
-  NotFoundError, 
-  BadRequestError, 
-  UnprocessableEntityError 
-} from "../utils/error/interfaces.utils.error";
+import { InternalServerError } from "../utils/error/interfaces.utils.error";
 
 
 /**
  * Returns all tags from database
- * @returns Tag[] | 500 Internal Server Error
+ * @returns Tag[] 
+ * @throws Internal Server Error 500
  */
 export const getAll = async (): Promise<Array<Tag>> => {
   try {
@@ -29,48 +26,40 @@ export const getAll = async (): Promise<Array<Tag>> => {
 /**
  * Returns a tag by its id from database
  * @param {number} id The id to use to retrieve a specific tag
- * @returns tag | 404 Not Found | 500 Internal Server Error
+ * @returns tag 
+ * @throws Error: 500 Internal Server Error | 404 Not Found 
  */
 export const getById = async (id: number): Promise<Tag> => {
   try {
     const isTagExist = await TagRepository.findOneBy({id});
     if (isTagExist) return isTagExist;
-    else throw new Error("id-not-found");
+    else throw new Error(TagErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === "id-not-found") {
-      throw new CustomError(
-        new NotFoundError(), 
-        `Le tag avec l'id ${id} n'existe pas en base de données`
-      );
-    }
+    if(e instanceof Error && e.message === TagErrorsFlag.ID_NOT_FOUND) handleTagError(TagErrorsFlag.ID_NOT_FOUND, id);
     throw new CustomError(
       new InternalServerError(), 
       `Problème de connexion interne, le tag n'a pas été chargé`
-    );
+  );
   }
 };
 
 /**
  * Returns a tag by its name from database
  * @param {string} name The name to use to retrieve a specific tag
- * @returns tag | 404 Not Found | 500 Internal Server Error
+ * @returns tag 
+ * @throws Error: 500 Internal Server Error | 404 Not Found
  */
 export const getByName = async (name: string): Promise<Tag> => {
   const formatName = formatString(name);
   try {
     const isTagExist = await TagRepository.findOneBy({name: formatName});
     if (isTagExist) return isTagExist;
-    else throw new Error("name-not-found"); 
+    else throw new Error(TagErrorsFlag.NAME_NOT_FOUND); 
   } catch (e) {
-    if (e instanceof Error && e.message === "name-not-found") {      
-      throw new CustomError(
-        new NotFoundError(), 
-        `Le tag avec le nom ${name} n'existe pas en base de données`
-      );
-    }
+    if (e instanceof Error && e.message === TagErrorsFlag.NAME_NOT_FOUND) handleTagError(TagErrorsFlag.NAME_NOT_FOUND, formatName)
     throw new CustomError(
       new InternalServerError(), 
-      `Problème de connexion interne, le tag ${name} n'a pas été chargé`
+      `Problème de connexion interne, le tag ${formatName} n'a pas été chargé`
     );
   }
 };
@@ -79,29 +68,19 @@ export const getByName = async (name: string): Promise<Tag> => {
 /**
  * Create and return a tag
  * @param {Tag} data Tag object to create 
- * @returns tag | 422 Unprocessable Entity | 400 Bad Request | 500 Internal Server Error
+ * @returns created tag 
+ * @throws Error: 500 Internal Server Error | 422 Unprocessable Entity
 */
 export const create = async (data: Tag): Promise<Tag> => {
   const name = formatString(data.name),
     icon = data.icon;
+    
   try {
     const createdTag = await TagRepository.save({name, icon});
     return createdTag;
   } catch (e) {
     if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      const errorKey = retrieveKeyFromDbErrorMessage(e.driverError.detail);
-      switch (errorKey) {
-        case "name":
-          throw new CustomError(
-            new UnprocessableEntityError(), 
-            `Le nom ${name} est déjà utilisé, vous devez en choisir un autre`
-          );
-        default:
-          throw new CustomError(
-            new BadRequestError(), 
-            `Il y a un problème lors de la création du tag ou dans le format de la requête`
-          );
-      }
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTagError(TagErrorsFlag.NAME_ALREADY_USED, name);
     } 
     throw new CustomError(
       new InternalServerError(), 
@@ -113,7 +92,8 @@ export const create = async (data: Tag): Promise<Tag> => {
 /**
  * Update a tag in database and return it
  * @param {Tag} data Tag object to update
- * @returns updated tag | 400 Bad Request | 404 Not Found | 422 Unprocessable Entity | 500 Internal Server Error
+ * @returns updated tag
+ *  @throws Error: 500 Internal Server Error | 404 Not Found | 422 Unprocessable Entity
  */
 export const update = async (data: Tag): Promise<Tag> => {
   const {id, icon} = data,
@@ -122,27 +102,11 @@ export const update = async (data: Tag): Promise<Tag> => {
     const tagToUpdate = await TagRepository.findOneBy({id});
     if (tagToUpdate) {
       return await TagRepository.save({...tagToUpdate, name, icon});
-    } else throw new Error("id-not-found");
+    } else throw new Error(TagErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === "id-not-found") {
-      throw new CustomError(
-        new NotFoundError(), 
-        `Le tag avec l'id ${id} n'existe pas en base de données`
-      );
-    } else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      const errorKey = retrieveKeyFromDbErrorMessage(e.driverError.detail);
-      switch (errorKey) {
-        case "name":
-          throw new CustomError(
-            new UnprocessableEntityError(), 
-            `Le nom ${name} est déjà utilisé, vous devez en choisir un autre`
-          );
-        default:
-          throw new CustomError(
-            new BadRequestError(), 
-            `Il y a un problème lors de la création du tag ou dans le format de la requête`
-          );
-      }
+    if (e instanceof Error && e.message === TagErrorsFlag.ID_NOT_FOUND) handleTagError(TagErrorsFlag.ID_NOT_FOUND, id); 
+    else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTagError(TagErrorsFlag.NAME_ALREADY_USED, name);
     } 
     throw new CustomError(
       new InternalServerError(),
@@ -154,21 +118,17 @@ export const update = async (data: Tag): Promise<Tag> => {
 /**
  * Delete a tag by its id in database
  * @param {number} id The id to use to delete a specific tag
- * @returns deleted tag | 404 Not Found | 500 Internal Server Error
+ * @returns deleted tag 
+ * @throws Error: 500 Internal Server Error | 404 Not Found
  */
 export const deleteTag = async (id: number): Promise<Tag> => {
   try {
     const tagToRemove = await TagRepository.findOneBy({id});
     if (tagToRemove) {
       return await TagRepository.remove(tagToRemove);
-    } else throw new Error("id-not-found");
+    } else throw new Error(TagErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === "id-not-found") {
-      throw new CustomError(
-        new NotFoundError(), 
-        `Le tag avec l'id ${id} n'existe pas en base de données`
-      );
-    } 
+    if (e instanceof Error && e.message === TagErrorsFlag.ID_NOT_FOUND) handleTagError(TagErrorsFlag.ID_NOT_FOUND, id);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le tag n'a pas été supprimé`

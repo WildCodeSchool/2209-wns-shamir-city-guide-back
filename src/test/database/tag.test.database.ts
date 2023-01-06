@@ -1,9 +1,10 @@
 import Tag from "../../entity/Tag.entity";
 import { TagRepository } from "../../repository/tag.repository";
-import { emojiTest, emojiAlambic, emojiWarning, emojiExclamation } from "../../utils/emoji.utils";
+import { emojiTest, emojiAlambic } from "../../utils/emoji.utils";
 
-const tagNames = ["Concert", "Musées", "Promenade", "Restaurant", "Visite"];
-const tagIcons = ["concert.png", "musées.jpeg", "", "restaurant.jpg", "Visite.png"];
+
+ export const tagNames = ["Concert", "Musées", "Promenade", "Restaurant", "Visite"],
+    tagIcons = ["concert.png", "musées.jpeg", "", "restaurant.jpg", "Visite.png"];
 
 
 export const loadTagData = async () => {
@@ -13,9 +14,7 @@ export const loadTagData = async () => {
         newTag.icon = tagIcons[index];
         try {
             await TagRepository.save(newTag);
-        } catch (e) {
-            console.log(`${emojiWarning}${emojiExclamation} Error to load tag data: `, e);
-        }
+        } catch (e) {}
     }));
 
     console.log(`${emojiAlambic}  Tags well added in database ${emojiTest}`);

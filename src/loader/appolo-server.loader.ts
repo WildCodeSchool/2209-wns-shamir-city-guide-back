@@ -1,8 +1,8 @@
 import { ApolloServer } from "apollo-server";
 import "reflect-metadata";
 import { buildSchema } from "type-graphql";
-import { TagResolver } from "../graphql/resolver/tag.resolver";
-import { CityResolver } from "../graphql/resolver/city.resolver";
+import { TagResolver } from "../resolver/tag.resolver";
+import { CityResolver } from "../resolver/city.resolver";
 
 export const startAppoloServer = async (): Promise<ApolloServer> => {
   const schema = await buildSchema({

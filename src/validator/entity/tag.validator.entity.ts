@@ -48,8 +48,7 @@ export const validateCreationTagInput = async (name: string, icon: string): Prom
     const tagValidator = new TagCreationValidator();
     tagValidator.name = name && name.length > 0 ? name.trim() : '';
     tagValidator.icon = icon && icon.length > 0 ? icon.trim() : '';
-    const verifiedData = await validateData(tagValidator);
-    return verifiedData;
+    return await validateData(tagValidator);
 }
 
 
@@ -65,6 +64,5 @@ export const validateUpdateTagInput = async (id: number, name: string, icon: str
     tagValidator.id = id;
     tagValidator.name = name && name.length > 0 ? name.trim() : '';
     tagValidator.icon = icon && icon.length > 0 ? icon.trim() : '';
-    const verifiedData = await validateData(tagValidator);
-    return verifiedData;
+    return await validateData(tagValidator);
 }

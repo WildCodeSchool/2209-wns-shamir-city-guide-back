@@ -8,7 +8,7 @@ import Circuit from "./Circuit.entity";
 export default class City {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Field()
   @Column({unique: true, length: 255})

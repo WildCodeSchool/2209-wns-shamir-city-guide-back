@@ -1,16 +1,12 @@
 import { Resolver, Arg, Mutation, Query } from "type-graphql";
-import Tag from "../../entity/Tag.entity";
-import { validateIdInput, validateNameInput } from "../../validator/common.validator";
-import * as TagService from "../../service/tag.service";
-import { validateCreationTagInput, validateUpdateTagInput } from "../../validator/entity/tag.validator.entity";
+import Tag from "../entity/Tag.entity";
+import { validateIdInput, validateNameInput } from "../validator/common.validator";
+import * as TagService from "../service/tag.service";
+import { validateCreationTagInput, validateUpdateTagInput } from "../validator/entity/tag.validator.entity";
 
 
 @Resolver(Tag)
 export class TagResolver {
-  @Query(() => String)
-  async getStatus(): Promise<string> {
-    return `🚀 Hello world! 😎`;
-  }
   @Query(() => [Tag])
   async getAllTags(): Promise<Tag[]> {
     const tags: Tag[] = await TagService.getAll();
@@ -50,7 +46,7 @@ export class TagResolver {
 
   @Mutation(() => Tag)
   async deleteTag(@Arg("id") id: number): Promise<Tag> {
-    const verifiedData = await validateIdInput(id);
-    return await TagService.deleteTag(verifiedData);
+    const verifiedId = await validateIdInput(id);
+    return await TagService.deleteTag(verifiedId);
   }
 }

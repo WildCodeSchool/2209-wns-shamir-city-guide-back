@@ -34,8 +34,7 @@ export class NameValidator {
 export const validateIdInput = async (id: number): Promise<number> => {
     const idValidator = new IdValidator();
     idValidator.id = id;
-    const verifiedId = await validateData(idValidator);
-    return verifiedId.id;
+    return (await validateData(idValidator)).id;
 }
 
 /**
@@ -46,6 +45,5 @@ export const validateIdInput = async (id: number): Promise<number> => {
 export const validateNameInput = async (name: string): Promise<string> => {
     const fieldToVerify = new NameValidator();
     fieldToVerify.name = name.length > 0 ? name.trim() : '';
-    const verifiedName = await validateData(fieldToVerify);
-    return verifiedName.name;
+    return (await validateData(fieldToVerify)).name;
 }

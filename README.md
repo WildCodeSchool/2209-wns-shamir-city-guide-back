@@ -31,3 +31,5 @@ To run tests with jest we can use the command `docker compose -f docker-compose.
 Once the container is running you can open a new ubuntu terminal and run the command `docker ps` to see all enabled containers and copy the city_guid_server_test container id. Then You can run `exec -it containerId bash` to open a bash in the running container.
 Now you can choose what type of test you want to run : `npm run test:unit` for unit tests, `npm run test:integration` for integration tests and `npm run test:functionnal` for functionnal/End-To-End tests.
 Ctr + c to leave the tests panel and `exit` to exit the bash in the container.
+
+To run the functionnal and integration suite of tests correctly you have to load the data reserved to the test environment. You have to uncomment the line 15 in the src/config/typeorm/index.ts and the lines 18-24 in the src/loader/database.loader.ts. Run commande for test and uncomment these above lines before the select save all in the file onglet.
