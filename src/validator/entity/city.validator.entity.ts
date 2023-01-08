@@ -1,21 +1,18 @@
 import { Field, InputType } from "type-graphql";
-import { Min, MinLength, MaxLength } from "class-validator";
+import { Min, MinLength, MaxLength, Matches } from "class-validator";
 import {
     idEqual0ErrorMessage,
     nameTooShortErrorMessage,
     nameTooLongErrorMessage,
-    latitudeTooShortErrorMessage,
-    latitudeTooLongErrorMessage,
-    longitudeTooShortErrorMessage,
-    longitudeTooLongErrorMessage,
     pictureTooLongErrorMessage 
 } from "../messages.validator";
 import City from "../../entity/City.entity";
 import { validateData } from "../validate.validator";
+import { LatitudeAndLongitudeValidator } from "../common.validator";
 
 
 @InputType()
-export class CityCreationValidator {
+export class CityCreationValidator extends LatitudeAndLongitudeValidator {
     @Field()
     @MinLength(1, {
         message: nameTooShortErrorMessage,
@@ -24,25 +21,7 @@ export class CityCreationValidator {
         message: nameTooLongErrorMessage
     })
     name: string
-
-    @Field()
-    @MinLength(6, {
-        message: latitudeTooShortErrorMessage,
-    })
-    @MaxLength(255, {
-        message: latitudeTooLongErrorMessage
-    })
-    latitude: string
     
-    @Field()
-    @MinLength(6, {
-        message: longitudeTooShortErrorMessage,
-    })
-    @MaxLength(255, {
-        message: longitudeTooLongErrorMessage
-    })
-    longitude: string
-
     @Field()
     @MaxLength(255, {
         message: pictureTooLongErrorMessage

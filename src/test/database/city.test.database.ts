@@ -4,8 +4,8 @@ import { emojiTest, emojiAlambic } from "../../utils/emoji.utils";
 
 
  export const cityNames = ["Paris", "Marseille", "Rennes", "Berlin", "Dublin"],
-    cityLatitudes = ["1221.21221", "2422.3694", "254.9987", "789.654", "321.852"],
-    cityLongitudes = ["963.258", "852.128", "456.897", "375.951", "368.156"],
+    cityLatitudes = ["48.8588897", "43.2961743", "48.1113387", "52.5170365", "53.3498006"],
+    cityLongitudes = ["2.320041", "5.3699525", "456.897", "13.3888599", "-6.2602964"],
     cityPictures = ["paris.png", "marseille.png", "rennes.png", "berlin.png", "dublin.png"];
 
 
