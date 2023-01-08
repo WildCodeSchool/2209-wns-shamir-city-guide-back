@@ -17,7 +17,7 @@ export class DatabaseLoader {
     //If our actual environment is 'test' we load data in the tables
     // if (config?.environment === Environments.TEST ||config?.environment === Environments.DEVELOPMENT) {
     //   try {
-    //     await loadData();
+    //     await loadData(); 
     //   } catch (e) {
     //     console.log(`${emojiWarning}${emojiExclamation} Error during the data loading: `, e);
     //   }
