@@ -5,6 +5,7 @@
 2 - In vscode open a new terminal (ctrl + j) and run `git clone https://github.com/WildCodeSchool/2209-wns-shamir-city-guide-back.git`
 
 3 - `cd 2209-wns-shamir-city-guide-back && npm i` to download and install all dependencies the project needs.
+If some authorization problems are raised maybe you have to change the folder's owner to root : `sudo chown userName 2209-wns-shamir-city-guide-back`, and you can run the above command again and move on the dev branch: `git checkout dev`.
 
 5 - You have to copy the .template.env content to a .env at the root of the project (you have to create this .env file because it is in the .gitignore and we don't want to expose our environment variables publicly).
 
@@ -27,7 +28,7 @@ Now pgAdmin is listenning on your postgres container ip address, you can see the
 
 
 ** TESTS **
-To run tests with jest we can use the command `docker compose -f docker-compose.test.yml up`, which create a new database a new volume db_test to save your manipulations. If some authorization problems are raised maybe you have to change the folder's owner to root : `sudo chown root 2209-wns-shamir-city-guide-back`,  and you can run the above command again.
+To run tests with jest we can use the command `docker compose -f docker-compose.test.yml up`, which create a new database a new volume db_test to save your manipulations. 
 Once the container is running you can open a new ubuntu terminal and run the command `docker ps` to see all enabled containers and copy the city_guid_server_test container id. Then You can run `exec -it containerId bash` to open a bash in the running container.
 Now you can choose what type of test you want to run : `npm run test:unit` for unit tests, `npm run test:integration` for integration tests and `npm run test:functionnal` for functionnal/End-To-End tests.
 Ctr + c to leave the tests panel and `exit` to exit the bash in the container.
