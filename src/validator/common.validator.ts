@@ -5,9 +5,7 @@ import {
     idEqual0ErrorMessage, 
     nameTooShortErrorMessage, 
     nameTooLongErrorMessage,
-    latitudeTooShortErrorMessage,
     latitudeFormatErrorMessage,
-    longitudeTooShortErrorMessage,
     longitudeFormatErrorMessage 
 } from "./messages.validator";
 
@@ -36,18 +34,12 @@ export class NameValidator {
 @InputType()
 export class LatitudeAndLongitudeValidator {
     @Field()
-    @MinLength(6, {
-        message: latitudeTooShortErrorMessage,
-    })
     @Matches(/^-?([0-8]?[0-9]|90)(\.[0-9]{1,})$/, {
         message: latitudeFormatErrorMessage
     })
     latitude: string
     
     @Field()
-    @MinLength(6, {
-        message: longitudeTooShortErrorMessage,
-    })
     @Matches(/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,})$/, {
         message: longitudeFormatErrorMessage
     })

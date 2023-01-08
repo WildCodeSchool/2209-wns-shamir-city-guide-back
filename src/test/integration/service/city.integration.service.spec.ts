@@ -263,12 +263,12 @@ describe("integration/service/city.service suite of tests with database connexio
 
     //GET BY NAME
     it("Should retrieve a city by its name", async () => {
-        const city: City = await getCityByName("paris");
+        const city: City = await getCityByName("rennes");
         
         expect(city).toBeDefined();
         expect(city && typeof city === 'object').toBe(true);
         expect(city).toBeInstanceOf(City);
-        expect(city.name).toBe("Paris");
+        expect(city.name).toBe("Rennes");
         expect(city).toEqual(expect.objectContaining({
             id: expect.any(Number),
             name: expect.any(String),
@@ -352,10 +352,10 @@ describe("integration/service/city.service suite of tests with database connexio
 
     it("Should return an error 422 Unprocessable Entity if we attempt to create a city with a name which already exist in database", async () => {
         const city = new City();
-        city.name = "Paris";
-        city.latitude = "458.2967";
-        city.longitude = "568.1832";
-        city.picture = 'paris.png';
+        city.name = "Rennes";
+        city.latitude = "48.1113387";
+        city.longitude = "-1.6800";
+        city.picture = ""
         try {
             await create(city);
         } catch (e) {
@@ -380,8 +380,8 @@ describe("integration/service/city.service suite of tests with database connexio
     
     it("Should return an error 422 Unprocessable Entity if we attempt to create a city with a localisation which already exist in database", async () => {
         const city = new City(),
-            latitude = "789.654",
-            longitude = "375.951";
+            latitude = "48.1113387",
+            longitude = "-1.6800198";
         city.name = "x";
         city.latitude = latitude;
         city.longitude =longitude;
@@ -496,14 +496,14 @@ describe("integration/service/city.service suite of tests with database connexio
         const city = new City();
         city.id = 4;
         city.name = "x";
-        city.latitude = "789.654";
-        city.longitude = "375.951";
+        city.latitude = "48.1113387";
+        city.longitude = "-1.6800198";
         city.picture = "x.png";
         try {
             await update(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("La ville avec la latitude 789.654 et la longitude 375.951 exist déjà en base de données");
+                expect(e.message).toBe("La ville avec la latitude 48.1113387 et la longitude -1.6800198 exist déjà en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -516,7 +516,7 @@ describe("integration/service/city.service suite of tests with database connexio
             expect(e).toStrictEqual(
                 new CustomError(
                     new UnprocessableEntityError(), 
-                    "La ville avec la latitude 789.654 et la longitude 375.951 exist déjà en base de données"
+                    "La ville avec la latitude 48.1113387 et la longitude -1.6800198 exist déjà en base de données"
                 ))
         }
     });

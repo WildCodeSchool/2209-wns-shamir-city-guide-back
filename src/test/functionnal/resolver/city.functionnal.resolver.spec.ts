@@ -7,10 +7,8 @@ import {
     idEqual0ErrorMessage, 
     nameTooShortErrorMessage, 
     nameTooLongErrorMessage, 
-    latitudeTooShortErrorMessage,
-    latitudeTooLongErrorMessage,
-    longitudeTooShortErrorMessage,
-    longitudeTooLongErrorMessage,
+    latitudeFormatErrorMessage,
+    longitudeFormatErrorMessage,
     pictureTooLongErrorMessage 
 } from "../../../validator/messages.validator";
 import { 
@@ -23,7 +21,6 @@ import { CustomError } from "../../../utils/error/CustomError.utils.error";
 import { InternalServerError } from "../../../utils/error/interfaces.utils.error";
 import { emojiShocked } from "../../../utils/emoji.utils";
 import { formatString } from "../../../utils/string.utils";
-import PointOfInterest from "../../../entity/PointOfInterest.entity";
 
 const GET_ALL = CityApi.GET_ALL,
     GET_CITY_BY_ID = CityApi.GET_CITY_BY_ID,
@@ -154,8 +151,8 @@ describe("functionnal/resolver/city resolver suite of tests without database con
     it("Should not update city and throw an 500 Internal Error", async () => {
         const updateCityId = 3,
             name = "test",
-            latitude = "123.321",
-            longitude = "852.321",
+            latitude = "12.321",
+            longitude = "85.321",
             picture = "picture.png";
             const tag = await server.executeOperation({
                 query: UPDATE_CITY,
@@ -416,8 +413,8 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             query: CREATE_CITY,
             variables: { 
                 name: "paris", 
-                latitude: "54.496",
-                longitude: "846.58",
+                latitude: "54.4596",
+                longitude: "46.5458",
                 picture: 'paris.png' 
             }
         })
@@ -463,7 +460,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             variables: { 
                 name: "Los Angeles", 
                 latitude: "",
-                longitude: "846.5884",
+                longitude: "86.5884",
                 picture: 'la.png' 
             }
         })
@@ -471,7 +468,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.errors) expect(city.errors).toBeDefined();
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
-            expect(city?.errors[0]?.message).toBe(latitudeTooShortErrorMessage);  
+            expect(city?.errors[0]?.message).toBe(latitudeFormatErrorMessage);  
             const customError = city.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -485,7 +482,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             variables: { 
                 name: "Los Angeles", 
                 latitude: strTooLong,
-                longitude: "846.5884",
+                longitude: "84.5884",
                 picture: 'la.png' 
             }
         })
@@ -493,7 +490,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.errors) expect(city.errors).toBeDefined();
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
-            expect(city?.errors[0]?.message).toBe(latitudeTooLongErrorMessage);  
+            expect(city?.errors[0]?.message).toBe(latitudeFormatErrorMessage);  
             const customError = city.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -506,7 +503,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             query: CREATE_CITY,
             variables: { 
                 name: "Los Angeles", 
-                latitude: "846.5884",
+                latitude: "86.5884",
                 longitude: "",
                 picture: 'la.png' 
             }
@@ -515,7 +512,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.errors) expect(city.errors).toBeDefined();
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
-            expect(city?.errors[0]?.message).toBe(longitudeTooShortErrorMessage);  
+            expect(city?.errors[0]?.message).toBe(longitudeFormatErrorMessage);  
             const customError = city.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -528,7 +525,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             query: CREATE_CITY,
             variables: { 
                 name: "Los Angeles", 
-                latitude: "846.5884",
+                latitude: "86.5884",
                 longitude: strTooLong,
                 picture: 'la.png' 
             }
@@ -537,7 +534,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.errors) expect(city.errors).toBeDefined();
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
-            expect(city?.errors[0]?.message).toBe(longitudeTooLongErrorMessage);  
+            expect(city?.errors[0]?.message).toBe(longitudeFormatErrorMessage);  
             const customError = city.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -550,8 +547,8 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             query: CREATE_CITY,
             variables: { 
                 name: "Los Angeles", 
-                latitude: "846.5884",
-                longitude: "846.5884",
+                latitude: "46.5884",
+                longitude: "46.5884",
                 picture: strTooLong 
             }
         })
@@ -574,8 +571,8 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             variables: { 
                 updateCityId: 5, 
                 name: "Los Angeles", 
-                latitude: "846.5884",
-                longitude: "654.963",
+                latitude: "86.5884",
+                longitude: "64.963",
                 picture: 'la.png'  
             }
         })
@@ -596,8 +593,8 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             variables: { 
                 updateCityId: 10, 
                 name: "Rio", 
-                latitude: "652.159",
-                longitude: "7366.738",
+                latitude: "52.159",
+                longitude: "66.738",
                 picture: 'rio.png'  
             }
         })
@@ -619,8 +616,8 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
             variables: { 
                 updateCityId: 5, 
                 name: "Rio", 
-                latitude: "254.9987",
-                longitude: "456.897",
+                latitude: "48.1113387",
+                longitude: "-1.6800198",
                 picture: 'rio.png'
             }
         })
@@ -628,7 +625,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.errors) expect(city.errors).toBeDefined();
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
-            expect(city?.errors[0]?.message).toBe("La ville avec la latitude 254.9987 et la longitude 456.897 exist déjà en base de données");  
+            expect(city?.errors[0]?.message).toBe("La ville avec la latitude 48.1113387 et la longitude -1.6800198 exist déjà en base de données");  
             const customError = city.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     

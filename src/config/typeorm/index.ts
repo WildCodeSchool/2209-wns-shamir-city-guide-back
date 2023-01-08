@@ -12,7 +12,7 @@ let letSynchronize: boolean = false;
 if (config?.environment === Environments.TEST || config?.environment === Environments.DEVELOPMENT) letSynchronize = true;
 
 let dropSchema: boolean = false;
-// if (config?.environment === Environments.TEST || config?.environment === Environments.DEVELOPMENT) dropSchema = true;
+//if (config?.environment === Environments.TEST || config?.environment === Environments.DEVELOPMENT) dropSchema = true;
 
 const databaseConfig = new DataSource({
   type: "postgres",
