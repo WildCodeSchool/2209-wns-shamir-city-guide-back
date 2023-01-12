@@ -5,6 +5,7 @@ import { retrieveKeyFromDbErrorMessage, formatString } from "../utils/string.uti
 import { TagErrorsFlag, handleTagError } from "../utils/error/handleError/tag.utils.error";
 import { CustomError } from "../utils/error/CustomError.utils.error";
 import { InternalServerError } from "../utils/error/interfaces.utils.error";
+import { TagValidator } from "../validator/entity/tag.validator.entity";
 
 
 /**
@@ -67,11 +68,11 @@ export const getByName = async (name: string): Promise<Tag> => {
 
 /**
  * Create and return a tag
- * @param {Tag} data Tag object to create 
+ * @param {TagValidator} data Tag object to create 
  * @returns created tag 
  * @throws Error: 500 Internal Server Error | 422 Unprocessable Entity
 */
-export const create = async (data: Tag): Promise<Tag> => {
+export const create = async (data: TagValidator): Promise<Tag> => {
   const name = formatString(data.name),
     icon = data.icon;
     
@@ -91,11 +92,11 @@ export const create = async (data: Tag): Promise<Tag> => {
 
 /**
  * Update a tag in database and return it
- * @param {Tag} data Tag object to update
+ * @param {TagValidator} data Tag object to update
  * @returns updated tag
  *  @throws Error: 500 Internal Server Error | 404 Not Found | 422 Unprocessable Entity
  */
-export const update = async (data: Tag): Promise<Tag> => {
+export const update = async (data: TagValidator): Promise<Tag> => {
   const {id, icon} = data,
     name = formatString(data.name);
   try {

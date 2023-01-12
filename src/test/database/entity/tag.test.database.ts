@@ -1,6 +1,6 @@
-import Tag from "../../entity/Tag.entity";
-import { TagRepository } from "../../repository/tag.repository";
-import { emojiTest, emojiAlambic } from "../../utils/emoji.utils";
+import Tag from "../../../entity/Tag.entity";
+import { TagRepository } from "../../../repository/tag.repository";
+import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 
  export const tagNames = ["Concert", "Musées", "Promenade", "Restaurant", "Visite"],
@@ -8,7 +8,7 @@ import { emojiTest, emojiAlambic } from "../../utils/emoji.utils";
 
 
 export const loadTagData = async () => {
-    Promise.all(tagNames.map(async (name, index) => {
+    await Promise.all(tagNames.map(async (name, index) => {
         let newTag = new Tag();
         newTag.name = name;
         newTag.icon = tagIcons[index];

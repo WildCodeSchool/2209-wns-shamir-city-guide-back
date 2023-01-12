@@ -1,7 +1,7 @@
 import { Resolver, Arg, Mutation, Query } from "type-graphql";
 import City from "../entity/City.entity";
 import * as CityService from "../service/city.service";
-import { formatString } from "../utils/string.utils";
+import { CityType } from "../utils/type/city.utils.type";
 import { validateIdInput, validateNameInput } from "../validator/common.validator";
 import { validateCreationCityInput, validateUpdateCityInput } from "../validator/entity/city.validator.entity";
 
@@ -27,35 +27,17 @@ export class CityResolver {
 
   @Mutation(() => City)
   async createCity(
-    @Arg("name") name: string,
-    @Arg("latitude") latitude: string,
-    @Arg("longitude") longitude: string,
-    @Arg("picture") picture: string,
+    @Arg("city") city: CityType,
   ): Promise<City> {
-    const verifiedData = await validateCreationCityInput(
-      name,
-      latitude,
-      longitude,
-      picture
-    )
+    const verifiedData = await validateCreationCityInput(city);
     return await CityService.create(verifiedData);
   }
 
   @Mutation(() => City)
   async updateCity(
-    @Arg("id") id: number,
-    @Arg("name") name: string,
-    @Arg("latitude") latitude: string,
-    @Arg("longitude") longitude: string,
-    @Arg("picture") picture: string,
+    @Arg("city") city: CityType,
   ): Promise<City> {
-    const verifiedData = await validateUpdateCityInput(
-      id,
-      name,
-      latitude,
-      longitude,
-      picture
-    )
+    const verifiedData = await validateUpdateCityInput(city);
     return await CityService.update(verifiedData);
   }
 

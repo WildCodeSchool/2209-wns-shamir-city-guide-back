@@ -1,87 +1,82 @@
-import { Field, InputType } from "type-graphql";
-import { Min, MinLength, MaxLength, Matches } from "class-validator";
-import {
-    idEqual0ErrorMessage,
-    nameTooShortErrorMessage,
-    nameTooLongErrorMessage,
-    pictureTooLongErrorMessage 
-} from "../messages.validator";
+import { Min, MinLength, MaxLength, Matches, IsOptional } from "class-validator";
+import { CityErrorValidator } from "../messages.validator";
 import City from "../../entity/City.entity";
 import { validateData } from "../validate.validator";
-import { LatitudeAndLongitudeValidator } from "../common.validator";
+import { CityType } from "../../utils/type/city.utils.type";
+import { CustomError } from "../../utils/error/CustomError.utils.error";
+import { BadRequestError } from "../../utils/error/interfaces.utils.error";
 
 
-@InputType()
-export class CityCreationValidator extends LatitudeAndLongitudeValidator {
-    @Field()
+export class CityValidator {
+    @IsOptional()
+    @Min(1, {
+        message: CityErrorValidator.ID_EQUAL_0
+    })
+    id: number
+    
     @MinLength(1, {
-        message: nameTooShortErrorMessage,
+        message: CityErrorValidator.NAME_TOO_SHORT,
     })
     @MaxLength(255, {
-        message: nameTooLongErrorMessage
+        message: CityErrorValidator.NAME_TOO_LONG
     })
     name: string
     
-    @Field()
+    @Matches(/^-?([0-8]?[0-9]|90)(\.[0-9]{1,})$/, {
+        message: CityErrorValidator.LATITUDE_FORMAT
+    })
+    latitude!: string
+    
+    @Matches(/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,})$/, {
+        message: CityErrorValidator.LONGITUDE_FORMAT
+    })
+    longitude!: string
+    
     @MaxLength(255, {
-        message: pictureTooLongErrorMessage
+        message: CityErrorValidator.PICTURE_TOO_LONG
     })
     picture: string
-}
-
-@InputType()
-export class CityUpdateValidator extends CityCreationValidator {
-    @Field()
-    @Min(1, {
-        message: idEqual0ErrorMessage
-    })
-    id: number
 }
 
 
 /**
  * Checks the validity of the city data during creation
- * @param {string} name the city name 
- * @param {string} latitude the city latitude
- * @param {string} longitude the city latitude
- * @param {string} picture the city latitude
- * @returns <City> the verified data | throw error 422 Unprocessable Entity
+ * @param {CityType} city the city  
+ * @returns <CityValidator> the verified city | throw error 422 Unprocessable Entity
 */
 export const validateCreationCityInput = async (
-    name: string, 
-    latitude: string,
-    longitude: string,
-    picture: string
-): Promise<City> => {
-    const cityValidator = new CityCreationValidator();
-    cityValidator.name = name && name.length > 0 ? name.trim() : '';
-    cityValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : '';
-    cityValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : '';
-    cityValidator.picture = picture && picture.length > 0 ? picture.trim() : '';
+    city: CityType
+): Promise<CityValidator> => {
+    if (Object.keys(city).includes("id")) {
+        throw new CustomError(new BadRequestError(), CityErrorValidator.ID_NOT_REQUIRED);
+    }
+
+    const cityValidator = new CityValidator();
+    cityValidator.name = city.name && city.name.length > 0 ? city.name.trim() : '';
+    cityValidator.latitude = city.latitude && city.latitude.length > 0 ? city.latitude.trim() : '';
+    cityValidator.longitude = city.longitude && city.longitude.length > 0 ? city.longitude.trim() : '';
+    cityValidator.picture = city.picture && city.picture.length > 0 ? city.picture.trim() : '';
     return await validateData(cityValidator);
 }
 
 
 /**
  * Checks the validity of the city data during update
- * @param {string} name the city name 
- * @param {string} latitude the city latitude
- * @param {string} longitude the city latitude
- * @param {string} picture the city latitude
- * @returns <City> the verified data | throw error 422 Unprocessable Entity
+ * @param {CityType} city the city  
+ * @returns <CityValidator> the verified data | throw error 422 Unprocessable Entity
 */
 export const validateUpdateCityInput = async (
-    id: number, 
-    name: string, 
-    latitude: string,
-    longitude: string,
-    picture: string
-): Promise<City> => {
-    const cityValidator = new CityUpdateValidator();
-    cityValidator.id = id;
-    cityValidator.name = name && name.length > 0 ? name.trim() : '';
-    cityValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : '';
-    cityValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : '';
-    cityValidator.picture = picture && picture.length > 0 ? picture.trim() : '';
+    city: CityType
+): Promise<CityValidator> => {
+    if (!Object.keys(city).includes("id")) {
+        throw new CustomError(new BadRequestError(), CityErrorValidator.ID_REQUIRED);
+    }
+    
+    const cityValidator = new CityValidator();
+    cityValidator.id = city.id;
+    cityValidator.name = city.name && city.name.length > 0 ? city.name.trim() : '';
+    cityValidator.latitude = city.latitude && city.latitude.length > 0 ? city.latitude.trim() : '';
+    cityValidator.longitude = city.longitude && city.longitude.length > 0 ? city.longitude.trim() : '';
+    cityValidator.picture = city.picture && city.picture.length > 0 ? city.picture.trim() : '';
     return await validateData(cityValidator);
 }

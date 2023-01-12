@@ -37,8 +37,8 @@ export default class City {
   @Field(() => [PointOfInterest])
   @OneToMany(
     () => PointOfInterest, 
-    (pointOfInterest) => pointOfInterest.city, 
-    { eager:true }
+    (pointOfInterest) => pointOfInterest.city,
+    {eager: true}
   )
   pointsOfInterest?: PointOfInterest[];
 }
