@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne, ManyToMany, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
-import { ObjectType, Field } from "type-graphql";
+import { ObjectType, Field, ID } from "type-graphql";
 import City from "./City.entity";
 import Type from "./Type.entity";
 import Tag from "./Tag.entity";
@@ -10,8 +10,9 @@ import { JoinTable } from "typeorm";
 @ObjectType()
 @Entity()
 export default class PointOfInterest {
+  @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Field()
   @Column({unique: true, length: 255})
@@ -33,18 +34,21 @@ export default class PointOfInterest {
   @Column({unique: true, length: 255})
   picture: string;
 
+  @Field()
   @ManyToOne(() => City, (city) => city.pointsOfInterest, { 
     onDelete: 'CASCADE'
    }) 
   @JoinColumn({name: "city_id"})
   city: City;
 
+  @Field()
   @ManyToOne(() => Type, (type) => type.pointsOfInterest, { 
     onDelete: 'SET NULL',
     nullable: true, 
+    eager: true
   }) 
   @JoinColumn({name: "type_id"})
-  type: Type;
+  type: Type; 
 
   @ManyToMany(() => Circuit, (circuit) => circuit.pointsOfInterest)
   circuits?: Circuit[]

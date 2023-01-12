@@ -274,7 +274,7 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
     it("Should retrieve a city by its name", async () => {
         const city = await server.executeOperation({
             query: GET_CITY_BY_NAME,
-            variables: {name: "paris"}
+            variables: {name: "rennes"}
         })
 
         expect(city.errors).toBeUndefined();
@@ -408,14 +408,14 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
     });
 
     it("Should trigger an error 422 Unprocessable Entity when we attempt to create a city with a name wich is already used in database", async () => {
-        const formattedName = formatString("paris");
+        const formattedName = formatString("rennes");
         const city = await server.executeOperation({
             query: CREATE_CITY,
             variables: { 
-                name: "paris", 
-                latitude: "54.4596",
-                longitude: "46.5458",
-                picture: 'paris.png' 
+                name: "rennes", 
+                latitude: "54.45496",
+                longitude: "46.57458",
+                picture: 'rennes.png' 
             }
         })
         

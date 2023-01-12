@@ -7,7 +7,7 @@ import PointOfInterest from "./PointOfInterest.entity";
 export default class Type {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Field()
   @Column({unique: true, length: 255})
@@ -23,8 +23,7 @@ export default class Type {
     
   @OneToMany(
     () => PointOfInterest, 
-    (pointOfInterest) => pointOfInterest.type, 
-    { eager:true }
+    (pointOfInterest) => pointOfInterest.type
   )
-  pointsOfInterest: PointOfInterest[];
+  pointsOfInterest?: PointOfInterest[];
 }

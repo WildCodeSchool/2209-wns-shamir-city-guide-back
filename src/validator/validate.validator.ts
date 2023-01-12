@@ -10,9 +10,10 @@ import { UnprocessableEntityError } from "../utils/error/interfaces.utils.error"
 */
 export const validateData = async <T>(data: T): Promise<T> => {
     let errorMessage = '';
+    
     if (data) {
         try {
-            const foundErrors = await validate(data);
+            const foundErrors = await validate(data);                        
             if (foundErrors.length > 0) {
                 const firstError = foundErrors[0].constraints;
                 if (firstError) {

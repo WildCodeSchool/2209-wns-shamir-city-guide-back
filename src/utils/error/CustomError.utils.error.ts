@@ -26,7 +26,7 @@ export class CustomError extends Error {
     
     if (this.statusCode === StatusCode.BAD_REQUEST) {
       this.emoji = emojiOups + emojiShocked
-      this.message = `Ouups!!Something went wrong\n` + this.message;
+      this.message = `Oups !! Quelque chose s'est mal passé\n` + this.message;
     } else if (this.statusCode === StatusCode.UNAUTHORIZED || this.statusCode === StatusCode.FORBIDDEN) {
       this.emoji = emojiFurious + emojiForbidden + emojiEnraged;
       this.message = message;
@@ -38,7 +38,7 @@ export class CustomError extends Error {
       this.message = message;
     } else if (this.statusCode >= StatusCode.INTERNAL_SERVER_ERROR) {
       this.emoji = emojiShocked + emojiSurprised + emojiWarning;
-      this.message = `${emojiShocked} Ouups!!Something went wrong\n` + this.message;
+      this.message = `${emojiShocked} Oups !! Quelque chose s'est mal passé\n` + this.message;
     }
     // 👇️ because we are extending a built-in class
     Object.setPrototypeOf(this, CustomError.prototype);

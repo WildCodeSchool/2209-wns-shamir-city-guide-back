@@ -1,20 +1,14 @@
 import { Field, InputType } from "type-graphql";
-import { Min, MinLength, MaxLength, Matches } from "class-validator";
+import { Min, MinLength, MaxLength } from "class-validator";
 import { validateData } from "./validate.validator";
-import {  
-    idEqual0ErrorMessage, 
-    nameTooShortErrorMessage, 
-    nameTooLongErrorMessage,
-    latitudeFormatErrorMessage,
-    longitudeFormatErrorMessage 
-} from "./messages.validator";
+import {  CommonErrorValidator } from "./messages.validator";
 
 
 @InputType()
 export class IdValidator{
     @Field()
     @Min(1, {
-        message: idEqual0ErrorMessage
+        message: CommonErrorValidator.ID_EQUAL_0
     })
     id: number
 }
@@ -23,29 +17,13 @@ export class IdValidator{
 export class NameValidator {
     @Field()
     @MinLength(1, {
-        message: nameTooShortErrorMessage
+        message: CommonErrorValidator.NAME_TOO_SHORT
     })
     @MaxLength(255, {
-        message: nameTooLongErrorMessage
+        message: CommonErrorValidator.NAME_TOO_LONG
     })
     name: string
 }
-
-@InputType()
-export class LatitudeAndLongitudeValidator {
-    @Field()
-    @Matches(/^-?([0-8]?[0-9]|90)(\.[0-9]{1,})$/, {
-        message: latitudeFormatErrorMessage
-    })
-    latitude: string
-    
-    @Field()
-    @Matches(/^-?([0-9]{1,2}|1[0-7][0-9]|180)(\.[0-9]{1,})$/, {
-        message: longitudeFormatErrorMessage
-    })
-    longitude: string
-}
-
 
 
 /**

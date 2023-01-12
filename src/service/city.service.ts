@@ -6,6 +6,7 @@ import { QueryFailedError } from "typeorm";
 import { formatString, retrieveKeyFromDbErrorMessage } from "../utils/string.utils";
 import { CityErrorsFlag, handleCityError } from "../utils/error/handleError/city.utils.error";
 import { InternalServerError } from "../utils/error/interfaces.utils.error";
+import { CityValidator } from "../validator/entity/city.validator.entity";
 
 
 /**
@@ -34,9 +35,9 @@ export const getById = async (id: number): Promise<City> => {
   try {
     const isCityExist = await CityRepository.findOneBy({id});
     if (isCityExist) return isCityExist;
-    else throw new Error("id-not-found");
+    else throw new Error(CityErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === "id-not-found") handleCityError(CityErrorsFlag.ID_NOT_FOUND, null);
+    if (e instanceof Error && e.message === CityErrorsFlag.ID_NOT_FOUND) handleCityError(CityErrorsFlag.ID_NOT_FOUND, null);
     throw new CustomError(
       new InternalServerError(), 
       `Problème de connexion interne, la ville n'a pas été chargée`
@@ -55,9 +56,9 @@ export const getByName = async (name: string): Promise<City> => {
   try {
     const isCityExist = await CityRepository.findOneBy({ name: formattedName });
     if (isCityExist) return isCityExist;
-    else throw new Error("name-not-found");
+    else throw new Error(CityErrorsFlag.NAME_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === "name-not-found") handleCityError(CityErrorsFlag.NAME_NOT_FOUND, name)
+    if (e instanceof Error && e.message === CityErrorsFlag.NAME_NOT_FOUND) handleCityError(CityErrorsFlag.NAME_NOT_FOUND, name)
     throw new CustomError(
       new InternalServerError(), 
       `Problème de connexion interne, la ville ${name} n'a pas été chargée`
@@ -67,12 +68,12 @@ export const getByName = async (name: string): Promise<City> => {
 
 /**
  * Create and return a city
- * @param {City} data City object to create 
+ * @param {CityValidator} data City object to create 
  * @returns city the created city 
  * @throws Error: 500 Internal Server Error | 422 Unprocessable Entity
 */
 export const create = async (
-  data: City
+  data: CityValidator
 ): Promise<City> => {
   const name = formatString(data.name),
     latitude = data.latitude,
@@ -99,42 +100,45 @@ export const create = async (
 
 /**
  * Update a city in database and return it
- * @param {City} data City object to update
+ * @param {CityValidator} data City object to update
  * @returns updated city
  * @throws Error: 500 Internal Server Error | 404 Not Found | 422 Unprocessable Entity
  */
 export const update = async (
-  data: City
+  data: CityValidator
 ): Promise<City> => {
   data.name = formatString(data.name);
   
   try {
     // Check if the id is present in database
     const isIdExistInDB = await CityRepository.findOneBy({ id: data.id });
-    if (!isIdExistInDB) throw new Error("id-not-found") 
+    if (!isIdExistInDB) throw new Error(CityErrorsFlag.ID_NOT_FOUND) 
 
     // Check name the name is already present in database
-    if (typeof data.id === "number") {
-      const isNameAlreadyInDB = await CityRepository.findByNameAndIfNotID(data.id, data.name);
-      if (isNameAlreadyInDB) throw new Error("name-already-in-db");
-      // If the latitude and longitude change we have to verify if the new location isn't stocked in database
-      // Check if the latitude and longitude are in database for all different id
-      if (isIdExistInDB.latitude !== data.latitude || isIdExistInDB.longitude !== data.longitude) {
-        const isLocationAlreadyExist = await CityRepository.findByLatitudeAndByLongitudeIfNotID(
-          data.id, 
-          data.latitude, 
-          data.longitude
-        );
-        if (isLocationAlreadyExist) throw new Error("location-already-in-db");
-      }
+    const isNameAlreadyInDB = await CityRepository.findByNameAndIfNotID(data.id, data.name);
+    //if (isNameAlreadyInDB) throw new Error(CityErrorsFlag.NAME_ALREADY_USED);
+    // If the latitude and longitude change we have to verify if the new location isn't stocked in database
+    // Check if the latitude and longitude are in database for all different id
+    if (isIdExistInDB.latitude !== data.latitude || isIdExistInDB.longitude !== data.longitude) {
+      const isLocationAlreadyExist = await CityRepository.findByLatitudeAndByLongitudeIfNotID(
+        data.id, 
+        data.latitude, 
+        data.longitude
+      );
+      if (isLocationAlreadyExist) throw new Error(CityErrorsFlag.LOCALISATION_ALREADY_USED);
     }
    
     return await CityRepository.save({ ...isIdExistInDB, ...data });
   } catch (e) {
+    console.log("Error:", e);
+    
     if (e instanceof Error) {
-      if (e.message === "id-not-found") handleCityError(CityErrorsFlag.ID_NOT_FOUND, data.id); 
-      else if (e.message === "name-already-in-db") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
-      else if (e.message === "location-already-in-db") handleCityError(CityErrorsFlag.LOCALISATION_ALREADY_USED, data);
+      if (e instanceof QueryFailedError && e.driverError.detail?.length) {
+        if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
+      } 
+      if (e.message === CityErrorsFlag.ID_NOT_FOUND) handleCityError(CityErrorsFlag.ID_NOT_FOUND, data.id); 
+      else if (e.message === CityErrorsFlag.NAME_ALREADY_USED) handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
+      else if (e.message === CityErrorsFlag.LOCALISATION_ALREADY_USED) handleCityError(CityErrorsFlag.LOCALISATION_ALREADY_USED, data);
     } 
     throw new CustomError(
       new InternalServerError(),
@@ -155,9 +159,9 @@ export const deleteCity = async (id: number): Promise<City> => {
     if (cityToRemove) {
       await CityRepository.remove(cityToRemove);
       return cityToRemove;
-    } else throw new Error("id-not-found");
+    } else throw new Error(CityErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === "id-not-found") handleCityError(CityErrorsFlag.ID_NOT_FOUND, id); 
+    if (e instanceof Error && e.message === CityErrorsFlag.ID_NOT_FOUND) handleCityError(CityErrorsFlag.ID_NOT_FOUND, id); 
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, la ville n'a pas été supprimée`

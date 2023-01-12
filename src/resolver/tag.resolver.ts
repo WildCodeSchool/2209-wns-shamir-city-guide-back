@@ -2,7 +2,8 @@ import { Resolver, Arg, Mutation, Query } from "type-graphql";
 import Tag from "../entity/Tag.entity";
 import { validateIdInput, validateNameInput } from "../validator/common.validator";
 import * as TagService from "../service/tag.service";
-import { validateCreationTagInput, validateUpdateTagInput } from "../validator/entity/tag.validator.entity";
+import { TagValidator, validateCreationTagInput, validateUpdateTagInput } from "../validator/entity/tag.validator.entity";
+import { TagType } from "../utils/type/tag.utils.type";
 
 
 @Resolver(Tag)
@@ -27,20 +28,17 @@ export class TagResolver {
 
   @Mutation(() => Tag)
   async createTag(
-    @Arg("name") name: string,
-    @Arg("icon") icon: string,
+    @Arg("tag") tag: TagType
   ): Promise<Tag> {
-    const verifiedData: Tag = await validateCreationTagInput(name, icon);
+    const verifiedData: TagValidator = await validateCreationTagInput(tag);
     return await TagService.create(verifiedData);
   }
 
   @Mutation(() => Tag)
   async updateTag(
-    @Arg("id") id: number,
-    @Arg("name") name: string,
-    @Arg("icon") icon: string,
+    @Arg("tag") tag: TagType
   ): Promise<Tag> {
-    const verifiedData: Tag = await validateUpdateTagInput(id, name, icon);
+    const verifiedData: TagValidator = await validateUpdateTagInput(tag);
     return await TagService.update(verifiedData);
   }
 

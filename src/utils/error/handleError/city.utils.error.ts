@@ -1,5 +1,5 @@
 import City from "../../../entity/City.entity";
-import { CityCreationValidator, CityUpdateValidator } from "../../../validator/entity/city.validator.entity";
+import { CityValidator } from "../../../validator/entity/city.validator.entity";
 import { CustomError } from "../CustomError.utils.error";
 import { NotFoundError, UnprocessableEntityError } from "../interfaces.utils.error";
 
@@ -28,14 +28,10 @@ export const handleCityError = <T>(flag: string, data: T): void => {
                 `Le nom de ville ${data} est déjà utilisé, vous devez en choisir un autre`
             );
         case CityErrorsFlag.LOCALISATION_ALREADY_USED:            
-            if (
-                data instanceof CityCreationValidator || 
-                data instanceof CityUpdateValidator ||
-                data instanceof City
-                ) {
+            if (data instanceof CityValidator || data instanceof City) {
                 throw new CustomError(
                     new UnprocessableEntityError(), 
-                    `La ville avec la latitude ${data.latitude} et la longitude ${data.longitude} exist déjà en base de données`
+                    `La ville avec la latitude ${data.latitude} et la longitude ${data.longitude} existe déjà en base de données`
                 );
             }
     }
