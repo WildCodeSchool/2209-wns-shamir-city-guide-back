@@ -73,19 +73,18 @@ export const getByName = async (name: string): Promise<Tag> => {
  * @throws Error: 500 Internal Server Error | 422 Unprocessable Entity
 */
 export const create = async (data: TagValidator): Promise<Tag> => {
-  const name = formatString(data.name),
-    icon = data.icon;
+  data.name = formatString(data.name);
     
   try {
-    const createdTag = await TagRepository.save({name, icon});
+    const createdTag = await TagRepository.save(data);
     return createdTag;
   } catch (e) {
     if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTagError(TagErrorsFlag.NAME_ALREADY_USED, name);
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTagError(TagErrorsFlag.NAME_ALREADY_USED, data.name);
     } 
     throw new CustomError(
       new InternalServerError(), 
-      `Problème de connexion interne, le tag ${name} n'a pas été créé`
+      `Problème de connexion interne, le tag ${data.name} n'a pas été créé`
     );
   }
 };
@@ -97,17 +96,16 @@ export const create = async (data: TagValidator): Promise<Tag> => {
  *  @throws Error: 500 Internal Server Error | 404 Not Found | 422 Unprocessable Entity
  */
 export const update = async (data: TagValidator): Promise<Tag> => {
-  const {id, icon} = data,
-    name = formatString(data.name);
+  data.name = formatString(data.name);
   try {
-    const tagToUpdate = await TagRepository.findOneBy({id});
+    const tagToUpdate = await TagRepository.findOneBy({id: data.id});
     if (tagToUpdate) {
-      return await TagRepository.save({...tagToUpdate, name, icon});
+      return await TagRepository.save({...tagToUpdate, ...data});
     } else throw new Error(TagErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === TagErrorsFlag.ID_NOT_FOUND) handleTagError(TagErrorsFlag.ID_NOT_FOUND, id); 
+    if (e instanceof Error && e.message === TagErrorsFlag.ID_NOT_FOUND) handleTagError(TagErrorsFlag.ID_NOT_FOUND, data.id); 
     else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTagError(TagErrorsFlag.NAME_ALREADY_USED, name);
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTagError(TagErrorsFlag.NAME_ALREADY_USED, data.name);
     } 
     throw new CustomError(
       new InternalServerError(),

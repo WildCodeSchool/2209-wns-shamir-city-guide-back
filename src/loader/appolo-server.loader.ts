@@ -4,12 +4,14 @@ import { buildSchema } from "type-graphql";
 import { TagResolver } from "../resolver/tag.resolver";
 import { CityResolver } from "../resolver/city.resolver";
 import { PoiResolver } from "../resolver/poi.resolver";
+import { TypeResolver } from "../resolver/type.resolver";
 
 export const startAppoloServer = async (): Promise<ApolloServer> => {
   const schema = await buildSchema({
     resolvers: [
       CityResolver,
       TagResolver,
+      TypeResolver,
       PoiResolver
     ],
   });

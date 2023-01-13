@@ -75,25 +75,22 @@ export const getByName = async (name: string): Promise<City> => {
 export const create = async (
   data: CityValidator
 ): Promise<City> => {
-  const name = formatString(data.name),
-    latitude = data.latitude,
-    longitude = data.longitude,
-    picture = data.picture;
+  data.name = formatString(data.name);
 
   try {
-    const isLocalisationAlreadyExist = await CityRepository.findByLatitudeAndByLongitude(latitude, longitude);    
+    const isLocalisationAlreadyExist = await CityRepository.findByLatitudeAndByLongitude(data.latitude, data.longitude);    
     if (isLocalisationAlreadyExist) throw new Error(CityErrorsFlag.LOCALISATION_ALREADY_USED);
     
-    const createdCity = await CityRepository.save({name, latitude, longitude, picture});    
+    const createdCity = await CityRepository.save(data);    
     return createdCity;
   } catch (e) {
     if (e instanceof Error && e.message === CityErrorsFlag.LOCALISATION_ALREADY_USED) handleCityError(CityErrorsFlag.LOCALISATION_ALREADY_USED, data);
     if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, name); 
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
     } 
     throw new CustomError(
       new InternalServerError(), 
-      `Problème de connexion interne, la ville ${name} n'a pas été créée`
+      `Problème de connexion interne, la ville ${data.name} n'a pas été créée`
     );
   }
 };

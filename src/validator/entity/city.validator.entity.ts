@@ -1,6 +1,5 @@
 import { Min, MinLength, MaxLength, Matches, IsOptional } from "class-validator";
 import { CityErrorValidator } from "../messages.validator";
-import City from "../../entity/City.entity";
 import { validateData } from "../validate.validator";
 import { CityType } from "../../utils/type/city.utils.type";
 import { CustomError } from "../../utils/error/CustomError.utils.error";
@@ -42,7 +41,8 @@ export class CityValidator {
 /**
  * Checks the validity of the city data during creation
  * @param {CityType} city the city  
- * @returns <CityValidator> the verified city | throw error 422 Unprocessable Entity
+ * @returns <CityValidator> the verified city
+ * @throws Error: 400 Bad Request | 422 Unprocessable Entity
 */
 export const validateCreationCityInput = async (
     city: CityType
@@ -63,7 +63,8 @@ export const validateCreationCityInput = async (
 /**
  * Checks the validity of the city data during update
  * @param {CityType} city the city  
- * @returns <CityValidator> the verified data | throw error 422 Unprocessable Entity
+ * @returns <CityValidator> the verified data 
+ * @throws Error: 400 Bad Request | 422 Unprocessable Entity
 */
 export const validateUpdateCityInput = async (
     city: CityType

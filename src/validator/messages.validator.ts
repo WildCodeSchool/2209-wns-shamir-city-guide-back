@@ -39,9 +39,9 @@ export enum TypeErrorValidator {
     ID_EQUAL_0 = "L'identifiant du type doit être supérieur à 0",
     NAME_TOO_SHORT = "La longueur du nom du type est trop courte. La longueur minimale est de 1 caractère, mais la valeur actuelle est de 0",
     NAME_TOO_LONG = "La longueur du nom du type est trop longue, elle doit être au maximale de 255 caractères",
+    LOGO_TOO_SHORT = "La longueur du logo du type est trop courte, elle doit être au minimum de 3 caractères",
     LOGO_TOO_LONG = "La longueur du logo du type est trop longue, elle doit être au maximale de 255 caractères",
-    COLOR_TOO_SHORT = "La longueur de la couleur du type est trop courte",
-    COLOR_TOO_LONG = "La longueur de la couleur du type est trop longue, elle doit être au maximale de 255 caractères"
+    COLOR_WRONG_FORMAT = "La format hexadécimal pour la couleur du type est incorrect",
 }
 
 //Tag
