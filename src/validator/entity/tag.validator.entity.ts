@@ -31,7 +31,8 @@ export class TagValidator {
 /**
  * Checks the validity of the tag data during creation
  * @param {TagType} tag the tag 
- * @returns <TagValidator> the verified tag | throw error 422 Unprocessable Entity
+ * @returns <TagValidator> the verified tag 
+ * @throws Error: 400 Bad Request | 422 Unprocessable Entity
 */
 export const validateCreationTagInput = async (tag: TagType): Promise<TagValidator> => {
     if (Object.keys(tag).includes("id")) {
@@ -49,7 +50,8 @@ export const validateCreationTagInput = async (tag: TagType): Promise<TagValidat
 /**
  * Checks the validity of the tag data during update
  * @param {TagType} tag the tag 
- * @returns <TagValidator> the verified data | throw error 422 Unprocessable Entity
+ * @returns <TagValidator> the verified data
+ * @throws Error: 400 Bad Request | 422 Unprocessable Entity
 */
 export const validateUpdateTagInput = async (tag: TagType): Promise<TagValidator> => {
     if (!Object.keys(tag).includes("id")) {

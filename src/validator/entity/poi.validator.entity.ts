@@ -55,7 +55,8 @@ export class PoiValidator {
 /**
  * Checks the validity of the poi data during creation
  * @param {PoiType} poi the poi to check before creation
- * @returns <PoiValidator> the verified poi | throw error 422 Unprocessable Entity
+ * @returns <PoiValidator> the verified poi
+ * @throws Error: 400 Bad Request | 422 Unprocessable Entity
 */
 export const validateCreationPoiInput = async (
     poi: PoiType
@@ -96,7 +97,8 @@ export const validateCreationPoiInput = async (
 /**
  * Checks the validity of the Poi data during update
  * @param {PoiType} poi the poi to check before update
- * @returns <City> the verified data | throw error 422 Unprocessable Entity
+ * @returns <City> the verified data 
+ * @throws Error: 400 Bad Request | 422 Unprocessable Entity
 */
 export const validateUpdatePoiInput = async (
     poi: PoiType
