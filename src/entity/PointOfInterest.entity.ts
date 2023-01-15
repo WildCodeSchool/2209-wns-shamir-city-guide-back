@@ -5,6 +5,7 @@ import Type from "./Type.entity";
 import Tag from "./Tag.entity";
 import Circuit from "./Circuit.entity";
 import { JoinTable } from "typeorm";
+import { type } from "os";
 
 
 @ObjectType()
@@ -53,11 +54,15 @@ export default class PointOfInterest {
   @ManyToMany(() => Circuit, (circuit) => circuit.pointsOfInterest)
   circuits?: Circuit[]
   
-  @ManyToMany(() => Tag, (tag) => tag.pointsOfInterest)
+  @Field(type => [Tag])
+  @ManyToMany(() => Tag, (tag) => tag.pointsOfInterest, {
+    eager: true,
+    cascade: true
+  })
   @JoinTable({ 
     name: 'point_of_interest_tag',
     joinColumn: {name: "point_of_interest_id"},
-    inverseJoinColumn: {name: "tag_id"}
+    inverseJoinColumn: {name: "tag_id"},
   })
   tags?: Tag[];
 }

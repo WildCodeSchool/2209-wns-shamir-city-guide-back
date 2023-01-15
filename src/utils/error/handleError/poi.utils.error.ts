@@ -15,8 +15,6 @@ export enum PoiErrorsFlag {
 }
 
 export const handlePoiError = <T>(flag: string, data: T): void => {
-    console.log("handle error : ", flag, data);
-    
     switch (flag) {
         case PoiErrorsFlag.ID_NOT_FOUND:
             throw new CustomError(

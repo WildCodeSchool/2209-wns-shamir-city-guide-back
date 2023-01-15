@@ -16,6 +16,7 @@ export class PoiResolver {
   @Query(() => Poi)
   async getPoiById(@Arg("id") id: number): Promise<Poi> {
     const verifiedId = await validateIdInput(id);
+    const poi = await PoiService.getById(verifiedId);
     return await PoiService.getById(verifiedId);
   }
 

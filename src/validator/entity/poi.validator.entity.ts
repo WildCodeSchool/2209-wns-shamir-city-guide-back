@@ -5,7 +5,9 @@ import { CityValidator } from "./city.validator.entity";
 import { TypeValidator } from "./type.validator.entity";
 import { PoiType } from "../../utils/type/poi.utils.type";
 import { CustomError } from "../../utils/error/CustomError.utils.error";
-import { BadRequestError } from "../../utils/error/interfaces.utils.error";
+import { BadRequestError, UnprocessableEntityError } from "../../utils/error/interfaces.utils.error";
+import { TagValidator } from "./tag.validator.entity";
+import { TagType } from "../../utils/type/tag.utils.type";
 
 
 export class PoiValidator {
@@ -49,6 +51,24 @@ export class PoiValidator {
     city: CityValidator
     
     type: TypeValidator
+
+    @IsOptional()
+    tags: TagValidator[]
+}
+
+const validateTagsArray = async (arr: TagType[]): Promise<TagValidator[]> => {
+    let returnedTags: TagValidator[] = [];
+    for (let i = 0; i < arr.length; i++) {
+        const tagValidator = new TagValidator();
+        if (arr[i].id) tagValidator.id = arr[i].id;
+        tagValidator.name = arr[i].name;
+        tagValidator.icon = arr[i].icon;
+        const verifiedTag = await validateData(tagValidator);
+        
+        if (verifiedTag) returnedTags.push(verifiedTag);
+        else throw new CustomError(new UnprocessableEntityError(), "Un ou plusieurs tags ne sont pas dans le bon format");
+    }
+    return returnedTags;
 }
 
 
@@ -89,6 +109,11 @@ export const validateCreationPoiInput = async (
     typeValidator.color = type.color;
     const verifiedType = await validateData(typeValidator);
     poiValidator.type = verifiedType;
+
+    if (poi.tags !== null && poi.tags !== undefined && poi.tags.length > 0) {
+        const validatedTags = await validateTagsArray(poi.tags);
+        poiValidator.tags = validatedTags;
+    }
     
     return poiValidator;
 }
@@ -133,6 +158,11 @@ export const validateUpdatePoiInput = async (
     typeValidator.color = type.color;
     const verifiedType = await validateData(typeValidator);
     poiValidator.type = verifiedType;
+
+    if (poi.tags !== null && poi.tags !== undefined && poi.tags.length > 0) {
+        const validatedTags = await validateTagsArray(poi.tags);
+        poiValidator.tags = validatedTags;
+    }
     
     return poiValidator;
 }
