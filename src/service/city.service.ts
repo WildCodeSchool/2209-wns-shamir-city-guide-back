@@ -127,8 +127,6 @@ export const update = async (
    
     return await CityRepository.save({ ...isIdExistInDB, ...data });
   } catch (e) {
-    console.log("Error:", e);
-    
     if (e instanceof Error) {
       if (e instanceof QueryFailedError && e.driverError.detail?.length) {
         if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 

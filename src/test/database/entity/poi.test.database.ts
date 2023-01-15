@@ -5,6 +5,8 @@ import { CityRepository } from "../../../repository/city.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 import Type from "../../../entity/Type.entity";
 import { TypeRepository } from "../../../repository/type.repository";
+import { TagRepository } from "../../../repository/tag.repository";
+import Tag from "../../../entity/Tag.entity";
 
 
  export const poiNames = ["Musée du Louvre", "Arc de Triomphe", "La Tour Eiffel", "Rue de la Soif", "Gare Saint Charles"],
@@ -21,6 +23,11 @@ export const loadPoiData = async () => {
     const type1: Type | null = await TypeRepository.findOneBy({ name: "Type1" });
     const type2: Type | null = await TypeRepository.findOneBy({ name: "Type2" });
     const type3: Type | null = await TypeRepository.findOneBy({ name: "Type3" });
+    const tag1: Tag | null = await TagRepository.findOneBy({ id: 1 });
+    const tag2: Tag | null = await TagRepository.findOneBy({ id: 2 });
+    const tag3: Tag | null = await TagRepository.findOneBy({ id: 3 });
+    const tag4: Tag | null = await TagRepository.findOneBy({ id: 4 });
+    const tag5: Tag | null = await TagRepository.findOneBy({ id: 5 });
     await Promise.all(poiNames.map(async (name, index) => {
         let newPoi = new Poi();
         newPoi.name = name;
@@ -31,12 +38,19 @@ export const loadPoiData = async () => {
         if (index < 3 ) {
             if (Paris !== null) newPoi.city = Paris;
             if (type1 !== null) newPoi.type = type1;
+            if (tag1 !== null && tag2 !== null) newPoi.tags = [tag1, tag2];
         } else if (index === 3) {
             if (Rennes !== null) newPoi.city = Rennes;
             if (type2 !== null) newPoi.type = type2;
+            if (tag3 !== null) newPoi.tags = [tag3];
         } else if (index === 4) {
             if (Marseille !== null) newPoi.city = Marseille;
             if (type3 !== null) newPoi.type = type3;
+            if (
+                tag1 !== null &&
+                tag4 !== null &&
+                tag5 !== null
+            ) newPoi.tags = [tag1, tag4, tag5]
         }
         
         try {

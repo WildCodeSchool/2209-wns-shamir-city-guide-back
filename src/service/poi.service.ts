@@ -16,8 +16,13 @@ import { PoiValidator } from "../validator/entity/poi.validator.entity";
  */
 export const getAll = async (): Promise<Array<Poi>> => {
   try {
-    const poi: Poi[] = await PoiRepository.find();
-    return poi;
+    const allPoi: Poi[] = await PoiRepository.find({
+      relations: {
+          tags: true,
+      }
+    });
+    
+    return allPoi;
   } catch (e) {
     throw new CustomError(
       new InternalServerError(), 
@@ -130,10 +135,11 @@ export const update = async (
       );
       if (isLocationAlreadyExist) throw new Error(PoiErrorsFlag.LOCALISATION_ALREADY_USED);
     }
-   
+    
+    (data.tags?.length > 0) ? isIdExistInDB.tags = [...data.tags] : isIdExistInDB.tags = [];
     return await PoiRepository.save({ ...isIdExistInDB, ...data });
   } catch (e) {
-    if (e instanceof Error) {
+    if (e instanceof Error) {      
       if (e.message === PoiErrorsFlag.ID_NOT_FOUND) handlePoiError(PoiErrorsFlag.ID_NOT_FOUND, data.id); 
       else if (e.message === PoiErrorsFlag.NAME_ALREADY_USED) handlePoiError(PoiErrorsFlag.NAME_ALREADY_USED, data.name); 
       else if (e.message === PoiErrorsFlag.LOCALISATION_ALREADY_USED) handlePoiError(PoiErrorsFlag.LOCALISATION_ALREADY_USED, data);

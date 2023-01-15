@@ -47,7 +47,7 @@ export const getById = async (id: number): Promise<Type> => {
 /**
  * Returns a type by its name from database
  * @param {string} name The name to use to retrieve a specific type
- * @returns tag 
+ * @returns type 
  * @throws Error: 500 Internal Server Error | 404 Not Found
  */
 export const getByName = async (name: string): Promise<Type> => {

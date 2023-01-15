@@ -1,5 +1,7 @@
 import { Field, InputType } from "type-graphql";
+import Tag from "../../entity/Tag.entity";
 import { CityType } from "./city.utils.type";
+import { TagType } from "./tag.utils.type";
 import { TypeType } from "./type.utils.type";
 
 
@@ -28,6 +30,9 @@ export class PoiType {
     
     @Field()
     type: TypeType
+    
+    @Field(() => [TagType], {nullable: true})
+    tags?: TagType[]
 }
 
 
