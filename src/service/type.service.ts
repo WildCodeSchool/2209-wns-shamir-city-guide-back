@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import Type from "../entity/Type.entity";
 import { TypeRepository } from "../repository/type.repository";
 import { QueryFailedError } from "typeorm";
@@ -86,7 +87,7 @@ export const create = async (data: TypeValidator): Promise<Type> => {
         } 
         throw new CustomError(
         new InternalServerError(), 
-        `Problème de connexion interne, le tag ${data.name} n'a pas été créé`
+        `Problème de connexion interne, le type ${data.name} n'a pas été créé`
         );
     }
 };

@@ -11,7 +11,8 @@ export enum PoiErrorsFlag {
     LOCALISATION_ALREADY_USED = "LOCALISATION_ALREADY_USED",
     PICTURE_ALREADY_USER = "PICTURE_ALREADY_USER",
     CITY_NOT_IN_DB = "CITY_NOT_IN_DB",
-    TYPE_NOT_IN_DB = "TYPE_NOT_IN_DB"
+    TYPE_NOT_IN_DB = "TYPE_NOT_IN_DB",
+    TAG_NOT_IN_DB = "TAG_NOT_IN_DB"
 }
 
 export const handlePoiError = <T>(flag: string, data: T): void => {
@@ -63,5 +64,10 @@ export const handlePoiError = <T>(flag: string, data: T): void => {
                 `Le type ${data.type.name} avec l'id ${data.type.id} n'existe pas en base de données`
             );
         }
+        case PoiErrorsFlag.TAG_NOT_IN_DB:            
+        throw new CustomError(
+            new UnprocessableEntityError(), 
+            `Le tag ${data} n'existe pas en base de données`
+        );
     }
 }

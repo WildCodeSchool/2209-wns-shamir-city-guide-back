@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import Tag from "../entity/Tag.entity";
 import { TagRepository } from "../repository/tag.repository";
 import { QueryFailedError } from "typeorm";

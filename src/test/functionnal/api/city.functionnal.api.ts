@@ -47,18 +47,8 @@ export const GET_CITY_BY_NAME = gql`
         `;
 
 export const CREATE_CITY = gql`
-            mutation CreateCity(
-                $name: String!, 
-                $latitude: String!, 
-                $longitude: String!,
-                $picture: String!
-            ) {
-                createCity (
-                    name: $name, 
-                    latitude: $latitude,
-                    longitude: $longitude,
-                    picture: $picture
-                ) {
+            mutation Mutation($city: CityType!) {
+                createCity(city: $city) {
                     id
                     name  
                     latitude
@@ -69,28 +59,16 @@ export const CREATE_CITY = gql`
         `;
 
 export const UPDATE_CITY = gql`
-        mutation UpdateCity(
-            $updateCityId: Float!, 
-            $name: String!, 
-            $latitude: String!, 
-            $longitude: String!,
-            $picture: String!
-            ) {
-            updateCity (
-                id: $updateCityId, 
-                name: $name, 
-                latitude: $latitude,
-                longitude: $longitude,
-                picture: $picture
-            ) {
-                id
-                name  
-                latitude
-                longitude
-                picture
+            mutation Mutation($city: CityType!) {
+                updateCity(city: $city) {
+                    id
+                    name  
+                    latitude
+                    longitude
+                    picture
+                }
             }
-        }
-    `;
+        `;
 
 export const DELETE = gql`
         mutation DeleteCity($deleteCityId: Float!) {

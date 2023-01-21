@@ -6,6 +6,7 @@ import { StatusCodeClass, StatusCodeMessage, StatusCode } from "../../../utils/c
 import Tag from "../../../entity/Tag.entity";
 import { emojiShocked } from "../../../utils/emoji.utils";
 import { formatString } from "../../../utils/string.utils";
+import { TagValidator } from "../../../validator/entity/tag.validator.entity";
 
 
 const getAll = TagService.getAll, 
@@ -23,7 +24,7 @@ describe("integration/service/tag.service suite of tests without database connex
             await getAll();
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, les tags n'ont pas été chargés`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, les tags n'ont pas été chargés`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -46,7 +47,7 @@ describe("integration/service/tag.service suite of tests without database connex
             await getTagById(1);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag n'a pas été chargé`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été chargé`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -70,7 +71,7 @@ describe("integration/service/tag.service suite of tests without database connex
             await getTagByName(name);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag ${name} n'a pas été chargé`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag ${name} n'a pas été chargé`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -89,14 +90,14 @@ describe("integration/service/tag.service suite of tests without database connex
     });
     
     it("Should not create a tag and throw an 500 Internal Error", async () => {
-        const tag = new Tag();
+        const tag = new TagValidator();
         tag.name = formatString("test");
         tag.icon = "test.png";
         try {
             await create(tag);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag ${tag.name} n'a pas été créé`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag ${tag.name} n'a pas été créé`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -115,7 +116,7 @@ describe("integration/service/tag.service suite of tests without database connex
     });
     
     it("Should not update a tag and throw an 500 Internal Error", async () => {
-        const tag = new Tag();
+        const tag = new TagValidator();
         tag.id = 5;
         tag.name = formatString("test");
         tag.icon = "test.png";
@@ -123,7 +124,7 @@ describe("integration/service/tag.service suite of tests without database connex
             await update(tag);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag n'a pas été mis à jour`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été mis à jour`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -146,7 +147,7 @@ describe("integration/service/tag.service suite of tests without database connex
             await deleteTag(1);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag n'a pas été supprimé`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été supprimé`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -207,7 +208,7 @@ describe("integration/service/tag.service suite of tests with database connexion
             await getTagById(0);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag avec l'id 0 n'existe pas en base de données");
+                expect(e.message).toBe("Le tag n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -220,7 +221,7 @@ describe("integration/service/tag.service suite of tests with database connexion
             expect(e).toStrictEqual(
                 new CustomError(
                     new NotFoundError(), 
-                    "Le tag avec l'id 0 n'existe pas en base de données"
+                    "Le tag n'existe pas en base de données"
             ))
         }
     });
@@ -230,7 +231,7 @@ describe("integration/service/tag.service suite of tests with database connexion
             await getTagById(10);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag avec l'id 10 n'existe pas en base de données");
+                expect(e.message).toBe("Le tag n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -243,7 +244,7 @@ describe("integration/service/tag.service suite of tests with database connexion
             expect(e).toStrictEqual(
                 new CustomError(
                     new NotFoundError(), 
-                    "Le tag avec l'id 10 n'existe pas en base de données"
+                    "Le tag n'existe pas en base de données"
                 ))
         }
     });
@@ -327,7 +328,7 @@ describe("integration/service/tag.service suite of tests with database connexion
     
 
     it("Should return an error 422 Unprocessable Entity if we attempt to create a tag with a name which already exist in database", async () => {
-        const tag = new Tag();
+        const tag = new TagValidator();
         tag.name = formatString("culturel");
         tag.icon = "icon.jpeg";
         try {
@@ -374,7 +375,7 @@ describe("integration/service/tag.service suite of tests with database connexion
             await update({ id: 10, name: "new Tag", icon: 'icon.png' });
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag avec l'id 10 n'existe pas en base de données");
+                expect(e.message).toBe("Le tag n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -387,13 +388,13 @@ describe("integration/service/tag.service suite of tests with database connexion
             expect(e).toStrictEqual(
                 new CustomError(
                     new NotFoundError(), 
-                    "Le tag avec l'id 10 n'existe pas en base de données"
+                    "Le tag n'existe pas en base de données"
                 ))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity if we attempt to update a tag with a name which already exist in database", async () => {
-        const tag = new Tag();
+        const tag = new TagValidator();
         tag.id = 1;
         tag.name = formatString("updated Tag");
         tag.icon = "icon.jpeg";
@@ -439,7 +440,7 @@ describe("integration/service/tag.service suite of tests with database connexion
             await deleteTag(10);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag avec l'id 10 n'existe pas en base de données");
+                expect(e.message).toBe("Le tag n'existe pas en base de données");
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
@@ -452,7 +453,7 @@ describe("integration/service/tag.service suite of tests with database connexion
             expect(e).toStrictEqual(
                 new CustomError(
                     new NotFoundError(), 
-                    "Le tag avec l'id 10 n'existe pas en base de données"
+                    "Le tag n'existe pas en base de données"
                 ))
         }
     });

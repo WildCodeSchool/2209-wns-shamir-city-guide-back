@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { validateIdInput, validateNameInput } from "../../../validator/common.validator";
 import { CustomError } from "../../../utils/error/CustomError.utils.error";
 import { StatusCode, StatusCodeClass, StatusCodeMessage } from "../../../utils/constants.utils";
+import { CommonErrorValidator } from "../../../validator/messages.validator";
 
 
 describe("unit/validator/common.validator suite of tests", () => {
@@ -22,7 +23,7 @@ describe("unit/validator/common.validator suite of tests", () => {
             await validateNameInput("");
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe("La longueur du prénom est trop courte. La longueur minimale est de 1 caractère, mais la valeur actuelle est de 0");
+                expect(e.message).toBe(CommonErrorValidator.NAME_TOO_SHORT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);

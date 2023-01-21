@@ -1,65 +1,87 @@
 import "reflect-metadata";
-import { validateIdInput, validateNameInput } from "../../../validator/common.validator";
 import { 
-    CityCreationValidator, 
-    CityUpdateValidator, 
+    CityValidator, 
     validateCreationCityInput, 
     validateUpdateCityInput 
 } from "../../../validator/entity/city.validator.entity";
-import { 
-    idEqual0ErrorMessage,
-    nameTooShortErrorMessage,
-    nameTooLongErrorMessage,
-    latitudeFormatErrorMessage,
-    longitudeFormatErrorMessage,
-    pictureTooLongErrorMessage
-} from "../../../validator/messages.validator";
+import { CityErrorValidator } from "../../../validator/messages.validator";
 import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
+import { BadRequestError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode, strTooLong } from "../../../utils/constants.utils";
 
 
 describe("unit/validator/city.validator suite of tests", () => {
     // CREATE CITY
     it("Should return City when we create a city with filled fields", async () => {
-        const name = " a city name   ",
-            latitude = "15.6418",
-            longitude = "64.2944",
-            picture = "a picture name",
-            tag = await validateCreationCityInput(name, latitude, longitude, picture);
+        const city = new CityValidator(); 
+        city.name = " a city name   ",
+        city.latitude = "15.6418",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+        const createdCity = await validateCreationCityInput(city);
         
-        expect(tag instanceof CityCreationValidator).toBe(true);
-        expect(tag.name).toBe("a city name");
-        expect(tag.latitude).toBe("15.6418");
-        expect(tag.longitude).toBe("64.2944");
-        expect(tag.picture).toBe("a picture name");
+        expect(createdCity instanceof CityValidator).toBe(true);
+        expect(createdCity.name).toBe("a city name");
+        expect(createdCity.latitude).toBe("15.6418");
+        expect(createdCity.longitude).toBe("64.2944");
+        expect(createdCity.picture).toBe("a picture name");
     });
 
     it("Should return City when we create a city with filled fields and white spaces to trim in name", async () => {
-        const name = "a city name",
-            latitude = "15.6418",
-            longitude = "64.2944",
-            picture = "a picture name",
-            city = await validateCreationCityInput(name, latitude, longitude, picture);
+        const city = new CityValidator();
+        city.name = "a city name";
+        city.latitude = "15.6418";
+        city.longitude = "64.2944";
+        city.picture = "a picture name";
+        const createdCity = await validateCreationCityInput(city);
         
-        expect(city instanceof CityCreationValidator).toBe(true);
-        expect(city.name).toBe("a city name");
-        expect(city.latitude).toBe("15.6418");
-        expect(city.longitude).toBe("64.2944");
-        expect(city.picture).toBe("a picture name");
+        expect(createdCity instanceof CityValidator).toBe(true);
+        expect(createdCity.name).toBe("a city name");
+        expect(createdCity.latitude).toBe("15.6418");
+        expect(createdCity.longitude).toBe("64.2944");
+        expect(createdCity.picture).toBe("a picture name");
     });
 
-    it("Should return an error 422 Unprocessable Entity when we create a city with empty name", async () => {
-        const name = "",
-            latitude = "15.6148",
-            longitude = "62.2944",
-            picture = "a picture name";
+    it('Should trigger 400 Bad Request Error during the city creation when an id is present', async () => {
+        const city = new CityValidator();
+        city.id = 1;
+        city.name = "a city name";
+        city.latitude = "15.6418";
+        city.longitude = "64.2944";
+        city.picture = "a picture name";
+        
         try {
-            await validateCreationCityInput(name, latitude, longitude, picture);
+            await validateCreationCityInput(city);            
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(nameTooShortErrorMessage);
-                expect(e.message).toEqual(nameTooShortErrorMessage);
+                expect(e.message).toBe(`Oups!! Quelque chose s'est mal passé\n${CityErrorValidator.ID_NOT_REQUIRED}`);
+                expect(e.message).toEqual(`Oups!! Quelque chose s'est mal passé\n${CityErrorValidator.ID_NOT_REQUIRED}`);
+                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.statusCode).toBe(StatusCode.BAD_REQUEST);
+                expect(e.statusCode).toEqual(StatusCode.BAD_REQUEST);
+                expect(e.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
+                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
+            }
+            
+            expect(e).toBeDefined();
+            expect(e).toStrictEqual(new CustomError(new BadRequestError(), CityErrorValidator.ID_NOT_REQUIRED))
+        }
+    }); 
+
+    it("Should return an error 422 Unprocessable Entity when we create a city with empty name", async () => {
+        const city = new CityValidator(); 
+        city.name = "",
+        city.latitude = "15.6418",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+        
+        try {
+            await validateCreationCityInput(city);
+        } catch (e) {
+            if (e instanceof CustomError) {
+                expect(e.message).toBe(CityErrorValidator.NAME_TOO_SHORT);
+                expect(e.message).toEqual(CityErrorValidator.NAME_TOO_SHORT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -69,21 +91,22 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), nameTooShortErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.NAME_TOO_SHORT))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we create a city with a name to long", async () => {
-        const name = strTooLong,
-            latitude = "15.6148",
-            longitude = "64.2944",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.name = strTooLong,
+        city.latitude = "15.6418",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
         try {
-            await validateCreationCityInput(name, latitude, longitude, picture);
+            await validateCreationCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(nameTooLongErrorMessage);
-                expect(e.message).toEqual(nameTooLongErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.NAME_TOO_LONG);
+                expect(e.message).toEqual(CityErrorValidator.NAME_TOO_LONG);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -93,21 +116,23 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), nameTooLongErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.NAME_TOO_LONG))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we create a city with empty latitude", async () => {
-        const name = "name",
-            latitude = "",
-            longitude = "64.2494",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.name = "new city",
+        city.latitude = "",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+
         try {
-            await validateCreationCityInput(name, latitude, longitude, picture);
+            await validateCreationCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(latitudeFormatErrorMessage);
-                expect(e.message).toEqual(latitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LATITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LATITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -117,21 +142,23 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), latitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LATITUDE_FORMAT))
         }
     });
     
     it("Should return an error 422 Unprocessable Entity when we create a city with too short latitude", async () => {
-        const name = "name",
-            latitude = "124",
-            longitude = "64.2944",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.name = "new city",
+        city.latitude = "124",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+        
         try {
-            await validateCreationCityInput(name, latitude, longitude, picture);
+            await validateCreationCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(latitudeFormatErrorMessage);
-                expect(e.message).toEqual(latitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LATITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LATITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -141,21 +168,23 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), latitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LATITUDE_FORMAT))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we create a city with too long latitude", async () => {
-        const name = "name",
-            latitude = strTooLong,
-            longitude = "64.2944",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.name = "new city",
+        city.latitude = strTooLong,
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+        
         try {
-            await validateCreationCityInput(name, latitude, longitude, picture);
+            await validateCreationCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(latitudeFormatErrorMessage);
-                expect(e.message).toEqual(latitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LATITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LATITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -165,21 +194,23 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), latitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LATITUDE_FORMAT))
         }
     });
     
     it("Should return an error 422 Unprocessable Entity when we create a city with empty longitude", async () => {
-        const name = "name",
-            latitude = "12.32156",
-            longitude = "",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.name = "new city",
+        city.latitude = "12.32156",
+        city.longitude = "",
+        city.picture = "a picture name";
+       
         try {
-            await validateCreationCityInput(name, latitude, longitude, picture);
+            await validateCreationCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(longitudeFormatErrorMessage);
-                expect(e.message).toEqual(longitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LONGITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LONGITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -189,21 +220,23 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), longitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LONGITUDE_FORMAT))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we create a city with to short longitude", async () => {
-        const name = "name",
-            latitude = "12.321546",
-            longitude = "32.4",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.name = "new city",
+        city.latitude = "12.32156",
+        city.longitude = "32.4",
+        city.picture = "a picture name";
+        
         try {
-            await validateCreationCityInput(name, latitude, longitude, picture);
+            await validateCreationCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(latitudeFormatErrorMessage);
-                expect(e.message).toEqual(latitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LONGITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LONGITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -213,21 +246,23 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), latitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LONGITUDE_FORMAT))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we create a city with too long longitude", async () => {
-        const name = "name",
-            latitude = "12.9643",
-            longitude = strTooLong,
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.name = "new city",
+        city.latitude = "12.32156",
+        city.longitude = strTooLong,
+        city.picture = "a picture name";
+
         try {
-            await validateCreationCityInput(name, latitude, longitude, picture);
+            await validateCreationCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(longitudeFormatErrorMessage);
-                expect(e.message).toEqual(longitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LONGITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LONGITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -237,63 +272,94 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), longitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LONGITUDE_FORMAT))
         }
     });
 
     it("Should return a City when we create a city with empty picture", async () => {
-        const name = "name",
-            latitude = "12.9643",
-            longitude = "39.7453",
-            picture = "",
-            city = await validateCreationCityInput(name, latitude, longitude, picture);
+        const city = new CityValidator(); 
+        city.name = "name",
+        city.latitude = "12.32156",
+        city.longitude = "39.7453",
+        city.picture = "";
+        const createdCity = await validateCreationCityInput(city);
         
-        expect(city instanceof CityCreationValidator).toBe(true);
-        expect(city.name).toBe("name");
-        expect(city.latitude).toBe("12.9643");
-        expect(city.longitude).toBe("39.7453");
-        expect(city.picture).toBe("");
+        expect(createdCity instanceof CityValidator).toBe(true);
+        expect(createdCity.name).toBe("name");
+        expect(createdCity.latitude).toBe("12.32156");
+        expect(createdCity.longitude).toBe("39.7453");
+        expect(createdCity.picture).toBe("");
     });
     
-    // UPDATE TAG
+    // UPDATE CITY
     it("Should return update city when we update a city with all filled fields", async () => {
-        const id = 5, 
-            name = "an updated city name",
-            latitude = "15.6148",
-            longitude = "64.2944",
-            picture = "a picture name",
-            tag = await validateUpdateCityInput(id, name, latitude, longitude, picture);
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "an updated city name",
+        city.latitude = "15.6148",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+        const updatedCity = await validateUpdateCityInput(city);
         
-        expect(tag instanceof CityUpdateValidator).toBe(true);
-        expect(tag.name).toBe("an updated city name");
-        expect(tag.picture).toBe("a picture name");
+        expect(updatedCity instanceof CityValidator).toBe(true);
+        expect(updatedCity.name).toBe("an updated city name");
+        expect(updatedCity.picture).toBe("a picture name");
     });
 
     it("Should return update city when we update a city with an empty picture", async () => {
-        const id = 5, 
-            name = "an updated city name",
-            latitude = "15.6418",
-            longitude = "64.2944",
-            picture = "",
-            tag = await validateUpdateCityInput(id, name, latitude, longitude, picture);
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "an updated city name",
+        city.latitude = "15.6148",
+        city.longitude = "64.2944",
+        city.picture = "";
+        const updatedCity = await validateUpdateCityInput(city);
         
-        expect(tag instanceof CityUpdateValidator).toBe(true);
-        expect(tag.name).toBe("an updated city name");
-        expect(tag.picture).toBe("");
+        expect(updatedCity instanceof CityValidator).toBe(true);
+        expect(updatedCity.name).toBe("an updated city name");
+        expect(updatedCity.picture).toBe("");
     });
 
-    it("Should return an error 422 Unprocessable Entity when we update a city with empty name", async () => {
-        const id = 4, 
-            name = "",
-            latitude = "15.6148",
-            longitude = "64.2944",
-            picture = "a picture name";
+    it('Should trigger 400 Bad Request Error during the city update when an id is not present', async () => {
+        const city = new CityValidator();
+        city.name = "a city name";
+        city.latitude = "15.6418";
+        city.longitude = "64.2944";
+        city.picture = "a picture name";
+        
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);            
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(nameTooShortErrorMessage);
-                expect(e.message).toEqual(nameTooShortErrorMessage);
+                expect(e.message).toBe(`Oups!! Quelque chose s'est mal passé\n${CityErrorValidator.ID_REQUIRED}`);
+                expect(e.message).toEqual(`Oups!! Quelque chose s'est mal passé\n${CityErrorValidator.ID_REQUIRED}`);
+                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.statusCode).toBe(StatusCode.BAD_REQUEST);
+                expect(e.statusCode).toEqual(StatusCode.BAD_REQUEST);
+                expect(e.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
+                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
+            }
+            
+            expect(e).toBeDefined();
+            expect(e).toStrictEqual(new CustomError(new BadRequestError(), CityErrorValidator.ID_REQUIRED))
+        }
+    }); 
+
+    it("Should return an error 422 Unprocessable Entity when we update a city with empty name", async () => {
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "",
+        city.latitude = "15.6148",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+        
+        try {
+            await validateUpdateCityInput(city);  
+        } catch (e) {
+            if (e instanceof CustomError) {
+                expect(e.message).toBe(CityErrorValidator.NAME_TOO_SHORT);
+                expect(e.message).toEqual(CityErrorValidator.NAME_TOO_SHORT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -303,22 +369,28 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), nameTooShortErrorMessage))
+            expect(e).toStrictEqual(
+                new CustomError(
+                    new UnprocessableEntityError(), 
+                    CityErrorValidator.NAME_TOO_SHORT
+                ))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we update a city with a name to long", async () => {
-        const id = 4, 
-            name = strTooLong,
-            latitude = "15.6148",
-            longitude = "64.2944",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = strTooLong,
+        city.latitude = "15.6148",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(nameTooLongErrorMessage);
-                expect(e.message).toEqual(nameTooLongErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.NAME_TOO_LONG);
+                expect(e.message).toEqual(CityErrorValidator.NAME_TOO_LONG);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -328,22 +400,27 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), nameTooLongErrorMessage))
+            expect(e).toStrictEqual(new CustomError(
+                new UnprocessableEntityError(), 
+                CityErrorValidator.NAME_TOO_LONG
+            ))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we update a city with empty latitude", async () => {
-        const id = 4, 
-            name = "name",
-            latitude = "",
-            longitude = "62.2944",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "a city name",
+        city.latitude = "",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(latitudeFormatErrorMessage);
-                expect(e.message).toEqual(latitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LATITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LATITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -353,22 +430,24 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), latitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LATITUDE_FORMAT))
         }
     });
     
     it("Should return an error 422 Unprocessable Entity when we update a city with too short latitude", async () => {
-        const id = 4,
-            name = "name",
-            latitude = "124",
-            longitude = "62.2944",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "a city name",
+        city.latitude = "124",
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(latitudeFormatErrorMessage);
-                expect(e.message).toEqual(latitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LATITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LATITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -378,22 +457,24 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), latitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LATITUDE_FORMAT))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we update a city with too long latitude", async () => {
-        const id = 4,
-            name = "name",
-            latitude = strTooLong,
-            longitude = "64.2944",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "a city name",
+        city.latitude = strTooLong,
+        city.longitude = "64.2944",
+        city.picture = "a picture name";
+
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(latitudeFormatErrorMessage);
-                expect(e.message).toEqual(latitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LATITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LATITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -403,22 +484,24 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), latitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LATITUDE_FORMAT))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we update a city with empty longitude", async () => {
-        const id = 4, 
-            name = "name",
-            latitude = "64.2944",
-            longitude = "",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "a city name",
+        city.latitude = "64.2944",
+        city.longitude = "",
+        city.picture = "a picture name";
+
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(longitudeFormatErrorMessage);
-                expect(e.message).toEqual(longitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LONGITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LONGITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -428,22 +511,24 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), longitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LONGITUDE_FORMAT))
         }
     });
     
     it("Should return an error 422 Unprocessable Entity when we update a city with too short longitude", async () => {
-        const id = 4,
-            name = "name",
-            latitude = "14.9643",
-            longitude = "64.123",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "a city name",
+        city.latitude = "12.3697",
+        city.longitude = "6424",
+        city.picture = "a picture name";
+
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(longitudeFormatErrorMessage);
-                expect(e.message).toEqual(longitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LONGITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LONGITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -453,22 +538,24 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), longitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LONGITUDE_FORMAT))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we update a city with wrong format for longitude", async () => {
-        const id = 4,
-            name = "name",
-            latitude = "64.294",
-            longitude = "46.g255",
-            picture = "a picture name";
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "a city name",
+        city.latitude = "64.2369",
+        city.longitude = "64.29g44",
+        city.picture = "a picture name";
+
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(longitudeFormatErrorMessage);
-                expect(e.message).toEqual(longitudeFormatErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.LONGITUDE_FORMAT);
+                expect(e.message).toEqual(CityErrorValidator.LONGITUDE_FORMAT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -478,22 +565,24 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), longitudeFormatErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.LONGITUDE_FORMAT))
         }
     });
 
     it("Should return an error 422 Unprocessable Entity when we update a city with too long picture", async () => {
-        const id = 4,
-            name = "name",
-            latitude = "62.294",
-            longitude = "62.294",
-            picture = strTooLong;
+        const city = new CityValidator(); 
+        city.id = 5;
+        city.name = "a city name",
+        city.latitude = "64.2944",
+        city.longitude = "64.2944",
+        city.picture = strTooLong;
+
         try {
-            await validateUpdateCityInput(id, name, latitude, longitude, picture);
+            await validateUpdateCityInput(city);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(pictureTooLongErrorMessage);
-                expect(e.message).toEqual(pictureTooLongErrorMessage);
+                expect(e.message).toBe(CityErrorValidator.PICTURE_TOO_LONG);
+                expect(e.message).toEqual(CityErrorValidator.PICTURE_TOO_LONG);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -503,7 +592,7 @@ describe("unit/validator/city.validator suite of tests", () => {
             }
             
             expect(e).toBeDefined();
-            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), pictureTooLongErrorMessage))
+            expect(e).toStrictEqual(new CustomError(new UnprocessableEntityError(), CityErrorValidator.PICTURE_TOO_LONG))
         }
     });
 })

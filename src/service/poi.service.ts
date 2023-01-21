@@ -1,12 +1,15 @@
 import "reflect-metadata";
+import { QueryFailedError } from "typeorm";
+
 import Poi from "../entity/PointOfInterest.entity";
 import { CustomError } from "../utils/error/CustomError.utils.error";
-import { PoiRepository } from "../repository/poi.repository";
-import { QueryFailedError } from "typeorm";
+import { InternalServerError } from "../utils/error/interfaces.utils.error";
 import { formatString, retrieveKeyFromDbErrorMessage } from "../utils/string.utils";
 import { PoiErrorsFlag, handlePoiError } from "../utils/error/handleError/poi.utils.error";
-import { InternalServerError } from "../utils/error/interfaces.utils.error";
 import { PoiValidator } from "../validator/entity/poi.validator.entity";
+import { TagValidator } from "../validator/entity/tag.validator.entity";
+import { PoiRepository } from "../repository/poi.repository";
+import { TagRepository } from "../repository/tag.repository";
 
 
 /**
@@ -26,7 +29,7 @@ export const getAll = async (): Promise<Array<Poi>> => {
   } catch (e) {
     throw new CustomError(
       new InternalServerError(), 
-      `Problème de connexion interne, les points d'interêt n'ont pas été chargés`
+      `Problème de connexion interne, les points d'intêret n'ont pas été chargés`
     );
   }
 };
@@ -46,7 +49,7 @@ export const getById = async (id: number): Promise<Poi> => {
     if (e instanceof Error && e.message === PoiErrorsFlag.ID_NOT_FOUND) handlePoiError(PoiErrorsFlag.ID_NOT_FOUND, null);
     throw new CustomError(
       new InternalServerError(), 
-      `Problème de connexion interne, le point d'interêt n'a pas été chargé`
+      `Problème de connexion interne, le point d'intêret n'a pas été chargé`
     );
   }
 };
@@ -67,7 +70,7 @@ export const getByName = async (name: string): Promise<Poi> => {
     if (e instanceof Error && e.message === PoiErrorsFlag.NAME_NOT_FOUND) handlePoiError(PoiErrorsFlag.NAME_NOT_FOUND, name)
     throw new CustomError(
       new InternalServerError(), 
-      `Problème de connexion interne, le point d'intêteret ${name} n'a pas été chargé`
+      `Problème de connexion interne, le point d'intêret ${name} n'a pas été chargé`
     );
   }
 };
@@ -81,22 +84,31 @@ export const getByName = async (name: string): Promise<Poi> => {
 export const create = async (
   data: PoiValidator
 ): Promise<Poi> => {
-  data.name = formatString(data.name);
-
+  data.name = formatString(data.name)
+  let tagIsNotInDB = null;
+  
   try {
+    // Check if the localisation already exist
     const isLocalisationAlreadyExist = await PoiRepository.findByLatitudeAndByLongitude(data.latitude, data.longitude);        
     if (isLocalisationAlreadyExist) throw new Error(PoiErrorsFlag.LOCALISATION_ALREADY_USED);
+    
+    // Check if all tags are present in database
+    if (data.tags !== null && data.tags.length > 0) {
+      tagIsNotInDB = await checkIfTagsAllExist(data.tags);
+    } 
+    if (tagIsNotInDB) throw new Error(PoiErrorsFlag.TAG_NOT_IN_DB);
     
     const createdCity = await PoiRepository.save(data);    
     return createdCity;
   } catch (e) {
     if (e instanceof Error && e.message === PoiErrorsFlag.LOCALISATION_ALREADY_USED) handlePoiError(PoiErrorsFlag.LOCALISATION_ALREADY_USED, data);
+    if (e instanceof Error && e.message.includes(PoiErrorsFlag.TAG_NOT_IN_DB)) handlePoiError(PoiErrorsFlag.TAG_NOT_IN_DB, tagIsNotInDB);
     if (e instanceof QueryFailedError && e.driverError.detail?.length) {
       if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handlePoiError(PoiErrorsFlag.NAME_ALREADY_USED, data.name);
       if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "address") handlePoiError(PoiErrorsFlag.ADDRESS_ALREADY_USED, data.address);
       if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "picture") handlePoiError(PoiErrorsFlag.PICTURE_ALREADY_USER, data.picture);
       if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "city_id") handlePoiError(PoiErrorsFlag.CITY_NOT_IN_DB, data);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "type_id") handlePoiError(PoiErrorsFlag.TYPE_NOT_IN_DB, data);   
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "type_id") handlePoiError(PoiErrorsFlag.TYPE_NOT_IN_DB, data);  
     } 
     
     throw new CustomError(
@@ -116,6 +128,7 @@ export const update = async (
   data: PoiValidator
 ): Promise<Poi> => {
   data.name = formatString(data.name);
+  let tagIsNotInDB = null;
   
   try {
     // Check if the id is present in database
@@ -136,13 +149,21 @@ export const update = async (
       if (isLocationAlreadyExist) throw new Error(PoiErrorsFlag.LOCALISATION_ALREADY_USED);
     }
     
+    // Check if all tags are present in database
+    if (data.tags !== null && data.tags.length > 0) {
+      tagIsNotInDB = await checkIfTagsAllExist(data.tags);
+    } 
+    if (tagIsNotInDB) throw new Error(PoiErrorsFlag.TAG_NOT_IN_DB);
+
     (data.tags?.length > 0) ? isIdExistInDB.tags = [...data.tags] : isIdExistInDB.tags = [];
+
     return await PoiRepository.save({ ...isIdExistInDB, ...data });
   } catch (e) {
-    if (e instanceof Error) {      
+    if (e instanceof Error) {   
       if (e.message === PoiErrorsFlag.ID_NOT_FOUND) handlePoiError(PoiErrorsFlag.ID_NOT_FOUND, data.id); 
-      else if (e.message === PoiErrorsFlag.NAME_ALREADY_USED) handlePoiError(PoiErrorsFlag.NAME_ALREADY_USED, data.name); 
-      else if (e.message === PoiErrorsFlag.LOCALISATION_ALREADY_USED) handlePoiError(PoiErrorsFlag.LOCALISATION_ALREADY_USED, data);
+      if (e.message === PoiErrorsFlag.NAME_ALREADY_USED) handlePoiError(PoiErrorsFlag.NAME_ALREADY_USED, data.name); 
+      if (e.message === PoiErrorsFlag.LOCALISATION_ALREADY_USED) handlePoiError(PoiErrorsFlag.LOCALISATION_ALREADY_USED, data);
+      if (e instanceof Error && e.message.includes(PoiErrorsFlag.TAG_NOT_IN_DB)) handlePoiError(PoiErrorsFlag.TAG_NOT_IN_DB, tagIsNotInDB);
     } 
     if (e instanceof QueryFailedError && e.driverError.detail?.length) {
       if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handlePoiError(PoiErrorsFlag.NAME_ALREADY_USED, data.name);
@@ -153,7 +174,7 @@ export const update = async (
     }
     throw new CustomError(
       new InternalServerError(),
-      `Problème de connexion interne, le point d'intêret n'a pas été mise à jour`
+      `Problème de connexion interne, le point d'intêret n'a pas été mis à jour`
     );
   }
 };
@@ -175,7 +196,16 @@ export const deletePoi = async (id: number): Promise<Poi> => {
     if (e instanceof Error && e.message === PoiErrorsFlag.ID_NOT_FOUND) handlePoiError(PoiErrorsFlag.ID_NOT_FOUND, id); 
     throw new CustomError(
       new InternalServerError(),
-      `Problème de connexion interne, le point d'intêret n'a pas été supprimée`
+      `Problème de connexion interne, le point d'intêret n'a pas été supprimé`
     );
   }
 };
+
+const checkIfTagsAllExist = async (tags: TagValidator[]): Promise<null | string> => {
+  for (let i = 0; i < tags.length; i++) {
+    const id = tags[i].id;
+    const isTagInDB = await TagRepository.findOneBy({id});
+    if (!isTagInDB) return tags[i].name;
+  }
+  return null;
+}
