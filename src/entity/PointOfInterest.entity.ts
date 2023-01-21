@@ -5,7 +5,6 @@ import Type from "./Type.entity";
 import Tag from "./Tag.entity";
 import Circuit from "./Circuit.entity";
 import { JoinTable } from "typeorm";
-import { type } from "os";
 
 
 @ObjectType()
@@ -35,14 +34,14 @@ export default class PointOfInterest {
   @Column({unique: true, length: 255})
   picture: string;
 
-  @Field()
+  @Field(() => City, {nullable: true})
   @ManyToOne(() => City, (city) => city.pointsOfInterest, { 
     onDelete: 'CASCADE'
    }) 
   @JoinColumn({name: "city_id"})
   city: City;
 
-  @Field()
+  @Field(() => Type, {nullable: true})
   @ManyToOne(() => Type, (type) => type.pointsOfInterest, { 
     onDelete: 'SET NULL',
     nullable: true, 
@@ -54,7 +53,7 @@ export default class PointOfInterest {
   @ManyToMany(() => Circuit, (circuit) => circuit.pointsOfInterest)
   circuits?: Circuit[]
   
-  @Field(type => [Tag])
+  @Field(() => [Tag])
   @ManyToMany(() => Tag, (tag) => tag.pointsOfInterest, {
     eager: true,
     cascade: true

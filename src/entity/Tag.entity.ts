@@ -13,10 +13,10 @@ export default class Tag {
   @Column({unique: true})
   name: string;
 
-  @Field()
+  @Field({nullable: true})
   @Column()
   icon: string;
   
-  @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest?.tags)
+  @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.tags)
   pointsOfInterest?: PointOfInterest[];
 }

@@ -4,7 +4,7 @@ import { StatusCode, StatusCodeClass, StatusCodeMessage, strTooLong } from "../.
 import { IdValidator, NameValidator } from "../../../validator/common.validator";
 import { CustomError } from "../../../utils/error/CustomError.utils.error";
 import { validateData } from "../../../validator/validate.validator";
-import { idEqual0ErrorMessage, nameTooShortErrorMessage, nameTooLongErrorMessage } from "../../../validator/messages.validator";
+import { CommonErrorValidator } from "../../../validator/messages.validator";
 
 
 describe("unit/validator/validate.validator suite of tests", () => {
@@ -77,8 +77,8 @@ describe("unit/validator/validate.validator suite of tests", () => {
             await validateData(idValidator);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(idEqual0ErrorMessage);
-                expect(e.message).toEqual(idEqual0ErrorMessage);
+                expect(e.message).toBe(CommonErrorValidator.ID_EQUAL_0);
+                expect(e.message).toEqual(CommonErrorValidator.ID_EQUAL_0);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -159,8 +159,8 @@ describe("unit/validator/validate.validator suite of tests", () => {
             await validateData(nameValidator);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(nameTooShortErrorMessage);
-                expect(e.message).toEqual(nameTooShortErrorMessage);
+                expect(e.message).toBe(CommonErrorValidator.NAME_TOO_SHORT);
+                expect(e.message).toEqual(CommonErrorValidator.NAME_TOO_SHORT);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
@@ -179,8 +179,8 @@ describe("unit/validator/validate.validator suite of tests", () => {
             await validateData(nameValidator);
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(nameTooLongErrorMessage);
-                expect(e.message).toEqual(nameTooLongErrorMessage);
+                expect(e.message).toBe(CommonErrorValidator.NAME_TOO_LONG);
+                expect(e.message).toEqual(CommonErrorValidator.NAME_TOO_LONG);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
                 expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);

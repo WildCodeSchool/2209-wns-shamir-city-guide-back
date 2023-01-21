@@ -4,12 +4,7 @@ import { startAppoloServer } from "../../../loader/appolo-server.loader";
 import * as TagApi from "../api/tag.functionnal.api";
 import { DatabaseLoader } from "../../../loader/database.loader";
 import Tag from "../../../entity/Tag.entity";
-import { 
-    idEqual0ErrorMessage, 
-    nameTooShortErrorMessage, 
-    nameTooLongErrorMessage, 
-    iconTooLongErrorMessage 
-} from "../../../validator/messages.validator";
+import { CommonErrorValidator, TagErrorValidator } from "../../../validator/messages.validator";
 import { 
     StatusCodeClass, 
     StatusCodeMessage, 
@@ -41,7 +36,7 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
             await server.executeOperation({query: GET_ALL});
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, les tags n'ont pas été chargés`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, les tags n'ont pas été chargés`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -68,7 +63,7 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
             });
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag n'a pas été chargé`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été chargé`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -96,7 +91,7 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
             });
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag ${name} n'a pas été chargé`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag ${name} n'a pas été chargé`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -121,11 +116,11 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
         try {
             await server.executeOperation({
                 query: CREATE_TAG,
-                variables: {name, icon}
+                variables: {tag: {name, icon}}
             });
         } catch (e) {
             if (e instanceof CustomError) {
-                expect(e.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag ${name} n'a pas été créé`);
+                expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag ${name} n'a pas été créé`);
                 expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
                 expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
@@ -145,18 +140,18 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
 
     // UPDATE
     it("Should not update tag and throw an 500 Internal Error", async () => {
-        const updateTagId = 3,
+        const id = 3,
             name = "concert",
             icon = "test.png";
             const tag = await server.executeOperation({
                 query: UPDATE_TAG,
-                variables: {updateTagId, name, icon}
+                variables: {tag: {id, name, icon}}
             });
             
             if (tag.errors) expect(tag.errors).toBeDefined();
             if (tag.data) expect(tag.data).not.toBeDefined();
             if (tag.errors) {
-                expect(tag?.errors[0]?.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag n'a pas été mis à jour`);  
+                expect(tag?.errors[0]?.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été mis à jour`);  
                 const customError = tag.errors[0].extensions?.exception;
                 expect(customError.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
                 expect(customError.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
@@ -175,7 +170,7 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
         if (deleted.errors) expect(deleted.errors).toBeDefined();
         if (deleted.data) expect(deleted.data).not.toBeDefined();
         if (deleted.errors) {
-            expect(deleted?.errors[0]?.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nProblème de connexion interne, le tag n'a pas été supprimé`);  
+            expect(deleted?.errors[0]?.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été supprimé`);  
             const customError = deleted.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
             expect(customError.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
@@ -238,7 +233,7 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.errors).toBeDefined();
         expect(tag.data?.getTagById).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(idEqual0ErrorMessage); 
+            expect(tag?.errors[0]?.message).toBe(CommonErrorValidator.ID_EQUAL_0); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -255,7 +250,7 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.errors).toBeDefined();
         expect(tag.data?.getTagById).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe("Le tag avec l'id 10 n'existe pas en base de données"); 
+            expect(tag?.errors[0]?.message).toBe("Le tag n'existe pas en base de données"); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
@@ -288,7 +283,7 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.errors).toBeDefined();
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(nameTooShortErrorMessage); 
+            expect(tag?.errors[0]?.message).toBe(CommonErrorValidator.NAME_TOO_SHORT); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -322,7 +317,7 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.errors).toBeDefined();
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(nameTooLongErrorMessage); 
+            expect(tag?.errors[0]?.message).toBe(CommonErrorValidator.NAME_TOO_LONG); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -346,17 +341,34 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
     //     }));
     // });
 
+    it("Should trigger an error 400 Bad Request when we attempt to create a tag with an id", async () => {
+        const tag = await server.executeOperation({
+            query: CREATE_TAG,
+            variables: {tag: {id: 10, name: "test30", icon: 'icon.png'}}
+        })
+        
+        if (tag.errors) expect(tag.errors[0]).toBeDefined();
+        expect(tag.data?.getTagByName).not.toBeDefined();
+        if (tag.errors) {
+            expect(tag?.errors[0]?.message).toBe("Oups!! Quelque chose s'est mal passé\nL'identifiant du tag n'est pas requis"); 
+            const customError = tag.errors[0].extensions?.exception;
+            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError.statusCode).toBe(StatusCode.BAD_REQUEST);     
+            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
+        } 
+    });    
+
     it("Should trigger an error 422 Unprocessable Entity when we attempt to create a tag with an empty name", async () => {
         const tag = await server.executeOperation({
             query: CREATE_TAG,
-            variables: { name: "", icon: 'icon.png' }
+            variables: {tag: {name: "", icon: 'icon.png'} }
         })
         
         if (tag.errors) expect(tag.errors[0]).toBeDefined();
         if (tag.data) expect(tag.data).not.toBeDefined();
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(nameTooShortErrorMessage); 
+            expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_SHORT); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -367,13 +379,13 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
     it("Should trigger an error 422 Unprocessable Entity when we attempt to create a tag with a name filled by white spaces", async () => {
         const tag = await server.executeOperation({
             query: CREATE_TAG,
-            variables: { name: "                 ", icon: 'icon.png' }
+            variables: {tag: {name: "                 ", icon: 'icon.png'} }
         })
         
         if (tag.errors) expect(tag.errors[0]).toBeDefined();
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(nameTooShortErrorMessage); 
+            expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_SHORT); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -384,13 +396,13 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
     it("Should trigger an error 422 Unprocessable Entity when we attempt to create a tag with a name too long, more than 255 characters", async () => {
         const tag = await server.executeOperation({
             query: CREATE_TAG,
-            variables: { name: strTooLong, icon: 'icon.png' }
+            variables: {tag:{name: strTooLong, icon: 'icon.png'}}
         })
         
         if (tag.errors) expect(tag.errors[0]).toBeDefined();
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(nameTooLongErrorMessage);  
+            expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_LONG);  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -403,7 +415,7 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
             icon = "icon.png";
         const tag = await server.executeOperation({
             query: CREATE_TAG,
-            variables: {name, icon}
+            variables: {tag:{name, icon}}
         });
         
         
@@ -421,13 +433,13 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
     it("Should trigger an error 422 Unprocessable Entity when we attempt to create a tag with an icon too long, more than 255 characters", async () => {
         const tag = await server.executeOperation({
             query: CREATE_TAG,
-            variables: { name: "new Tag name", icon: strTooLong }
+            variables: {tag:{name: "new Tag name", icon: strTooLong}}
         })
         
         if (tag.errors) expect(tag.errors).toBeDefined();
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(iconTooLongErrorMessage);  
+            expect(tag?.errors[0]?.message).toBe(TagErrorValidator.ICON_TOO_LONG);  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -440,9 +452,11 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         const tag = await server.executeOperation({
             query: UPDATE_TAG,
             variables: { 
-                updateTagId: 5, 
-                name: "updated Tag", 
-                icon: 'update.png' 
+                tag: {
+                    id: 5, 
+                    name: "updated Tag", 
+                    icon: 'update.png' 
+                }
             }
         })
         
@@ -455,21 +469,40 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         }));
     });
 
-    it("Should trigger an error 422 Unprocessable Entity when we attempt to update a tag with an id which doesn't exist in databse", async () => {
+    it("Should trigger an error 400 Bad Request when we attempt to update a tag without id", async () => {
+        const tag = await server.executeOperation({
+            query: UPDATE_TAG,
+            variables: {tag: {name: "test30", icon: 'icon.png'}}
+        })
+        
+        if (tag.errors) expect(tag.errors[0]).toBeDefined();
+        expect(tag.data?.getTagByName).not.toBeDefined();
+        if (tag.errors) {
+            expect(tag?.errors[0]?.message).toBe("Oups!! Quelque chose s'est mal passé\nL'identifiant du tag est requis"); 
+            const customError = tag.errors[0].extensions?.exception;
+            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError.statusCode).toBe(StatusCode.BAD_REQUEST);     
+            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
+        } 
+    });
+
+    it("Should trigger an error 422 Unprocessable Entity when we attempt to update a tag with an id which doesn't exist in database", async () => {
         const id = 10;
         const tag = await server.executeOperation({
             query: UPDATE_TAG,
             variables: { 
-                updateTagId: id, 
-                name: "updated tag", 
-                icon: "updated.png" 
+                tag: {
+                    id: id, 
+                    name: "updated tag", 
+                    icon: "updated.png" 
+                }
             }
         })
         
         if (tag.errors) expect(tag.errors).toBeDefined();
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(`Le tag avec l'id ${id} n'existe pas en base de données`);  
+            expect(tag?.errors[0]?.message).toBe("Le tag n'existe pas en base de données");  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
@@ -481,16 +514,18 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         const tag = await server.executeOperation({
             query: UPDATE_TAG,
             variables: { 
-                updateTagId: 6, 
-                name: "", 
-                icon: "updated.png" 
+                tag: {
+                    id: 6, 
+                    name: "", 
+                    icon: "updated.png" 
+                }
             }
         })
         
         if (tag.errors) expect(tag.errors).toBeDefined();
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(nameTooShortErrorMessage);  
+            expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_SHORT);  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -502,16 +537,18 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         const tag = await server.executeOperation({
             query: UPDATE_TAG,
             variables: { 
-                updateTagId: 6, 
-                name: "                 ", 
-                icon: 'icon.png' 
+                tag: {
+                    id: 6, 
+                    name: "                 ", 
+                    icon: 'icon.png' 
+                }
             }
         })
         
         if (tag.errors) expect(tag.errors[0]).toBeDefined();
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(nameTooShortErrorMessage); 
+            expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_SHORT); 
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -523,16 +560,18 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         const tag = await server.executeOperation({
             query: UPDATE_TAG,
             variables: { 
-                updateTagId: 6, 
-                name: strTooLong, 
-                icon: 'icon.png' 
+                tag: {
+                    id: 6, 
+                    name: strTooLong, 
+                    icon: 'icon.png' 
+                }
             }
         })
         
         if (tag.errors) expect(tag.errors[0]).toBeDefined();
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(nameTooLongErrorMessage);  
+            expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_LONG);  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -546,9 +585,11 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         const tag = await server.executeOperation({
             query: UPDATE_TAG,
             variables: { 
-                updateTagId: 5, 
-                name: name, 
-                icon: icon 
+                tag: {
+                    id: 5, 
+                    name: name, 
+                    icon: icon 
+                }
             }
         })
         
@@ -567,16 +608,18 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         const tag = await server.executeOperation({
             query: UPDATE_TAG,
             variables: { 
-                updateTagId: 6,
-                name: "new Tag name", 
-                icon: strTooLong 
+                tag: {
+                    id: 6,
+                    name: "new Tag name", 
+                    icon: strTooLong 
+                }
             }
         })
         
         if (tag.errors) expect(tag.errors).toBeDefined();
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(iconTooLongErrorMessage);  
+            expect(tag?.errors[0]?.message).toBe(TagErrorValidator.ICON_TOO_LONG);  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -610,7 +653,7 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         if (tag.errors) expect(tag.errors).toBeDefined();
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe(idEqual0ErrorMessage);  
+            expect(tag?.errors[0]?.message).toBe(CommonErrorValidator.ID_EQUAL_0);  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
@@ -627,7 +670,7 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         if (tag.errors) expect(tag.errors).toBeDefined();
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
-            expect(tag?.errors[0]?.message).toBe("Le tag avec l'id 10 n'existe pas en base de données");  
+            expect(tag?.errors[0]?.message).toBe("Le tag n'existe pas en base de données");  
             const customError = tag.errors[0].extensions?.exception;
             expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
             expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     

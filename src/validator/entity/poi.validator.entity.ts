@@ -113,6 +113,8 @@ export const validateCreationPoiInput = async (
     if (poi.tags !== null && poi.tags !== undefined && poi.tags.length > 0) {
         const validatedTags = await validateTagsArray(poi.tags);
         poiValidator.tags = validatedTags;
+    } else { 
+        poiValidator.tags = [];
     }
     
     return poiValidator;
@@ -162,6 +164,8 @@ export const validateUpdatePoiInput = async (
     if (poi.tags !== null && poi.tags !== undefined && poi.tags.length > 0) {
         const validatedTags = await validateTagsArray(poi.tags);
         poiValidator.tags = validatedTags;
+    } else {
+        poiValidator.tags = [];
     }
     
     return poiValidator;

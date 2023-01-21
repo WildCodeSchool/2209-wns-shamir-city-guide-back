@@ -14,12 +14,12 @@ import {
 
 describe("unit/CustomError.utils.validator suite of tests", () => {
     it("Should return Custom Error => 400 BadRequestError", async () => {
-        const customError = new CustomError(new Errors.BadRequestError(), "Bad request");
+        const customError = new CustomError(new Errors.BadRequestError(), StatusCodeMessage.BAD_REQUEST);
         expect(customError instanceof CustomError).toBe(true);
         expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
         expect(customError.statusCode).toBe(StatusCode.BAD_REQUEST);
         expect(customError.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
-        expect(customError.message).toBe("Ouups!!Something went wrong" + "\nBad request");
+        expect(customError.message).toBe(`Oups!! Quelque chose s'est mal passé\n${StatusCodeMessage.BAD_REQUEST}`);
         expect(customError.emoji).toBe(emojiOups + emojiShocked);
     });
     
@@ -69,7 +69,7 @@ describe("unit/CustomError.utils.validator suite of tests", () => {
         expect(customError.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
         expect(customError.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
         expect(customError.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-        expect(customError.message).toBe(`${emojiShocked} Ouups!!Something went wrong\nInternal Server Error`);
+        expect(customError.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\n${StatusCodeMessage.INTERNAL_SERVER_ERROR}`);
         expect(customError.emoji).toBe(emojiShocked + emojiSurprised + emojiWarning);
     });
 })

@@ -32,21 +32,21 @@ export const GET_TAG_BY_NAME = gql`
         `;
 
 export const CREATE_TAG = gql`
-            mutation CreateTag($name: String!, $icon: String!) {
-                createTag (name: $name, icon: $icon) {
+            mutation Mutation($tag: TagType!) {
+                createTag(tag: $tag) {
                     id
-                    name  
-                    icon 
+                    name
+                    icon
                 }
             }
         `;
 
 export const UPDATE_TAG = gql`
-        mutation UpdateTag($updateTagId: Float!, $name: String!, $icon: String!) {
-            updateTag (id: $updateTagId, name: $name, icon: $icon) {
-                id
-                name  
-                icon 
+        mutation UpdateTag($tag: TagType!) {
+            updateTag(tag: $tag) {
+                id 
+                name
+                icon
             }
         }
     `;

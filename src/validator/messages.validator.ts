@@ -7,8 +7,8 @@ export enum CommonErrorValidator {
 
 //Poi
 export enum PoiErrorValidator {
-    ID_NOT_REQUIRED = "L'identifiant du poit d'intêret n'est pas requis",
-    ID_REQUIRED = "L'identifiant du poit d'intêret est requis",
+    ID_NOT_REQUIRED = "L'identifiant du point d'intêret n'est pas requis",
+    ID_REQUIRED = "L'identifiant du point d'intêret est requis",
     ID_EQUAL_0 = "L'identifiant du point d'intêret doit être supérieur à 0",
     NAME_TOO_SHORT = "La longueur du nom du point d'intêret est trop courte. La longueur minimale est de 1 caractère, mais la valeur actuelle est de 0",
     NAME_TOO_LONG = "La longueur du nom du point d'intêret est trop longue, elle doit être au maximale de 255 caractères",
