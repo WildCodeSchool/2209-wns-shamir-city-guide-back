@@ -24,12 +24,12 @@ describe("unit/validator/common.validator suite of tests", () => {
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(CommonErrorValidator.NAME_TOO_SHORT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
         }
     })

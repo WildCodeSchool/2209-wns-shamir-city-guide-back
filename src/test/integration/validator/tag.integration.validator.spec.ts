@@ -9,7 +9,6 @@ import { CommonErrorValidator, TagErrorValidator } from "../../../validator/mess
 import { CustomError } from "../../../utils/error/CustomError.utils.error";
 import { BadRequestError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode, strTooLong } from "../../../utils/constants.utils";
-import Tag from "../../../entity/Tag.entity";
 
 
 describe("unit/validator/tag.validator suite of tests", () => {
@@ -28,12 +27,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(CommonErrorValidator.ID_EQUAL_0);
                 expect(e.message).toEqual(CommonErrorValidator.ID_EQUAL_0);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -56,12 +55,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(CommonErrorValidator.NAME_TOO_SHORT);
                 expect(e.message).toEqual(CommonErrorValidator.NAME_TOO_SHORT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -76,12 +75,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(CommonErrorValidator.NAME_TOO_LONG);
                 expect(e.message).toEqual(CommonErrorValidator.NAME_TOO_LONG);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -146,12 +145,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`Oups!! Quelque chose s'est mal passé\n${TagErrorValidator.ID_NOT_REQUIRED}`);
                 expect(e.message).toEqual(`Oups!! Quelque chose s'est mal passé\n${TagErrorValidator.ID_NOT_REQUIRED}`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.BAD_REQUEST);
-                expect(e.statusCode).toEqual(StatusCode.BAD_REQUEST);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCode).toEqual(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
             }
             
             expect(e).toBeDefined();
@@ -170,12 +169,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TagErrorValidator.NAME_TOO_SHORT);
                 expect(e.message).toEqual(TagErrorValidator.NAME_TOO_SHORT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -194,12 +193,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TagErrorValidator.NAME_TOO_LONG);
                 expect(e.message).toEqual(TagErrorValidator.NAME_TOO_LONG);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -218,12 +217,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TagErrorValidator.ICON_TOO_LONG);
                 expect(e.message).toEqual(TagErrorValidator.ICON_TOO_LONG);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -291,12 +290,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`Oups!! Quelque chose s'est mal passé\n${TagErrorValidator.ID_REQUIRED}`);
                 expect(e.message).toEqual(`Oups!! Quelque chose s'est mal passé\n${TagErrorValidator.ID_REQUIRED}`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.BAD_REQUEST);
-                expect(e.statusCode).toEqual(StatusCode.BAD_REQUEST);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCode).toEqual(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
             }
             
             expect(e).toBeDefined();
@@ -316,12 +315,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TagErrorValidator.ID_EQUAL_0);
                 expect(e.message).toEqual(TagErrorValidator.ID_EQUAL_0);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -341,12 +340,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TagErrorValidator.NAME_TOO_SHORT);
                 expect(e.message).toEqual(TagErrorValidator.NAME_TOO_SHORT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -366,12 +365,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TagErrorValidator.NAME_TOO_LONG);
                 expect(e.message).toEqual(TagErrorValidator.NAME_TOO_LONG);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -391,12 +390,12 @@ describe("unit/validator/tag.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TagErrorValidator.ICON_TOO_LONG);
                 expect(e.message).toEqual(TagErrorValidator.ICON_TOO_LONG);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();

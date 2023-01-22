@@ -37,12 +37,12 @@ describe("unit/validator/type.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TypeErrorValidator.NAME_TOO_SHORT);
                 expect(e.message).toEqual(TypeErrorValidator.NAME_TOO_SHORT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -62,12 +62,12 @@ describe("unit/validator/type.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TypeErrorValidator.LOGO_TOO_SHORT);
                 expect(e.message).toEqual(TypeErrorValidator.LOGO_TOO_SHORT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -87,12 +87,12 @@ describe("unit/validator/type.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TypeErrorValidator.COLOR_WRONG_FORMAT);
                 expect(e.message).toEqual(TypeErrorValidator.COLOR_WRONG_FORMAT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -113,12 +113,12 @@ describe("unit/validator/type.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`Oups!! Quelque chose s'est mal passé\n${TypeErrorValidator.ID_NOT_REQUIRED}`);
                 expect(e.message).toEqual(`Oups!! Quelque chose s'est mal passé\n${TypeErrorValidator.ID_NOT_REQUIRED}`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.BAD_REQUEST);
-                expect(e.statusCode).toEqual(StatusCode.BAD_REQUEST);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCode).toEqual(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
             }
             
             expect(e).toBeDefined();
@@ -153,12 +153,12 @@ describe("unit/validator/type.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`Oups!! Quelque chose s'est mal passé\n${TypeErrorValidator.ID_REQUIRED}`);
                 expect(e.message).toEqual(`Oups!! Quelque chose s'est mal passé\n${TypeErrorValidator.ID_REQUIRED}`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.BAD_REQUEST);
-                expect(e.statusCode).toEqual(StatusCode.BAD_REQUEST);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCode).toEqual(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
             }
             
             expect(e).toBeDefined();
@@ -179,12 +179,12 @@ describe("unit/validator/type.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TypeErrorValidator.NAME_TOO_SHORT);
                 expect(e.message).toEqual(TypeErrorValidator.NAME_TOO_SHORT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -205,12 +205,12 @@ describe("unit/validator/type.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TypeErrorValidator.LOGO_TOO_SHORT);
                 expect(e.message).toEqual(TypeErrorValidator.LOGO_TOO_SHORT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -231,12 +231,12 @@ describe("unit/validator/type.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(TypeErrorValidator.COLOR_WRONG_FORMAT);
                 expect(e.message).toEqual(TypeErrorValidator.COLOR_WRONG_FORMAT);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();

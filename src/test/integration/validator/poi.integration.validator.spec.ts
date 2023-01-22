@@ -6,8 +6,8 @@ import {
 } from "../../../validator/entity/poi.validator.entity";
 import { PoiErrorValidator } from "../../../validator/messages.validator";
 import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { BadRequestError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
-import { StatusCodeClass, StatusCodeMessage, StatusCode, strTooLong } from "../../../utils/constants.utils";
+import { BadRequestError } from "../../../utils/error/interfaces.utils.error";
+import { StatusCodeClass, StatusCodeMessage, StatusCode } from "../../../utils/constants.utils";
 import { CityValidator } from "../../../validator/entity/city.validator.entity";
 import { TypeValidator } from "../../../validator/entity/type.validator.entity";
 import { TagValidator } from "../../../validator/entity/tag.validator.entity";
@@ -89,12 +89,12 @@ describe("unit/validator/poi.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`Oups!! Quelque chose s'est mal passé\n${PoiErrorValidator.ID_NOT_REQUIRED}`);
                 expect(e.message).toEqual(`Oups!! Quelque chose s'est mal passé\n${PoiErrorValidator.ID_NOT_REQUIRED}`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.BAD_REQUEST);
-                expect(e.statusCode).toEqual(StatusCode.BAD_REQUEST);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCode).toEqual(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
             }
             
             expect(e).toBeDefined();
@@ -179,12 +179,12 @@ describe("unit/validator/poi.validator suite of tests", () => {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`Oups!! Quelque chose s'est mal passé\n${PoiErrorValidator.ID_REQUIRED}`);
                 expect(e.message).toEqual(`Oups!! Quelque chose s'est mal passé\n${PoiErrorValidator.ID_REQUIRED}`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.BAD_REQUEST);
-                expect(e.statusCode).toEqual(StatusCode.BAD_REQUEST);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCode).toEqual(StatusCode.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.BAD_REQUEST);
             }
             
             expect(e).toBeDefined();

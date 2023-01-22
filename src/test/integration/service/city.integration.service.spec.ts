@@ -25,12 +25,12 @@ describe("integration/service/city.service suite of tests without database conne
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, les villes n'ont pas été chargées`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined(); 
@@ -48,12 +48,12 @@ describe("integration/service/city.service suite of tests without database conne
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville n'a pas été chargée`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -72,12 +72,12 @@ describe("integration/service/city.service suite of tests without database conne
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville ${name} n'a pas été chargée`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -104,12 +104,12 @@ describe("integration/service/city.service suite of tests without database conne
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville ${name} n'a pas été créée`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -133,12 +133,12 @@ describe("integration/service/city.service suite of tests without database conne
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville n'a pas été mise à jour`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -156,12 +156,12 @@ describe("integration/service/city.service suite of tests without database conne
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville n'a pas été supprimée`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -223,12 +223,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`La ville n'existe pas en base de données`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -247,12 +247,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`La ville n'existe pas en base de données`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -287,12 +287,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("La ville avec le nom  n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -312,12 +312,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`La ville avec le nom ${name} n'existe pas en base de données`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -365,12 +365,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`Le nom de ville ${city.name} est déjà utilisé, vous devez en choisir un autre`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -395,12 +395,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`La ville avec la latitude ${latitude} et la longitude ${longitude} existe déjà en base de données`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -450,12 +450,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("La ville avec l'id 4 n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -479,12 +479,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`Le nom ${city.name} est déjà utilisé, vous devez en choisir un autre`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -508,12 +508,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("La ville avec la latitude 48.1113387 et la longitude -1.6800198 existe déjà en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -550,12 +550,12 @@ describe("integration/service/city.service suite of tests with database connexio
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("La ville n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();

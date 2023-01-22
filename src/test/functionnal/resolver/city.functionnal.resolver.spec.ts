@@ -37,12 +37,12 @@ describe("functionnal/resolver/city resolver suite of tests without database con
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, les villes n'ont pas été chargées`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -64,12 +64,12 @@ describe("functionnal/resolver/city resolver suite of tests without database con
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville n'a pas été chargée`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -92,12 +92,12 @@ describe("functionnal/resolver/city resolver suite of tests without database con
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville ${name} n'a pas été chargée`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -123,12 +123,12 @@ describe("functionnal/resolver/city resolver suite of tests without database con
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville ${name} n'a pas été créée`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -160,10 +160,10 @@ describe("functionnal/resolver/city resolver suite of tests without database con
             if (tag.data) expect(tag.data).not.toBeDefined();
             if (tag.errors) {
                 expect(tag?.errors[0]?.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville n'a pas été mise à jour`);  
-                const customError = tag.errors[0].extensions?.exception;
-                expect(customError.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(customError.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
-                expect(customError.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);   
+                const customError = tag.errors[0].extensions;
+                expect(customError?.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(customError?.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
+                expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);   
             } 
     });
 
@@ -179,10 +179,10 @@ describe("functionnal/resolver/city resolver suite of tests without database con
         if (deleted.data) expect(deleted.data).not.toBeDefined();
         if (deleted.errors) {
             expect(deleted?.errors[0]?.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, la ville n'a pas été supprimée`);  
-            const customError = deleted.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);   
+            const customError = deleted.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);   
         }
     });
 })
@@ -243,10 +243,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityById).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CommonErrorValidator.ID_EQUAL_0); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -260,10 +260,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityById).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe("La ville n'existe pas en base de données"); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);  
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.NOT_FOUND);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);  
         } 
     });
 
@@ -295,10 +295,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CommonErrorValidator.NAME_TOO_SHORT); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -312,10 +312,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe("La ville avec le nom lorem n'existe pas en base de données"); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);  
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.NOT_FOUND);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);  
         } 
     });
 
@@ -329,10 +329,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CommonErrorValidator.NAME_TOO_LONG); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);  
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);  
         } 
     });
 
@@ -377,10 +377,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getTagByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe("Oups!! Quelque chose s'est mal passé\nL'identifiant de la ville n'est pas requis"); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.BAD_REQUEST);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.BAD_REQUEST);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
         } 
     });
 
@@ -402,10 +402,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CityErrorValidator.NAME_TOO_SHORT); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -426,10 +426,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CityErrorValidator.NAME_TOO_SHORT); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -451,10 +451,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(`Le nom de ville ${formattedName} est déjà utilisé, vous devez en choisir un autre`); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -475,10 +475,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getCityByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CityErrorValidator.NAME_TOO_LONG);  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -501,10 +501,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CityErrorValidator.LATITUDE_FORMAT);  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -525,10 +525,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CityErrorValidator.LATITUDE_FORMAT);  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -549,10 +549,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CityErrorValidator.LONGITUDE_FORMAT);  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -573,10 +573,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CityErrorValidator.LONGITUDE_FORMAT);  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -597,10 +597,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(CityErrorValidator.PICTURE_TOO_LONG);  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -644,10 +644,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         expect(city.data?.getTagByName).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe("Oups!! Quelque chose s'est mal passé\nL'identifiant de la ville est requis"); 
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.BAD_REQUEST);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.BAD_REQUEST);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
         } 
     });
 
@@ -669,10 +669,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe(`La ville n'existe pas en base de données`);  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.NOT_FOUND);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);   
         } 
     });
 
@@ -694,10 +694,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
     //     if (city.data) expect(city.data).not.toBeDefined();
     //     if (city.errors) {
     //         expect(city?.errors[0]?.message).toBe("Le nom de ville Berlin est déjà utilisé, vous devez en choisir un autre");  
-    //         const customError = city.errors[0].extensions?.exception;
-    //         expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-    //         expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-    //         expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+    //         const customError = city.errors[0].extensions;
+    //         expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //         expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+    //         expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
     //     } 
     // });
 
@@ -719,10 +719,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe("La ville avec la latitude 48.1113387 et la longitude -1.6800198 existe déjà en base de données");  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -737,10 +737,10 @@ describe("functionnal/resolver/city.resolver suite of tests with database connec
         if (city.data) expect(city.data).not.toBeDefined();
         if (city.errors) {
             expect(city?.errors[0]?.message).toBe("La ville n'existe pas en base de données");  
-            const customError = city.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);   
+            const customError = city.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.NOT_FOUND);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);   
         } 
     });
 });
