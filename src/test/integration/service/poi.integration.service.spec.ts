@@ -28,12 +28,12 @@ describe("integration/service/poi.service suite of tests without database connex
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, les points d'intêret n'ont pas été chargés`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -51,12 +51,12 @@ describe("integration/service/poi.service suite of tests without database connex
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le point d'intêret n'a pas été chargé`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -75,12 +75,12 @@ describe("integration/service/poi.service suite of tests without database connex
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le point d'intêret ${name} n'a pas été chargé`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -115,12 +115,12 @@ describe("integration/service/poi.service suite of tests without database connex
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le point d'intêret ${poi.name} n'a pas été créé`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -156,12 +156,12 @@ describe("integration/service/poi.service suite of tests without database connex
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le point d'intêret n'a pas été mis à jour`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -179,12 +179,12 @@ describe("integration/service/poi.service suite of tests without database connex
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le point d'intêret n'a pas été supprimé`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -246,12 +246,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -269,12 +269,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -310,12 +310,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret avec le nom  n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -333,12 +333,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret avec le nom Se mettre au vert n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -385,12 +385,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret avec la latitude 48.8611473 et la longitude 2.3380277 existe déjà en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -412,12 +412,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret Musée du Louvre est déjà utilisé, vous devez en choisir un autre");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -438,12 +438,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("L'adresse Rue de Rivoli, 75001 Paris est déjà utilisée, vous devez en choisir une autre");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -464,12 +464,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("L'image musee-du-louvre.png est déjà utilisée, vous devez en choisir une autre");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -491,12 +491,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("La ville city name avec l'id 10 n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -519,12 +519,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le type name type avec l'id 10 n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -571,12 +571,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();
@@ -599,12 +599,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret Rue de la Soif est déjà utilisé, vous devez en choisir un autre");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -627,12 +627,12 @@ describe("integration/service/poi.service suite of tests with database connexion
     //     } catch (e) {
     //         if (e instanceof CustomError) {
     //             expect(e.message).toBe("Le point d'intêret avec la latitude 48.1140518 et la longitude -1.6813832 existe déjà en base de données");
-    //             expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-    //             expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-    //             expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
     //         }
             
     //         expect(e).toBeDefined();
@@ -655,12 +655,12 @@ describe("integration/service/poi.service suite of tests with database connexion
     //     } catch (e) {
     //         if (e instanceof CustomError) {
     //             expect(e.message).toBe("Le point d'intêret Arc de Triomphe est déjà utilisé, vous devez en choisir un autre");
-    //             expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-    //             expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-    //             expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
     //         }
             
     //         expect(e).toBeDefined();
@@ -683,12 +683,12 @@ describe("integration/service/poi.service suite of tests with database connexion
     //     } catch (e) {
     //         if (e instanceof CustomError) {
     //             expect(e.message).toBe("L'adresse Pl. Charles de Gaulle, 75008 Paris est déjà utilisée, vous devez en choisir une autre");
-    //             expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-    //             expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-    //             expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
     //         }
             
     //         expect(e).toBeDefined();
@@ -710,12 +710,12 @@ describe("integration/service/poi.service suite of tests with database connexion
     //     } catch (e) {
     //         if (e instanceof CustomError) {
     //             expect(e.message).toBe("L'image arc-de-triomphe.png est déjà utilisée, vous devez en choisir une autre");
-    //             expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-    //             expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-    //             expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-    //             expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
     //         }
             
     //         expect(e).toBeDefined();
@@ -738,12 +738,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("La ville city name avec l'id 10 n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -767,12 +767,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le type name type avec l'id 10 n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
             }
             
             expect(e).toBeDefined();
@@ -791,12 +791,12 @@ describe("integration/service/poi.service suite of tests with database connexion
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe("Le point d'intêret n'existe pas en base de données");
-                expect(e.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
             }
             
             expect(e).toBeDefined();

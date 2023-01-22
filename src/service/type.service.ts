@@ -7,6 +7,7 @@ import { TypeErrorsFlag, handleTypeError } from "../utils/error/handleError/type
 import { CustomError } from "../utils/error/CustomError.utils.error";
 import { InternalServerError } from "../utils/error/interfaces.utils.error";
 import { TypeValidator } from "../validator/entity/type.validator.entity";
+import { GraphQLError } from 'graphql';
 
 
 /**

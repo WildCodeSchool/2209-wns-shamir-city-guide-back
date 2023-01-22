@@ -10,8 +10,10 @@ import {
   emojiWarning,
   emojiForbidden
 } from "../emoji.utils";
+import { ApolloError } from 'apollo-server-errors';
 
-export class CustomError extends Error {
+
+export class CustomError extends ApolloError {
   statusCodeClass: string;
   statusCode: number;
   statusCodeMessage: string;
@@ -19,25 +21,26 @@ export class CustomError extends Error {
   emoji: string;
 
   constructor(error: IError, message: string) {
-    super(message);    
-    this.statusCodeClass = error.statusCodeClass;
-    this.statusCode = error.statusCode;
-    this.statusCodeMessage = error.statusCodeMessage;
+    super(message);  
+    this.extensions.code = error.statusCodeMessage.toUpperCase();  
+    this.extensions.statusCodeClass = error.statusCodeClass;
+    this.extensions.statusCode = error.statusCode;
+    this.extensions.statusCodeMessage = error.statusCodeMessage;
     
-    if (this.statusCode === StatusCode.BAD_REQUEST) {
-      this.emoji = emojiOups + emojiShocked
+    if (this.extensions.statusCode === StatusCode.BAD_REQUEST) {
+      this.extensions.emoji = emojiOups + emojiShocked
       this.message = `Oups!! Quelque chose s'est mal passé\n` + this.message;
-    } else if (this.statusCode === StatusCode.UNAUTHORIZED || this.statusCode === StatusCode.FORBIDDEN) {
-      this.emoji = emojiFurious + emojiForbidden + emojiEnraged;
+    } else if (this.extensions.statusCode === StatusCode.UNAUTHORIZED || this.extensions.statusCode === StatusCode.FORBIDDEN) {
+      this.extensions.emoji = emojiFurious + emojiForbidden + emojiEnraged;
       this.message = message;
-    } else if (this.statusCode === StatusCode.NOT_FOUND) {
-      this.emoji = emojiUnhappy + emojiSurprised;
+    } else if (this.extensions.statusCode === StatusCode.NOT_FOUND) {
+      this.extensions.emoji = emojiUnhappy + emojiSurprised;
       this.message = message;
-    } else if (this.statusCode === StatusCode.UNPROCESSABLE_ENTITY) {
-      this.emoji = emojiUnhappy + emojiSurprised;
+    } else if (this.extensions.statusCode === StatusCode.UNPROCESSABLE_ENTITY) {
+      this.extensions.emoji = emojiUnhappy + emojiSurprised;
       this.message = message;
-    } else if (this.statusCode >= StatusCode.INTERNAL_SERVER_ERROR) {
-      this.emoji = emojiShocked + emojiSurprised + emojiWarning;
+    } else if (this.extensions.statusCode >= StatusCode.INTERNAL_SERVER_ERROR) {
+      this.extensions.emoji = emojiShocked + emojiSurprised + emojiWarning;
       this.message = `${emojiShocked} Oups!! Quelque chose s'est mal passé\n` + this.message;
     }
     // 👇️ because we are extending a built-in class

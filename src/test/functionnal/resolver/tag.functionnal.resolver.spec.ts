@@ -37,12 +37,12 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, les tags n'ont pas été chargés`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -64,12 +64,12 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été chargé`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -92,12 +92,12 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag ${name} n'a pas été chargé`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -121,12 +121,12 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
         } catch (e) {
             if (e instanceof CustomError) {
                 expect(e.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag ${name} n'a pas été créé`);
-                expect(e.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
-                expect(e.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
-                expect(e.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.SERVER_ERROR);
+                expect(e.extensions.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCode).toEqual(StatusCode.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);
+                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.INTERNAL_SERVER_ERROR);
             }
             
             expect(e).toBeDefined();
@@ -152,10 +152,10 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
             if (tag.data) expect(tag.data).not.toBeDefined();
             if (tag.errors) {
                 expect(tag?.errors[0]?.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été mis à jour`);  
-                const customError = tag.errors[0].extensions?.exception;
-                expect(customError.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-                expect(customError.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
-                expect(customError.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);   
+                const customError = tag.errors[0]?.extensions;
+                expect(customError?.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+                expect(customError?.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
+                expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);   
             } 
     });
 
@@ -171,10 +171,10 @@ describe("functionnal/resolver/tag.resolver suite of tests without database conn
         if (deleted.data) expect(deleted.data).not.toBeDefined();
         if (deleted.errors) {
             expect(deleted?.errors[0]?.message).toBe(`${emojiShocked} Oups!! Quelque chose s'est mal passé\nProblème de connexion interne, le tag n'a pas été supprimé`);  
-            const customError = deleted.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);   
+            const customError = deleted.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.SERVER_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.INTERNAL_SERVER_ERROR);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.INTERNAL_SERVER_ERROR);   
         }
         
            
@@ -234,10 +234,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagById).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(CommonErrorValidator.ID_EQUAL_0); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -251,10 +251,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagById).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe("Le tag n'existe pas en base de données"); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);  
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.NOT_FOUND);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);  
         } 
     });
 
@@ -284,10 +284,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(CommonErrorValidator.NAME_TOO_SHORT); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -301,10 +301,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe("Le tag avec le nom Lorem n'existe pas en base de données"); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);  
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.NOT_FOUND);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);  
         } 
     });
 
@@ -318,10 +318,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(CommonErrorValidator.NAME_TOO_LONG); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);  
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);  
         } 
     });
 
@@ -351,10 +351,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe("Oups!! Quelque chose s'est mal passé\nL'identifiant du tag n'est pas requis"); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.BAD_REQUEST);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.BAD_REQUEST);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
         } 
     });    
 
@@ -369,10 +369,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_SHORT); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -386,10 +386,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_SHORT); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -403,10 +403,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_LONG);  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -423,10 +423,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(`Le nom ${name} est déjà utilisé, vous devez en choisir un autre`); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -440,10 +440,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(TagErrorValidator.ICON_TOO_LONG);  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -479,10 +479,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe("Oups!! Quelque chose s'est mal passé\nL'identifiant du tag est requis"); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.BAD_REQUEST);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.BAD_REQUEST);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.BAD_REQUEST);   
         } 
     });
 
@@ -503,10 +503,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe("Le tag n'existe pas en base de données");  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.NOT_FOUND);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);   
         } 
     });
 
@@ -526,10 +526,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_SHORT);  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -549,10 +549,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_SHORT); 
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -572,10 +572,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(TagErrorValidator.NAME_TOO_LONG);  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -597,10 +597,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         expect(tag.data?.getTagByName).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(`Le nom ${name} est déjà utilisé, vous devez en choisir un autre`);  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -620,10 +620,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(TagErrorValidator.ICON_TOO_LONG);  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -654,10 +654,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe(CommonErrorValidator.ID_EQUAL_0);  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);   
         } 
     });
 
@@ -671,10 +671,10 @@ describe("functionnal/resolver/tag.resolver suite of tests with databse connecti
         if (tag.data) expect(tag.data).not.toBeDefined();
         if (tag.errors) {
             expect(tag?.errors[0]?.message).toBe("Le tag n'existe pas en base de données");  
-            const customError = tag.errors[0].extensions?.exception;
-            expect(customError.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-            expect(customError.statusCode).toBe(StatusCode.NOT_FOUND);     
-            expect(customError.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);   
+            const customError = tag.errors[0].extensions;
+            expect(customError?.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+            expect(customError?.statusCode).toBe(StatusCode.NOT_FOUND);     
+            expect(customError?.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);   
         } 
     });
 });
