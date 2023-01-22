@@ -28,7 +28,7 @@ export const startAppoloServer = async (): Promise<ApolloServer> => {
         err.extensions.code === 'BAD_USER_INPUT' ||
         err.extensions.code === 'BAD_REQUEST'
       ) {
-        return new CustomError(new BadRequestError(), "La requête n'est pas dans le format attendu");
+        return new CustomError(new BadRequestError(), "La requête n'est pas dans le format attendu\n" + err.message);
       } else if (
         err.extensions.code === 'INTERNAL_SERVER_ERROR'
       ) {
