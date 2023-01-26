@@ -3,38 +3,35 @@ import { Field, InputType } from "type-graphql";
 import Tag from "../../entity/Tag.entity";
 import Type from "../../entity/Type.entity";
 import { CityType } from "./city.utils.type";
-import { TagType } from "./tag.utils.type";
+import { TagType } from "./TagType";
 import { TypeType } from "./type.utils.type";
-
 
 @InputType()
 export class PoiType {
-    @Field({nullable: true})
-    id: number
+  @Field({ nullable: true })
+  id: number;
 
-    @Field()
-    name: string
-    
-    @Field()
-    address: string
+  @Field()
+  name: string;
 
-    @Field()
-    latitude: string
+  @Field()
+  address: string;
 
-    @Field()
-    longitude: string
+  @Field()
+  latitude: string;
 
-    @Field()
-    picture: string
+  @Field()
+  longitude: string;
 
-    @Field()
-    city: CityType
-    
-    @Field()
-    type: TypeType
-    
-    @Field(() => [TagType], {nullable: true})
-    tags: TagType[]
+  @Field()
+  picture: string;
+
+  @Field()
+  city: CityType;
+
+  @Field()
+  type: TypeType;
+
+  @Field(() => [TagType], { nullable: true })
+  tags: TagType[];
 }
-
-
