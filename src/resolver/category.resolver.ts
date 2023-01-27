@@ -1,6 +1,16 @@
 import { Resolver, Arg, Mutation, Query } from "type-graphql";
-import Category from "../../entity/Category.entity";
-import * as CategoryService from "../../service/category.service";
+import Category from "../entity/Category.entity";
+import {
+  validateIdInput,
+  validateNameInput,
+} from "../validator/common.validator";
+import * as CategoryService from "../service/category.service";
+import {
+  CategoryValidator,
+  validateCreationCategoryInput,
+  validateUpdateCategoryInput,
+} from "../validator/entity/category.validator.entity";
+import { CategoryType } from "../utils/type/category.utils.type";
 
 @Resolver(Category)
 export class CategoryResolver {
@@ -12,39 +22,45 @@ export class CategoryResolver {
 
   @Query(() => Category)
   async getCategoryByName(@Arg("name") name: string): Promise<Category> {
-    return await CategoryService.getByName(name);
+    const verifiedName: string = await validateNameInput(name);
+    return await CategoryService.getByName(verifiedName);
   }
 
   @Query(() => Category)
   async getCategoryById(@Arg("id") id: number): Promise<Category> {
-    return await CategoryService.getById(id);
+    const verifiedId: number = await validateIdInput(id);
+    return await CategoryService.getById(verifiedId);
   }
 
-  @Query(() => Category)
-  async getCategoryByIcon(@Arg("icon") icon: string): Promise<Category> {
-    return await CategoryService.getByIcon(icon);
-  }
+  // @Query(() => Category)
+  // async getCategoryByIcon(@Arg("icon") icon: string): Promise<Category> {
+  //   const verifiedIcon: string = await validateIconInput(icon);
+  //   return await CategoryService.getByIcon(verifiedIcon);
+  // }
 
   @Mutation(() => Category)
   async createCategory(
-    @Arg("name") name: string,
-    @Arg("color") color: string,
-    @Arg("icon") icon: string
+    @Arg("category") category: CategoryType
   ): Promise<Category> {
-    return await CategoryService.create(name, color, icon);
+    const verifiedData: CategoryValidator = await validateCreationCategoryInput(
+      category
+    );
+    return await CategoryService.create(verifiedData);
   }
 
-  // @Mutation(() => Category)
-  // async updateCategory(
-  //   @Arg("id") id: number,
-  //   @Arg("name") name: string,
-  //   @Arg("color") color: string,
-  //   @Arg("icon") icon: string
-  // ): Promise<Category> {
-  //   return await CategoryService.create(name, color, icon);
-  // }
-
-  //@Mutation(() => Category)
-  //async deleteCategory(@Arg("id") id: number): Promise<Category> {
-    //return await CategoryService.deleteCategory(id);
+  @Mutation(() => Category)
+  async updateCategory(
+    @Arg("category") category: CategoryType
+  ): Promise<Category> {
+    const verifiedData: CategoryValidator = await validateUpdateCategoryInput(
+      category
+    );
+    return await CategoryService.update(verifiedData);
   }
+
+  @Mutation(() => Category)
+  async deleteCategory(@Arg("id") id: number): Promise<Category> {
+    const verifiedId = await validateIdInput(id);
+    return await CategoryService.deleteCategory(verifiedId);
+  }
+}

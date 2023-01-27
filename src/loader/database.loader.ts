@@ -9,18 +9,29 @@ export class DatabaseLoader {
   public static openConnection = async () => {
     try {
       await databaseConfig.initialize();
-      console.log(`${emojiPg} Database ${config?.database?.name} is connected and is running on port ${config?.database?.port} ${emojiWink}`)
+      console.log(
+        `${emojiPg} Database ${config?.database?.name} is connected and is running on port ${config?.database?.port} ${emojiWink}`
+      );
     } catch (e) {
-      console.log(`${emojiWarning}${emojiExclamation} Error during the database instanciation: `, e);
+      console.log(
+        `${emojiWarning}${emojiExclamation} Error during the database instanciation: `,
+        e
+      );
     }
 
-    //If our actual environment is 'test' we load data in the tables
-    // if (config?.environment === Environments.TEST ||config?.environment === Environments.DEVELOPMENT) {
+    // If our actual environment is 'test' we load data in the tables
+    // if (
+    //   config?.environment === Environments.TEST ||
+    //   config?.environment === Environments.DEVELOPMENT
+    // ) {
     //   try {
-    //     await loadData(); 
+    //     await loadData();
     //   } catch (e) {
-    //     console.log(`${emojiWarning}${emojiExclamation} Error during the data loading: `, e);
+    //     console.log(
+    //       `${emojiWarning}${emojiExclamation} Error during the data loading: `,
+    //       e
+    //     );
     //   }
-    // }   
-  }; 
-} 
+    // }
+  };
+}
