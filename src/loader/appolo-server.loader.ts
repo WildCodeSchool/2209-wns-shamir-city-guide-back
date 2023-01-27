@@ -5,6 +5,7 @@ import { TagResolver } from "../resolver/tag.resolver";
 import { CityResolver } from "../resolver/city.resolver";
 import { PoiResolver } from "../resolver/poi.resolver";
 import { TypeResolver } from "../resolver/type.resolver";
+import { CategoryResolver } from "../resolver/category.resolver";
 import { CustomError } from "../utils/error/CustomError.utils.error";
 import { BadRequestError, InternalServerError } from "../utils/error/interfaces.utils.error";
 
@@ -15,7 +16,8 @@ export const startAppoloServer = async (): Promise<ApolloServer> => {
       CityResolver,
       TagResolver,
       TypeResolver,
-      PoiResolver
+      PoiResolver,
+      CategoryResolver,
     ],
   });
 

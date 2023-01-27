@@ -61,4 +61,5 @@ export enum CategoryErrorValidator {
   ICON_TOO_LONG = "La longueur de l'icône de la catégorie est trop longue, elle doit être au maximale de 255 caractères",
   ID_NOT_REQUIRED = "L'identifiant de la catégorie n'est pas requis",
   ID_REQUIRED = "L'identifiant de la catégorie est requis",
+  COLOR_WRONG_FORMAT = "La format hexadécimal pour la couleur de la catégorie est incorrect",
 }

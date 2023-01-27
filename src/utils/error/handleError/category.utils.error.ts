@@ -9,6 +9,8 @@ export enum CategoryErrorsFlag {
   NAME_NOT_FOUND = "GET_BY_NAME",
   NAME_ALREADY_USED = "NAME_ALREADY_USED",
   ICON_NOT_FOUND = "GET_BY_ICON",
+  ICON_ALREADY_USED = "ICON_ALREADY_USED",
+  COLOR_ALREADY_USED = "COLOR_ALREADY_USED",
 }
 
 export const handleCategoryError = <T>(flag: string, data: T): void => {
@@ -31,7 +33,17 @@ export const handleCategoryError = <T>(flag: string, data: T): void => {
     case CategoryErrorsFlag.ICON_NOT_FOUND:
       throw new CustomError(
         new NotFoundError(),
-        "L'icone ${data} n'existe pas en base de données"
+        `L'icone ${data} n'existe pas en base de données`
+      );
+    case CategoryErrorsFlag.ICON_ALREADY_USED:
+      throw new CustomError(
+        new UnprocessableEntityError(),
+        `L'icone ${data} est déjà utilisée, vous devez en choisir une autre`
+      );
+    case CategoryErrorsFlag.COLOR_ALREADY_USED:
+      throw new CustomError(
+        new UnprocessableEntityError(),
+        `La couleur ${data} est déjà utilisée, vous devez en choisir une autre`
       );
   }
 };

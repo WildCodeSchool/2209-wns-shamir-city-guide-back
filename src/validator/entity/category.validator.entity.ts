@@ -1,4 +1,10 @@
-import { Min, MinLength, MaxLength, IsOptional } from "class-validator";
+import {
+  Min,
+  MinLength,
+  MaxLength,
+  IsOptional,
+  Matches,
+} from "class-validator";
 import { CategoryErrorValidator } from "../messages.validator";
 import { CategoryType } from "../../utils/type/category.utils.type";
 import { validateData } from "../validate.validator";
@@ -24,6 +30,11 @@ export class CategoryValidator {
     message: CategoryErrorValidator.ICON_TOO_LONG,
   })
   icon: string;
+
+  @Matches(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
+    message: CategoryErrorValidator.COLOR_WRONG_FORMAT,
+  })
+  color: string;
 }
 
 /**
@@ -41,10 +52,12 @@ export const validateCreationCategoryInput = async (
       CategoryErrorValidator.ID_NOT_REQUIRED
     );
   }
-  const { name, icon } = category;
+  const { name, icon, color } = category;
   const categoryValidator = new CategoryValidator();
   categoryValidator.name = name && name.length > 0 ? name.trim() : "";
   categoryValidator.icon = icon && icon.length > 0 ? icon.trim() : "";
+  categoryValidator.color = color && color.length > 0 ? color.trim() : "";
+
   return await validateData(categoryValidator);
 };
 
@@ -64,10 +77,12 @@ export const validateUpdateCategoryInput = async (
     );
   }
 
-  const { id, name, icon } = category;
+  const { id, name, icon, color } = category;
   const categoryValidator = new CategoryValidator();
   categoryValidator.id = id;
   categoryValidator.name = name && name.length > 0 ? name.trim() : "";
   categoryValidator.icon = icon && icon.length > 0 ? icon.trim() : "";
+  categoryValidator.color = color && color.length > 0 ? color.trim() : "";
+
   return await validateData(categoryValidator);
 };

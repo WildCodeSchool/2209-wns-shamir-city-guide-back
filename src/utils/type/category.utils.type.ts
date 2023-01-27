@@ -10,4 +10,7 @@ export class CategoryType {
 
   @Field()
   icon: string;
+
+  @Field()
+  color: string;
 }

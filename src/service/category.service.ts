@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import Category from "../entity/Category.entity";
-import { CategoryRepository} from "../repository/category.repository";
+import { CategoryRepository } from "../repository/category.repository";
 import { QueryFailedError } from "typeorm";
 import {
   retrieveKeyFromDbErrorMessage,
@@ -114,6 +114,10 @@ export const create = async (data: CategoryValidator): Promise<Category> => {
     if (e instanceof QueryFailedError && e.driverError.detail?.length) {
       if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name")
         handleCategoryError(CategoryErrorsFlag.NAME_ALREADY_USED, data.name);
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "icon")
+        handleCategoryError(CategoryErrorsFlag.ICON_ALREADY_USED, data.icon);
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "color")
+        handleCategoryError(CategoryErrorsFlag.COLOR_ALREADY_USED, data.color);
     }
     throw new CustomError(
       new InternalServerError(),
@@ -143,6 +147,10 @@ export const update = async (data: CategoryValidator): Promise<Category> => {
     else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
       if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name")
         handleCategoryError(CategoryErrorsFlag.NAME_ALREADY_USED, data.name);
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "icon")
+        handleCategoryError(CategoryErrorsFlag.ICON_ALREADY_USED, data.icon);
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "color")
+        handleCategoryError(CategoryErrorsFlag.COLOR_ALREADY_USED, data.color);
     }
     throw new CustomError(
       new InternalServerError(),
@@ -154,7 +162,7 @@ export const update = async (data: CategoryValidator): Promise<Category> => {
 /**
  * Delete a category by its id in database
  * @param {number} id The id to use to delete a specific category
- * @returns deleted category 
+ * @returns deleted category
  * @throws Error: 500 Internal Server Error | 404 Not Found
  */
 export const deleteCategory = async (id: number): Promise<Category> => {
@@ -172,4 +180,3 @@ export const deleteCategory = async (id: number): Promise<Category> => {
     );
   }
 };
-

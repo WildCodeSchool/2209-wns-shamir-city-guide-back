@@ -16,7 +16,7 @@ import {
   UnprocessableEntityError,
 } from "../../utils/error/interfaces.utils.error";
 import { TagValidator } from "./tag.validator.entity";
-import { TagType } from "../../utils/type/TagType";
+import { TagType } from "../../utils/type/tag.utils.type";
 
 export class PoiValidator {
   @IsOptional()

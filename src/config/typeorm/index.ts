@@ -6,14 +6,22 @@ import Circuit from "../../entity/Circuit.entity";
 import City from "../../entity/City.entity";
 import PointOfInterest from "../../entity/PointOfInterest.entity";
 import Tag from "../../entity/Tag.entity";
-import Type from "../../entity/Type.entity"; 
+import Type from "../../entity/Type.entity";
 
 let letSynchronize: boolean = false;
-if (config?.environment === Environments.TEST || config?.environment === Environments.DEVELOPMENT) letSynchronize = true;
+if (
+  config?.environment === Environments.TEST ||
+  config?.environment === Environments.DEVELOPMENT
+)
+  letSynchronize = true;
 
 let dropSchema: boolean = false;
-//if (config?.environment === Environments.TEST || config?.environment === Environments.DEVELOPMENT) dropSchema = true;
- 
+// if (
+//   config?.environment === Environments.TEST ||
+//   config?.environment === Environments.DEVELOPMENT
+// )
+// dropSchema = true;
+
 const databaseConfig = new DataSource({
   type: "postgres",
   host: config?.database?.host,
@@ -25,7 +33,7 @@ const databaseConfig = new DataSource({
   subscribers: [],
   migrations: [],
   dropSchema: dropSchema,
-  synchronize: letSynchronize, 
+  synchronize: letSynchronize,
 });
 
 export default databaseConfig;
