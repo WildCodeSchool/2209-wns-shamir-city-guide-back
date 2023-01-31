@@ -85,8 +85,10 @@ export const create = async (
     return createdCity;
   } catch (e) {
     if (e instanceof Error && e.message === CityErrorsFlag.LOCALISATION_ALREADY_USED) handleCityError(CityErrorsFlag.LOCALISATION_ALREADY_USED, data);
-    if (e instanceof QueryFailedError && e.driverError.detail?.length) {
+    if (e instanceof QueryFailedError && e.driverError.detail?.length) {      
       if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "picture") handleCityError(CityErrorsFlag.PICTURE_ALREADY_USED, data.picture);
+      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "user_id") handleCityError(CityErrorsFlag.USER_NOT_IN_DB, data.user.username);
     } 
     throw new CustomError(
       new InternalServerError(), 
@@ -130,6 +132,8 @@ export const update = async (
     if (e instanceof Error) {
       if (e instanceof QueryFailedError && e.driverError.detail?.length) {
         if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
+        if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "picture") handleCityError(CityErrorsFlag.PICTURE_ALREADY_USED, data.picture);
+        if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "user_id") handleCityError(CityErrorsFlag.USER_NOT_IN_DB, data.user.username);
       } 
       if (e.message === CityErrorsFlag.ID_NOT_FOUND) handleCityError(CityErrorsFlag.ID_NOT_FOUND, data.id); 
       else if (e.message === CityErrorsFlag.NAME_ALREADY_USED) handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 

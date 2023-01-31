@@ -66,7 +66,6 @@ export const getByName = async (name: string): Promise<Tag> => {
   }
 };
 
-
 /**
  * Create and return a tag
  * @param {TagValidator} data Tag object to create 

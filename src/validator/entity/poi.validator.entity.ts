@@ -51,8 +51,8 @@ export class PoiValidator {
   })
   longitude!: string;
 
-  @MaxLength(255, {
-    message: PoiErrorValidator.PICTURE_TOO_LONG,
+  @Matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, {
+    message: PoiErrorValidator.PICTURE_WRONG_FORMAT,
   })
   picture: string;
 

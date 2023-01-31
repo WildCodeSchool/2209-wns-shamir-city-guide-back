@@ -13,7 +13,7 @@ export default class Tag {
   @Column({unique: true})
   name: string;
 
-  @Field({nullable: true})
+  @Field()
   @Column()
   icon: string;
   

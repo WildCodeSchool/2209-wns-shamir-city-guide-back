@@ -12,7 +12,7 @@
     "test:functionnal": "jest --watchAll src/test/functionnal --verbose --detectOpenHandles --colors --coverage"
   },
   "repository": {
-    "type": "git", 
+    "type": "git",
     "url": "git+https://github.com/WildCodeSchool/2209-wns-shamir-city-guide-back.git"
   },
   "author": "Bardinet-Langlois Thibault",
@@ -23,8 +23,10 @@
   "homepage": "https://github.com/WildCodeSchool/2209-wns-shamir-city-guide-back#readme",
   "dependencies": {
     "apollo-server": "^3.10.3",
+    "argon2": "^0.30.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
+    "jsonwebtoken": "^9.0.0",
     "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.9.1",
@@ -35,6 +37,7 @@
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/jest": "^29.2.4",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.11.9",
     "@types/reflect-metadata": "^0.1.0",
     "jest": "^29.3.1",
