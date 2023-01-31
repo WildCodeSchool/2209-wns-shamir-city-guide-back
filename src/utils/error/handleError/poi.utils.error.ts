@@ -66,7 +66,7 @@ export const handlePoiError = <T>(flag: string, data: T): void => {
         }
         case PoiErrorsFlag.TAG_NOT_IN_DB:            
         throw new CustomError(
-            new UnprocessableEntityError(), 
+            new NotFoundError(), 
             `Le tag ${data} n'existe pas en base de données`
         );
     }

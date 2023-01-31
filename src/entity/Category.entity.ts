@@ -22,9 +22,7 @@ export default class Category {
   color: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({})
   icon: string;
 
 

@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import PointOfInterest from "./PointOfInterest.entity";
 import Circuit from "./Circuit.entity";
+import User from "./User.entity";
 
 @ObjectType()
 @Entity()
@@ -23,7 +24,7 @@ export default class City {
   longitude!: string;
 
   @Field()
-  @Column({length: 255})
+  @Column({unique: true, length: 255})
   picture: string;
 
   @Field(() => [Circuit])
@@ -41,4 +42,13 @@ export default class City {
     {eager: true}
   )
   pointsOfInterest?: PointOfInterest[];
+
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.cities, { 
+    onDelete: 'SET NULL', 
+    eager: true,
+    nullable: false 
+  }) 
+  @JoinColumn({name: "user_id"})
+  user: User;
 }

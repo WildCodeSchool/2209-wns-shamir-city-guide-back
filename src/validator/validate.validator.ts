@@ -12,8 +12,9 @@ export const validateData = async <T>(data: T): Promise<T> => {
     let errorMessage = '';
     
     if (data) {
-        try {
-            const foundErrors = await validate(data);                                    
+        try { 
+            const foundErrors = await validate(data); 
+                                               
             if (foundErrors.length > 0) {
                 const firstError = foundErrors[0].constraints;
                 if (firstError) {

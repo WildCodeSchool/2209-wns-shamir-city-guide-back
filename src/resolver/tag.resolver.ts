@@ -1,4 +1,4 @@
-import { Resolver, Arg, Mutation, Query } from "type-graphql";
+import { Resolver, Arg, Mutation, Query, Authorized } from "type-graphql";
 import Tag from "../entity/Tag.entity";
 import {
   validateIdInput,
@@ -11,6 +11,8 @@ import {
   validateUpdateTagInput,
 } from "../validator/entity/tag.validator.entity";
 import { TagType } from "../utils/type/tag.utils.type";
+import { UserRoles } from "../utils/constants.utils";
+
 
 @Resolver(Tag)
 export class TagResolver {
@@ -32,18 +34,21 @@ export class TagResolver {
     return await TagService.getByName(verifiedName);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async createTag(@Arg("tag") tag: TagType): Promise<Tag> {
     const verifiedData: TagValidator = await validateCreationTagInput(tag);
     return await TagService.create(verifiedData);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async updateTag(@Arg("tag") tag: TagType): Promise<Tag> {
     const verifiedData: TagValidator = await validateUpdateTagInput(tag);
     return await TagService.update(verifiedData);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async deleteTag(@Arg("id") id: number): Promise<Tag> {
     const verifiedId = await validateIdInput(id);

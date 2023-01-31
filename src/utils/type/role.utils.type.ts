@@ -3,22 +3,19 @@ import { UserType } from "./user.utils.type";
 
 
 @InputType()
-export class CityType {
+export class RoleType {
     @Field({nullable: true})
     id: number
 
     @Field()
     name: string
+}
 
-    @Field()
-    latitude: string
-
-    @Field()
-    longitude: string
-
-    @Field()
-    picture: string
-
-    @Field({nullable: true})
+@InputType()
+export class UpdateUserRoles {
+    @Field(() => UserType)
     user: UserType
+
+    @Field(() => [RoleType])
+    roles: RoleType[]
 }
