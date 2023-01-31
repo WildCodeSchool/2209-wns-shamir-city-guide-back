@@ -1,9 +1,10 @@
-import { Resolver, Arg, Mutation, Query } from "type-graphql";
+import { Resolver, Arg, Mutation, Query, Authorized } from "type-graphql";
 import Type from "../entity/Type.entity";
 import { validateIdInput, validateNameInput } from "../validator/common.validator";
 import * as TypeService from "../service/type.service";
 import { TypeValidator, validateCreationTypeInput, validateUpdateTypeInput } from "../validator/entity/type.validator.entity";
 import { TypeType } from "../utils/type/type.utils.type";
+import { UserRoles } from "../utils/constants.utils";
 
 
 @Resolver(Type)
@@ -13,7 +14,7 @@ export class TypeResolver {
     const types: Type[] = await TypeService.getAll();
     return types;
   }
-
+  
   @Query(() => Type)
   async getTypeById(@Arg("id") id: number): Promise<Type> {
     const verifiedId: number = await validateIdInput(id);
@@ -25,7 +26,8 @@ export class TypeResolver {
     const verifiedName: string = await validateNameInput(name);
     return await TypeService.getByName(verifiedName);
   }
-
+  
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Type)
   async createType(
     @Arg("type") type: TypeType
@@ -34,6 +36,7 @@ export class TypeResolver {
     return await TypeService.create(verifiedData);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Type)
   async updateType(
     @Arg("type") type: TypeType
@@ -42,6 +45,7 @@ export class TypeResolver {
     return await TypeService.update(verifiedData);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Type)
   async deleteType(@Arg("id") id: number): Promise<Type> {
     const verifiedId = await validateIdInput(id);

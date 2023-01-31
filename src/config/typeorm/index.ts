@@ -27,7 +27,7 @@ let dropSchema: boolean = false;
 const databaseConfig = new DataSource({
   type: "postgres",
   host: config?.database?.host,
-  port: Number(config?.database?.port),
+  port: Number(config?.database?.port), 
   username: config?.database?.user,
   password: config?.database?.password!,
   database: config?.database?.name!,

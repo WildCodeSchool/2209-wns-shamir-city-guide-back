@@ -4,6 +4,7 @@ import User from "../../../entity/User.entity";
 import { RoleRepository } from "../../../repository/role.repository";
 import { UserRepository } from "../../../repository/user.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
+import { UserRoles } from "../../../utils/constants.utils";
 
 
 export const userUsernames = ["Shirley", "Christelle", "Medhi", "Thibault"],
@@ -11,10 +12,10 @@ export const userUsernames = ["Shirley", "Christelle", "Medhi", "Thibault"],
   userPwds = ["Shirley2023$", "Christelle2023$", "Medhi2023$", "Thibault2023$"];
   
 export const loadUserData = async () => {
-    const SUPER_ADMIN: Role | null = await RoleRepository.findOneBy({ name: "SUPER_ADMIN" });
-    const CITY_ADMIN: Role | null = await RoleRepository.findOneBy({ name: "CITY_ADMIN" });
-    const CONTRIBUTOR: Role | null = await RoleRepository.findOneBy({ name: "CONTRIBUTOR" });
-    const USER: Role | null = await RoleRepository.findOneBy({ name: "USER" });
+    const SUPER_ADMIN: Role | null = await RoleRepository.findOneBy({ name: UserRoles.SUPER_ADMIN });
+    const CITY_ADMIN: Role | null = await RoleRepository.findOneBy({ name: UserRoles.CITY_ADMIN });
+    const CONTRIBUTOR: Role | null = await RoleRepository.findOneBy({ name: UserRoles.CONTRIBUTOR });
+    const USER: Role | null = await RoleRepository.findOneBy({ name: UserRoles.USER });
 
     await Promise.all(
         userUsernames.map(async (username, index) => {
@@ -38,7 +39,7 @@ export const loadUserData = async () => {
                 CITY_ADMIN !== null && 
                 CONTRIBUTOR !== null && 
                 USER !== null
-            ) newUser.roles = [SUPER_ADMIN, CITY_ADMIN, CONTRIBUTOR, USER];        
+            ) newUser.roles = [SUPER_ADMIN];        
         }
             
         try {

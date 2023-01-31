@@ -1,6 +1,7 @@
-import { Resolver, Arg, Mutation, Query } from "type-graphql";
+import { Resolver, Arg, Mutation, Query, Authorized } from "type-graphql";
 import City from "../entity/City.entity";
 import * as CityService from "../service/city.service";
+import { UserRoles } from "../utils/constants.utils";
 import { CityType } from "../utils/type/city.utils.type";
 import { validateIdInput, validateNameInput } from "../validator/common.validator";
 import { validateCreationCityInput, validateUpdateCityInput } from "../validator/entity/city.validator.entity";
@@ -25,6 +26,7 @@ export class CityResolver {
     return await CityService.getByName(verifiedName);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => City)
   async createCity(
     @Arg("city") city: CityType,
@@ -33,6 +35,7 @@ export class CityResolver {
     return await CityService.create(verifiedData);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => City)
   async updateCity(
     @Arg("city") city: CityType,
@@ -41,6 +44,7 @@ export class CityResolver {
     return await CityService.update(verifiedData);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => City)
   async deleteCity(@Arg("id") id: number): Promise<City> {
     const verifiedId = await validateIdInput(id);

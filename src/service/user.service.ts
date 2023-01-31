@@ -9,6 +9,7 @@ import { UserValidator } from "../validator/entity/user.validator.entity";
 import * as argon2 from "argon2";
 import { RoleRepository } from "../repository/role.repository";
 import { RoleValidator } from "../validator/entity/role.validator.entity";
+import { UserRoles } from "../utils/constants.utils";
 
 
 /**
@@ -105,7 +106,7 @@ export const createUser = async (data: UserValidator): Promise<User> => {
     try {
         newUser.hashedPassword = await argon2.hash(data.password);
 
-        const defaultRole = await RoleRepository.findOneBy({ name: "USER" });
+        const defaultRole = await RoleRepository.findOneBy({ name: UserRoles.USER });
         if (defaultRole !== null) newUser.roles = [defaultRole];
         return await UserRepository.save(newUser);
     } catch (e) {

@@ -36,6 +36,13 @@ export const enum StatusCodeMessage {
     INTERNAL_SERVER_ERROR = "Internal Server Error",
 }
 
+export const enum UserRoles {
+    SUPER_ADMIN = "SUPER_ADMIN",
+    CITY_ADMIN = "CITY_ADMIN",
+    CONTRIBUTOR = "CONTRIBUTOR",
+    USER = "USER"
+}
+
 
 /* FOR TESTS */ 
 export const strTooLong = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec adipiscing elit. Aenean commodo ligula eget dolor";

@@ -78,7 +78,7 @@ export const getById = async (id: number): Promise<Category> => {
 
 /**
  * Returns category by icon
- * @param {icon} string
+ * @param {string} icon
  * @returns category
  */
 export const getByIcon = async (icon: string): Promise<Category> => {
