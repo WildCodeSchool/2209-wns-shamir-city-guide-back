@@ -18,7 +18,7 @@ import { UserRoles } from "../utils/constants.utils";
 
 
 @Resolver(User)
-export class UserResolver {
+export class UserResolver { 
   @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {

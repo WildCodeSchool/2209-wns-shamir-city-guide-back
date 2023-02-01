@@ -70,7 +70,7 @@ export const signJwt = (payload: any) => {
     }
 
     return jwt.sign(payload, configuration.jwt_secret_key, {
-        expiresIn: "10h",
+        expiresIn: "1day",
     });
 }
 
@@ -86,7 +86,7 @@ export const verifyToken = (token: string) => {
     
     try {
         return jwt.verify(token, configuration.jwt_secret_key);
-    } catch (e) {
+    } catch (e) {        
         throw new Error();
     }
 }

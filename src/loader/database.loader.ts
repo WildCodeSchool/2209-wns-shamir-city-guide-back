@@ -16,7 +16,7 @@ export class DatabaseLoader {
       console.log(
         `${emojiWarning}${emojiExclamation} Error during the database instanciation: `,
         e
-      );
+      ); 
     }
 
     // If our actual environment is 'test' we load data in the tables
