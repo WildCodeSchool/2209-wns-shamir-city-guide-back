@@ -28,6 +28,8 @@ export const startAppoloServer = async (): Promise<ApolloServer> => {
       CategoryResolver,
     ],
     authChecker: async ({ context }, requiredRoles) => { 
+      console.log(context);
+      
       let isAuthentified = false;
       const userId =  context?.user?.id ? context.user.id : null; 
       
@@ -62,14 +64,14 @@ export const startAppoloServer = async (): Promise<ApolloServer> => {
         return new CustomError(new InternalServerError(), "Erreur interne au serveur");
       } return err;
     },
-    context: ({ req }) => {
+    context: ({ req }) => {      
       if (
         req?.headers.authorization === undefined ||
         configuration?.jwt_secret_key === undefined
       ) {
         return {};
       } else {
-        try {
+        try {          
           const token = req.headers.authorization.split("Bearer ")[1];
           const userPayload = authenticationService.verifyToken(token);
           
