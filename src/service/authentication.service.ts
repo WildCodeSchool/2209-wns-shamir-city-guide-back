@@ -86,9 +86,7 @@ export const verifyToken = (token: string) => {
     
     try {
         return jwt.verify(token, configuration.jwt_secret_key);
-    } catch (e) {
-        console.log(e);
-        
+    } catch (e) {        
         throw new Error();
     }
 }
