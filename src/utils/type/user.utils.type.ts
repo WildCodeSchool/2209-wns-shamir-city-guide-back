@@ -1,4 +1,5 @@
 import { Field, InputType, ObjectType } from "type-graphql";
+import Role from "../../entity/Role.entity";
 
 
 @InputType()
@@ -26,6 +27,9 @@ export class AuthenticatedUserType {
 
     @Field()
     email: string
+
+    @Field(() => [Role])
+    roles: Role[]
 
     @Field()
     token: string

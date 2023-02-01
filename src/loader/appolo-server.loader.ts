@@ -48,7 +48,7 @@ export const startAppoloServer = async (): Promise<ApolloServer> => {
 
   const server = new ApolloServer({ 
     schema,
-    formatError: (err) => {
+    formatError: (err) => {      
       if (
         err.extensions.code === 'GRAPHQL_VALIDATION_FAILED' ||
         err.extensions.code === 'BAD_USER_INPUT' ||
