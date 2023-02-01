@@ -7,20 +7,16 @@ import PointOfInterest from "./PointOfInterest.entity";
 export default class Tag {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true})
   name: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column()
   icon: string;
-
+  
   @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.tags)
-  pointsOfInterest: PointOfInterest[];
+  pointsOfInterest?: PointOfInterest[];
 }

@@ -2,59 +2,61 @@ version: "3.8"
 
 services:
   server:
-    container_name: graphql_server_container
+    container_name: city_guid_server_dev
     image: graphql_server_image
     build:
-      dockerfile: "Dockerfile.dev"
+      dockerfile: "Dockerfile"
       target: development
     volumes:
       - ./:/app:rw,cached
+    environment:
+      - NODE_ENV=development
     command: npm run dev
     ports:
       - 4000:4000
     depends_on:
-      database:
+      database_dev:
         condition: service_healthy
 
-  database:
-    container_name: postgresql_container
+  database_dev:
+    container_name: city_guid_postgresql_dev
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: wilderDB
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: city_guid
+      POSTGRES_USER: wilder_dev
+      POSTGRES_PASSWORD: password_dev
+      POSTGRES_DB: city_guid_dev
       PGDATA: /var/lib/postgresql/data/customDataFolder
     ports:
       - "5432:5432"
     volumes:
-      - ./dbData:/var/lib/postgresql/data/customDataFolder
+      - ./db_dev:/var/lib/postgresql/data/customDataFolder
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -d city_guid -U wilderDB"]
+      test: ["CMD-SHELL", "pg_isready -d city_guid_dev -U wilder_dev"]
       interval: 5s
       timeout: 5s
       retries: 10
       start_period: 30s
 
   adminer:
-    container_name: adminer_container
+    container_name: city_guid_adminer_dev
     image: adminer
     restart: always
     ports:
       - 8080:8080
     depends_on:
-      database:
+      database_dev:
         condition: service_healthy
 
   pgadmin:
-    container_name: pgadmin4_container
+    container_name: city_guid_pgadmin4_dev
     image: dpage/pgadmin4
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: wilder@wilder.com
-      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_DEFAULT_EMAIL: dev@dev.com
+      PGADMIN_DEFAULT_PASSWORD: dev
     ports:
       - "4050:80"
     depends_on:
-      database:
+      database_dev:
         condition: service_healthy

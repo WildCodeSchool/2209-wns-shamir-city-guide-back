@@ -1,44 +1,54 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import PointOfInterest from "./PointOfInterest.entity";
+import Circuit from "./Circuit.entity";
+import User from "./User.entity";
 
 @ObjectType()
 @Entity()
 export default class City {
   @Field(() => ID)
   @PrimaryGeneratedColumn()
-  id: number;
+  id?: number;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({unique: true, length: 255})
   name: string;
 
   @Field()
-  @Column({
-    type: "decimal", 
-    precision: 10, 
-    scale: 2, 
-    default: 0,
-  })
-  latitude: number;
+  @Column({length: 255})
+  latitude!: string;
 
   @Field()
-  @Column({
-    type: "decimal", 
-    precision: 10, 
-    scale: 2, 
-    default: 0
-  })
-  longitude: number;
+  @Column({length: 255})
+  longitude!: string;
 
   @Field()
-  @Column({
-    nullable: true
-  })
+  @Column({unique: true, length: 255})
   picture: string;
 
-  @OneToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.city)
-  pointsOfInterest: PointOfInterest[];
+  @Field(() => [Circuit])
+  @OneToMany(
+    () => Circuit, 
+    (circuit) => circuit.city, 
+    {eager: true}
+  )
+  circuits?: Circuit[];
+
+  @Field(() => [PointOfInterest])
+  @OneToMany(
+    () => PointOfInterest, 
+    (pointOfInterest) => pointOfInterest.city,
+    {eager: true}
+  )
+  pointsOfInterest?: PointOfInterest[];
+
+  @Field(() => User)
+  @ManyToOne(() => User, (user) => user.cities, { 
+    onDelete: 'SET NULL', 
+    eager: true,
+    nullable: false 
+  }) 
+  @JoinColumn({name: "user_id"})
+  user: User;
 }
