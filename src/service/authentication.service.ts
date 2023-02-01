@@ -8,10 +8,11 @@ import { ForbiddenError, InternalServerError, UnauthorizedError } from "../utils
 import { AuthenticatedUserType } from "../utils/type/user.utils.type";
 import { StatusCodeMessage } from "../utils/constants.utils";
 import { UserValidator } from "../validator/entity/user.validator.entity";
+import Role from "../entity/Role.entity";
 
 
 /**
- * Log a user
+ * Log a user 
  * @param {UserValidator} data the credentials in order to login the user
  * @returns AuthenticatedUserType the loggued user with a token
  */
@@ -22,10 +23,12 @@ export const login = async (data: UserValidator): Promise<AuthenticatedUserType>
         
         const isCorrectPwd = await verifyPassword(data.password, getUserByEmail.hashedPassword);
         if (isCorrectPwd) {
+            let roles: Role[] | undefined = getUserByEmail.roles ? getUserByEmail.roles : []; 
             const userPayload = {
                 id: getUserByEmail.id,
                 username: getUserByEmail.username,
-                email: getUserByEmail.email
+                email: getUserByEmail.email,
+                roles: roles
             }
             return {...userPayload, token: signJwt(userPayload)};
         } else {
