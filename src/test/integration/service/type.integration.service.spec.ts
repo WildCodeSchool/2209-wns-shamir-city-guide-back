@@ -1,12 +1,12 @@
-import { DatabaseLoader } from "../../../loader/database.loader";
-import * as TypeService from "../../../service/type.service";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { NotFoundError, InternalServerError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
+import { DatabaseLoader } from "../../../loaders/database.loader";
+import * as TypeService from "../../../services/type.service";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { NotFoundError, InternalServerError, UnprocessableEntityError } from "../../../utils/errors/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode } from "../../../utils/constants.utils";
-import Type from "../../../entity/Type.entity";
+import Type from "../../../entities/Type.entity";
 import { emojiShocked } from "../../../utils/emoji.utils";
 import { formatString } from "../../../utils/string.utils";
-import { TypeValidator } from "../../../validator/entity/type.validator.entity";
+import { TypeValidator } from "../../../validators/entities/type.validator.entity";
 
 
 const getAll = TypeService.getAll, 

@@ -1,17 +1,17 @@
 import { ApolloServer } from "apollo-server";
-import { startAppoloServer } from "../../../loader/appolo-server.loader";
+import { startAppoloServer } from "../../../loaders/appolo-server.loader";
 import * as CityApi from "../api/city.functionnal.api";
-import { DatabaseLoader } from "../../../loader/database.loader";
-import City from "../../../entity/City.entity";
-import { CommonErrorValidator, CityErrorValidator } from "../../../validator/messages.validator";
+import { DatabaseLoader } from "../../../loaders/database.loader";
+import City from "../../../entities/City.entity";
+import { CommonErrorValidator, CityErrorValidator } from "../../../validators/messages.validator";
 import { 
     StatusCodeClass, 
     StatusCodeMessage, 
     StatusCode, 
     strTooLong 
 } from "../../../utils/constants.utils";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { InternalServerError } from "../../../utils/error/interfaces.utils.error";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { InternalServerError } from "../../../utils/errors/interfaces.utils.error";
 import { emojiShocked } from "../../../utils/emoji.utils";
 import { formatString } from "../../../utils/string.utils";
 

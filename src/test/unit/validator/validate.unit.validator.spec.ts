@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import { Min, Max, Length, Contains, IsInt, IsEmail, IsDate } from "class-validator";
 import { StatusCode, StatusCodeClass, StatusCodeMessage, strTooLong } from "../../../utils/constants.utils";
-import { IdValidator, NameValidator } from "../../../validator/common.validator";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { validateData } from "../../../validator/validate.validator";
-import { CommonErrorValidator } from "../../../validator/messages.validator";
+import { IdValidator, NameValidator } from "../../../validators/common.validator";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { validateData } from "../../../validators/validate.validator";
+import { CommonErrorValidator } from "../../../validators/messages.validator";
 
 
 describe("unit/validator/validate.validator suite of tests", () => {

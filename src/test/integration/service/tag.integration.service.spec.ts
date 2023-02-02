@@ -1,12 +1,12 @@
-import { DatabaseLoader } from "../../../loader/database.loader";
-import * as TagService from "../../../service/tag.service";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { NotFoundError, InternalServerError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
+import { DatabaseLoader } from "../../../loaders/database.loader";
+import * as TagService from "../../../services/tag.service";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { NotFoundError, InternalServerError, UnprocessableEntityError } from "../../../utils/errors/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode } from "../../../utils/constants.utils";
-import Tag from "../../../entity/Tag.entity";
+import Tag from "../../../entities/Tag.entity";
 import { emojiShocked } from "../../../utils/emoji.utils";
 import { formatString } from "../../../utils/string.utils";
-import { TagValidator } from "../../../validator/entity/tag.validator.entity";
+import { TagValidator } from "../../../validators/entities/tag.validator.entity";
 
 
 const getAll = TagService.getAll, 

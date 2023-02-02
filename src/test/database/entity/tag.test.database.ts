@@ -1,5 +1,5 @@
-import Tag from "../../../entity/Tag.entity";
-import { TagRepository } from "../../../repository/tag.repository";
+import Tag from "../../../entities/Tag.entity";
+import { TagRepository } from "../../../repositories/tag.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 

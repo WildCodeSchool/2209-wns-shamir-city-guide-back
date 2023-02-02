@@ -1,18 +1,18 @@
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server";
-import { startAppoloServer } from "../../../loader/appolo-server.loader";
+import { startAppoloServer } from "../../../loaders/appolo-server.loader";
 import * as TypeApi from "../api/type.functionnal.api";
-import { DatabaseLoader } from "../../../loader/database.loader";
-import Type from "../../../entity/Type.entity";
-import { CommonErrorValidator, TypeErrorValidator } from "../../../validator/messages.validator";
+import { DatabaseLoader } from "../../../loaders/database.loader";
+import Type from "../../../entities/Type.entity";
+import { CommonErrorValidator, TypeErrorValidator } from "../../../validators/messages.validator";
 import { 
     StatusCodeClass, 
     StatusCodeMessage, 
     StatusCode, 
     strTooLong 
 } from "../../../utils/constants.utils";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { InternalServerError } from "../../../utils/error/interfaces.utils.error";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { InternalServerError } from "../../../utils/errors/interfaces.utils.error";
 import { emojiShocked } from "../../../utils/emoji.utils";
 import { formatString } from "../../../utils/string.utils";
 

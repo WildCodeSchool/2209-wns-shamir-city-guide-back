@@ -3,10 +3,10 @@ import {
     CityValidator, 
     validateCreationCityInput, 
     validateUpdateCityInput 
-} from "../../../validator/entity/city.validator.entity";
-import { CityErrorValidator } from "../../../validator/messages.validator";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { BadRequestError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
+} from "../../../validators/entities/city.validator.entity";
+import { CityErrorValidator } from "../../../validators/messages.validator";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { BadRequestError, UnprocessableEntityError } from "../../../utils/errors/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode, strTooLong } from "../../../utils/constants.utils";
 
 

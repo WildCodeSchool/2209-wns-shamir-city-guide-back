@@ -1,7 +1,7 @@
-import City from "../../../entity/City.entity";
-import User from "../../../entity/User.entity";
-import { CityRepository } from "../../../repository/city.repository";
-import { UserRepository } from "../../../repository/user.repository";
+import City from "../../../entities/City.entity";
+import User from "../../../entities/User.entity";
+import { CityRepository } from "../../../repositories/city.repository";
+import { UserRepository } from "../../../repositories/user.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 

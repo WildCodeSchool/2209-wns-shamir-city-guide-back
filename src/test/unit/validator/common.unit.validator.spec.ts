@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import { validateIdInput, validateNameInput } from "../../../validator/common.validator";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
+import { validateIdInput, validateNameInput } from "../../../validators/common.validator";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
 import { StatusCode, StatusCodeClass, StatusCodeMessage } from "../../../utils/constants.utils";
-import { CommonErrorValidator } from "../../../validator/messages.validator";
+import { CommonErrorValidator } from "../../../validators/messages.validator";
 
 
 describe("unit/validator/common.validator suite of tests", () => {

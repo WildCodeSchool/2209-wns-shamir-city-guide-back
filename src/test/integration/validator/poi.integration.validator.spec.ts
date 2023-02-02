@@ -3,14 +3,14 @@ import {
     PoiValidator, 
     validateCreationPoiInput, 
     validateUpdatePoiInput 
-} from "../../../validator/entity/poi.validator.entity";
-import { PoiErrorValidator } from "../../../validator/messages.validator";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { BadRequestError } from "../../../utils/error/interfaces.utils.error";
+} from "../../../validators/entities/poi.validator.entity";
+import { PoiErrorValidator } from "../../../validators/messages.validator";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { BadRequestError } from "../../../utils/errors/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode } from "../../../utils/constants.utils";
-import { CityValidator } from "../../../validator/entity/city.validator.entity";
-import { TypeValidator } from "../../../validator/entity/type.validator.entity";
-import { TagValidator } from "../../../validator/entity/tag.validator.entity";
+import { CityValidator } from "../../../validators/entities/city.validator.entity";
+import { TypeValidator } from "../../../validators/entities/type.validator.entity";
+import { TagValidator } from "../../../validators/entities/tag.validator.entity";
 
 
 describe("unit/validator/poi.validator suite of tests", () => {

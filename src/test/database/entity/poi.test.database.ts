@@ -1,12 +1,12 @@
-import Poi from "../../../entity/PointOfInterest.entity";
-import City from "../../../entity/City.entity";
-import { PoiRepository } from "../../../repository/poi.repository";
-import { CityRepository } from "../../../repository/city.repository";
+import Poi from "../../../entities/PointOfInterest.entity";
+import City from "../../../entities/City.entity";
+import { PoiRepository } from "../../../repositories/poi.repository";
+import { CityRepository } from "../../../repositories/city.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
-import Type from "../../../entity/Type.entity";
-import { TypeRepository } from "../../../repository/type.repository";
-import { TagRepository } from "../../../repository/tag.repository";
-import Tag from "../../../entity/Tag.entity";
+import Type from "../../../entities/Type.entity";
+import { TypeRepository } from "../../../repositories/type.repository";
+import { TagRepository } from "../../../repositories/tag.repository";
+import Tag from "../../../entities/Tag.entity";
 
 
  export const poiNames = ["Musée du Louvre", "Arc de Triomphe", "La Tour Eiffel", "Rue de la Soif", "Gare Saint Charles"],

@@ -1,13 +1,13 @@
 import "reflect-metadata";
-import { validateIdInput, validateNameInput } from "../../../validator/common.validator";
+import { validateIdInput, validateNameInput } from "../../../validators/common.validator";
 import { 
     TagValidator, 
     validateCreationTagInput, 
     validateUpdateTagInput 
-} from "../../../validator/entity/tag.validator.entity";
-import { CommonErrorValidator, TagErrorValidator } from "../../../validator/messages.validator";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { BadRequestError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
+} from "../../../validators/entities/tag.validator.entity";
+import { CommonErrorValidator, TagErrorValidator } from "../../../validators/messages.validator";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { BadRequestError, UnprocessableEntityError } from "../../../utils/errors/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode, strTooLong } from "../../../utils/constants.utils";
 
 

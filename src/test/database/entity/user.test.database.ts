@@ -1,8 +1,8 @@
 import * as argon2 from "argon2";
-import Role from "../../../entity/Role.entity";
-import User from "../../../entity/User.entity";
-import { RoleRepository } from "../../../repository/role.repository";
-import { UserRepository } from "../../../repository/user.repository";
+import Role from "../../../entities/Role.entity";
+import User from "../../../entities/User.entity";
+import { RoleRepository } from "../../../repositories/role.repository";
+import { UserRepository } from "../../../repositories/user.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 import { UserRoles } from "../../../utils/constants.utils";
 

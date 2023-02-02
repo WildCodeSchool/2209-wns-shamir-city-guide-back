@@ -1,17 +1,17 @@
 import { ApolloServer } from "apollo-server";
-import { startAppoloServer } from "../../../loader/appolo-server.loader";
+import { startAppoloServer } from "../../../loaders/appolo-server.loader";
 import * as PoiApi from "../api/poi.functionnal.api";
-import { DatabaseLoader } from "../../../loader/database.loader";
-import Poi from "../../../entity/PointOfInterest.entity";
-import { CommonErrorValidator, PoiErrorValidator } from "../../../validator/messages.validator";
+import { DatabaseLoader } from "../../../loaders/database.loader";
+import Poi from "../../../entities/PointOfInterest.entity";
+import { CommonErrorValidator, PoiErrorValidator } from "../../../validators/messages.validator";
 import { 
     StatusCodeClass, 
     StatusCodeMessage, 
     StatusCode, 
     strTooLong 
 } from "../../../utils/constants.utils";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { InternalServerError } from "../../../utils/error/interfaces.utils.error";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { InternalServerError } from "../../../utils/errors/interfaces.utils.error";
 import { emojiShocked } from "../../../utils/emoji.utils";
 
 const GET_ALL = PoiApi.GET_ALL,

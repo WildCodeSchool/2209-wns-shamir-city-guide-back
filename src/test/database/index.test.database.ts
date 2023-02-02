@@ -5,6 +5,7 @@ import { loadTypeData } from "./entity/type.test.database";
 import { loadCategoryData } from "./entity/category.test.database";
 import { loadCityData } from "./entity/city.test.database";
 import { loadPoiData } from "./entity/poi.test.database";
+import { loadCircuitData } from "./entity/"
 
 export const loadData = async () => {
   await loadRoleData();

@@ -1,5 +1,5 @@
-import Role from "../../../entity/Role.entity";
-import { RoleRepository } from "../../../repository/role.repository";
+import Role from "../../../entities/Role.entity";
+import { RoleRepository } from "../../../repositories/role.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 

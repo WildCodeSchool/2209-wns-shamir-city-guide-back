@@ -1,5 +1,5 @@
-import Category from "../../../entity/Category.entity";
-import { CategoryRepository } from "../../../repository/category.repository";
+import Category from "../../../entities/Category.entity";
+import { CategoryRepository } from "../../../repositories/category.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 export const categoryNames = ["Cat1", "Cat2", "Cat3"],

@@ -1,5 +1,5 @@
-import Type from "../../../entity/Type.entity";
-import { TypeRepository } from "../../../repository/type.repository";
+import Type from "../../../entities/Type.entity";
+import { TypeRepository } from "../../../repositories/type.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 

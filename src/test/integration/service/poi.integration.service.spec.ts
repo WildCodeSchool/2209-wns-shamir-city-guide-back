@@ -1,15 +1,15 @@
-import { DatabaseLoader } from "../../../loader/database.loader";
-import * as PoiService from "../../../service/poi.service";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { NotFoundError, InternalServerError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
+import { DatabaseLoader } from "../../../loaders/database.loader";
+import * as PoiService from "../../../services/poi.service";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { NotFoundError, InternalServerError, UnprocessableEntityError } from "../../../utils/errors/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode } from "../../../utils/constants.utils";
-import Poi from "../../../entity/PointOfInterest.entity";
+import Poi from "../../../entities/PointOfInterest.entity";
 import { emojiShocked } from "../../../utils/emoji.utils";
 import { formatString } from "../../../utils/string.utils";
-import { PoiValidator } from "../../../validator/entity/poi.validator.entity";
-import { CityValidator } from "../../../validator/entity/city.validator.entity";
-import { TypeValidator } from "../../../validator/entity/type.validator.entity";
-import { TagValidator } from "../../../validator/entity/tag.validator.entity";
+import { PoiValidator } from "../../../validators/entities/poi.validator.entity";
+import { CityValidator } from "../../../validators/entities/city.validator.entity";
+import { TypeValidator } from "../../../validators/entities/type.validator.entity";
+import { TagValidator } from "../../../validators/entities/tag.validator.entity";
 
 
 const getAll = PoiService.getAll, 

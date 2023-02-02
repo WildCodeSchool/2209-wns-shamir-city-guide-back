@@ -1,13 +1,13 @@
-import { DatabaseLoader } from "../../../loader/database.loader";
-import * as CityService from "../../../service/city.service";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { NotFoundError, InternalServerError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
+import { DatabaseLoader } from "../../../loaders/database.loader";
+import * as CityService from "../../../services/city.service";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { NotFoundError, InternalServerError, UnprocessableEntityError } from "../../../utils/errors/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode } from "../../../utils/constants.utils";
 import { emojiShocked } from "../../../utils/emoji.utils";
 import { formatString } from "../../../utils/string.utils";
-import { CityValidator } from "../../../validator/entity/city.validator.entity";
-import { CityErrorsFlag, handleCityError } from "../../../utils/error/handleError/city.utils.error";
-import City from "../../../entity/City.entity";
+import { CityValidator } from "../../../validators/entities/city.validator.entity";
+import { CityErrorsFlag, handleCityError } from "../../../utils/errors/handleError/city.utils.error";
+import City from "../../../entities/City.entity";
 
 const getAll = CityService.getAll, 
     getCityById = CityService.getById,

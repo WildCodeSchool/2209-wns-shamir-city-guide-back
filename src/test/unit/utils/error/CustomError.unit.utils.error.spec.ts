@@ -1,5 +1,5 @@
-import { CustomError } from "../../../../utils/error/CustomError.utils.error";
-import * as Errors from "../../../../utils/error/interfaces.utils.error";
+import { CustomError } from "../../../../utils/errors/CustomError.utils.error";
+import * as Errors from "../../../../utils/errors/interfaces.utils.error";
 import { StatusCode, StatusCodeClass, StatusCodeMessage } from "../../../../utils/constants.utils";
 import { 
   emojiOups, 

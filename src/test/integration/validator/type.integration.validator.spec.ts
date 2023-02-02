@@ -3,10 +3,10 @@ import {
     TypeValidator, 
     validateCreationTypeInput, 
     validateUpdateTypeInput 
-} from "../../../validator/entity/type.validator.entity";
-import { TypeErrorValidator } from "../../../validator/messages.validator";
-import { CustomError } from "../../../utils/error/CustomError.utils.error";
-import { BadRequestError, UnprocessableEntityError } from "../../../utils/error/interfaces.utils.error";
+} from "../../../validators/entities/type.validator.entity";
+import { TypeErrorValidator } from "../../../validators/messages.validator";
+import { CustomError } from "../../../utils/errors/CustomError.utils.error";
+import { BadRequestError, UnprocessableEntityError } from "../../../utils/errors/interfaces.utils.error";
 import { StatusCodeClass, StatusCodeMessage, StatusCode } from "../../../utils/constants.utils";
 
 
