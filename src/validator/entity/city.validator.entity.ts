@@ -4,6 +4,7 @@ import { validateData } from "../validate.validator";
 import { CityType } from "../../utils/type/city.utils.type";
 import { CustomError } from "../../utils/error/CustomError.utils.error";
 import { BadRequestError } from "../../utils/error/interfaces.utils.error";
+import { UserValidator } from "./user.validator.entity";
 
 
 export class CityValidator {
@@ -31,10 +32,12 @@ export class CityValidator {
     })
     longitude!: string
     
-    @MaxLength(255, {
-        message: CityErrorValidator.PICTURE_TOO_LONG
+    @Matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, {
+        message: CityErrorValidator.PICTURE_WRONG_FORMAT
     })
     picture: string
+
+    user: UserValidator;
 }
 
 
@@ -51,12 +54,27 @@ export const validateCreationCityInput = async (
         throw new CustomError(new BadRequestError(), CityErrorValidator.ID_NOT_REQUIRED);
     }
 
+    if (!Object.keys(city).includes("user")) {
+        throw new CustomError(new BadRequestError(), CityErrorValidator.USER_REQUIRED);
+    }
+    const { name, latitude, longitude, picture, user } = city;
+    
     const cityValidator = new CityValidator();
-    cityValidator.name = city.name && city.name.length > 0 ? city.name.trim() : '';
-    cityValidator.latitude = city.latitude && city.latitude.length > 0 ? city.latitude.trim() : '';
-    cityValidator.longitude = city.longitude && city.longitude.length > 0 ? city.longitude.trim() : '';
-    cityValidator.picture = city.picture && city.picture.length > 0 ? city.picture.trim() : '';
-    return await validateData(cityValidator);
+    cityValidator.name = name && name.length > 0 ? name.trim() : '';
+    cityValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : '';
+    cityValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : '';
+    cityValidator.picture = picture && picture.length > 0 ? picture.trim() : '';
+    await validateData(cityValidator);
+
+    const userValidator = new UserValidator();
+    userValidator.id = user.id;
+    userValidator.username = user.username;
+    userValidator.email = user.email;
+    
+    const verifiedUser = await validateData(userValidator);
+    cityValidator.user = verifiedUser;
+
+    return cityValidator;
 }
 
 
@@ -72,12 +90,27 @@ export const validateUpdateCityInput = async (
     if (!Object.keys(city).includes("id")) {
         throw new CustomError(new BadRequestError(), CityErrorValidator.ID_REQUIRED);
     }
+
+    if (!Object.keys(city).includes("user")) {
+        throw new CustomError(new BadRequestError(), CityErrorValidator.USER_REQUIRED);
+    }
+
+    const { id, name, latitude, longitude, picture, user } = city;
     
     const cityValidator = new CityValidator();
-    cityValidator.id = city.id;
-    cityValidator.name = city.name && city.name.length > 0 ? city.name.trim() : '';
-    cityValidator.latitude = city.latitude && city.latitude.length > 0 ? city.latitude.trim() : '';
-    cityValidator.longitude = city.longitude && city.longitude.length > 0 ? city.longitude.trim() : '';
-    cityValidator.picture = city.picture && city.picture.length > 0 ? city.picture.trim() : '';
-    return await validateData(cityValidator);
+    cityValidator.id = id;
+    cityValidator.name = name && name.length > 0 ? name.trim() : '';
+    cityValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : '';
+    cityValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : '';
+    cityValidator.picture = picture && picture.length > 0 ? picture.trim() : '';
+    await validateData(cityValidator);
+
+    const userValidator = new UserValidator();
+    userValidator.id = user.id;
+    userValidator.username = user.username;
+    userValidator.email = user.email;
+    const verifiedUser = await validateData(userValidator);
+    cityValidator.user = verifiedUser;
+
+    return cityValidator;
 }

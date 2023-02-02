@@ -7,7 +7,7 @@ console.log(`${emojiDocker} Actual environment: ${environment} ${emojiLaptop}`);
 
 type Configuration = {
   environment: string | undefined
-  secret: string | undefined
+  jwt_secret_key: string | undefined
   database: Database | undefined
 }
 
@@ -21,7 +21,7 @@ type Database = {
 
 const developmentConfiguration: Configuration = {
   environment:  process.env.NODE_ENV,
-  secret: process.env.SERVER_SECRET,
+  jwt_secret_key: process.env.SERVER_JWT_SECRET_KEY,
   database: {
     port: process.env.DB_PORT,
     name: process.env.DB_NAME_DEV,
@@ -33,7 +33,7 @@ const developmentConfiguration: Configuration = {
 
 const testConfiguration: Configuration = {
   environment: process.env.NODE_ENV,
-  secret: process.env.SERVER_SECRET,
+  jwt_secret_key: process.env.SERVER_JWT_SECRET_KEY,
   database: {
     port: process.env.DB_PORT,
     name: process.env.DB_NAME_TEST,

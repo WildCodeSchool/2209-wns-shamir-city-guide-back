@@ -180,7 +180,7 @@ export const update = async (
 };
 
 /**
- * Delete a poit of interest by its id in database
+ * Delete a point of interest by its id in database
  * @param {number} id poi id
  * @returns deleted poi 
  * @throws Error: 500 Internal Server Error | 404 Not Found

@@ -1,4 +1,4 @@
-import { Min, MinLength, MaxLength, IsOptional } from "class-validator";
+import { Min, MinLength, MaxLength, IsOptional, Matches } from "class-validator";
 import { TagErrorValidator } from "../messages.validator";
 import { TagType } from "../../utils/type/tag.utils.type";
 import { validateData } from "../validate.validator";
@@ -20,8 +20,8 @@ export class TagValidator {
   })
   name: string;
 
-  @MaxLength(255, {
-    message: TagErrorValidator.ICON_TOO_LONG,
+  @Matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, {
+    message: TagErrorValidator.ICON_WRONG_FORMAT,
   })
   icon: string;
 }

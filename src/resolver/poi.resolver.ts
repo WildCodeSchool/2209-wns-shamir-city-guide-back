@@ -1,9 +1,11 @@
-import { Resolver, Arg, Mutation, Query } from "type-graphql";
+import { Resolver, Arg, Mutation, Query, Authorized } from "type-graphql";
 import Poi from "../entity/PointOfInterest.entity";
 import * as PoiService from "../service/poi.service";
+import { UserRoles } from "../utils/constants.utils";
 import { PoiType } from "../utils/type/poi.utils.type";
 import { validateIdInput, validateNameInput } from "../validator/common.validator";
 import { validateCreationPoiInput, validateUpdatePoiInput } from "../validator/entity/poi.validator.entity";
+
 
 @Resolver(Poi)
 export class PoiResolver {
@@ -26,6 +28,7 @@ export class PoiResolver {
     return await PoiService.getByName(verifiedName);
   }
 
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Poi)
   async createPoi(
     @Arg("poi") poi: PoiType
@@ -34,6 +37,7 @@ export class PoiResolver {
     return await PoiService.create(verifiedData);
   }
 
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Poi)
   async updatePoi(
     @Arg("poi") poi: PoiType,
@@ -42,6 +46,7 @@ export class PoiResolver {
     return await PoiService.update(verifiedData);
   }
 
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Poi)
   async deletePoi(@Arg("id") id: number): Promise<Poi> {
     const verifiedId = await validateIdInput(id);

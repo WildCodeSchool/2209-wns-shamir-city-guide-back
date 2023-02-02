@@ -23,11 +23,8 @@ export class TypeValidator  {
     })
     name: string
     
-    @MinLength(3, {
-        message: TypeErrorValidator.LOGO_TOO_SHORT
-    })
-    @MaxLength(255, {
-        message: TypeErrorValidator.LOGO_TOO_LONG
+    @Matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, {
+        message: TypeErrorValidator.LOGO_WRONG_FORMAT
     })
     logo: string
     
