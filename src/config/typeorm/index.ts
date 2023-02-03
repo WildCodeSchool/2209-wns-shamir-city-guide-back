@@ -1,14 +1,14 @@
 import { DataSource } from "typeorm";
 import config from "..";
 import { Environments } from "../../utils/constants.utils";
-import Role from "../../entity/Role.entity";
-import User from "../../entity/User.entity";
-import Category from "../../entity/Category.entity";
-import Circuit from "../../entity/Circuit.entity";
-import City from "../../entity/City.entity";
-import PointOfInterest from "../../entity/PointOfInterest.entity";
-import Tag from "../../entity/Tag.entity";
-import Type from "../../entity/Type.entity";
+import Role from "../../entities/Role.entity";
+import User from "../../entities/User.entity";
+import Category from "../../entities/Category.entity";
+import Circuit from "../../entities/Circuit.entity";
+import City from "../../entities/City.entity";
+import PointOfInterest from "../../entities/PointOfInterest.entity";
+import Tag from "../../entities/Tag.entity";
+import Type from "../../entities/Type.entity";
 
 let letSynchronize: boolean = false;
 if (
