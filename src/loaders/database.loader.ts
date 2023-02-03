@@ -2,7 +2,7 @@ import databaseConfig from "../config/typeorm";
 import config from "../config";
 import { emojiWink, emojiPg } from "../utils/emoji.utils";
 import { emojiWarning, emojiExclamation } from "../utils/emoji.utils";
-import { loadData } from "../test/database/index.test.database";
+import { loadData } from "../tests/database/index.test.database";
 import { Environments } from "../utils/constants.utils";
 
 export class DatabaseLoader {

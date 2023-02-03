@@ -9,6 +9,7 @@ import { AuthenticatedUserType } from "../types/user.type";
 import { StatusCodeMessage } from "../utils/constants.utils";
 import { UserValidator } from "../validators/entities/user.validator.entity";
 import Role from "../entities/Role.entity";
+import User from "../entities/User.entity";
 
 
 /**
@@ -18,9 +19,9 @@ import Role from "../entities/Role.entity";
  */
 export const login = async (data: UserValidator): Promise<AuthenticatedUserType> => {
     try {
-        const getUserByEmail = await UserRepository.findOneBy({ email: data.email });
-        if (getUserByEmail === null) throw new Error(UserErrorsFlag.EMAIL_NOT_FOUND);
-        
+        const getUserByEmail: User | null = await UserRepository.findOneBy({ email: data.email });
+        if (getUserByEmail === null && getUserByEmail !== undefined) throw new Error(UserErrorsFlag.EMAIL_NOT_FOUND);
+
         const isCorrectPwd = await verifyPassword(data.password, getUserByEmail.hashedPassword);
         if (isCorrectPwd) {
             let roles: Role[] | undefined = getUserByEmail.roles ? getUserByEmail.roles : []; 

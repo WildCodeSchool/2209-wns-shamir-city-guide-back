@@ -23,8 +23,8 @@ export class TypeValidator  {
     })
     name: string
     
-    @Matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, {
-        message: TypeErrorValidator.LOGO_WRONG_FORMAT
+    @MinLength(1, {
+        message: TypeErrorValidator.LOGO_TOO_SHORT
     })
     logo: string
     

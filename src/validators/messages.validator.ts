@@ -78,6 +78,7 @@ export enum TypeErrorValidator {
   NAME_TOO_SHORT = "La longueur du nom du type est trop courte. La longueur minimale est de 1 caractère, mais la valeur actuelle est de 0",
   NAME_TOO_LONG = "La longueur du nom du type est trop longue, elle doit être au maximale de 255 caractères",
   LOGO_WRONG_FORMAT = "Le format de l'url du logo ne convient pas",
+  LOGO_TOO_SHORT = "Le nom du logo du type est trop court",
   COLOR_WRONG_FORMAT = "La format hexadécimal pour la couleur du type est incorrect",
 }
 
@@ -89,6 +90,7 @@ export enum TagErrorValidator {
   NAME_TOO_SHORT = "La longueur du nom du tag est trop courte. La longueur minimale est de 1 caractère, mais la valeur actuelle est de 0",
   NAME_TOO_LONG = "La longueur du nom du tag est trop longue, elle doit être au maximale de 255 caractères",
   ICON_WRONG_FORMAT = "Le format de l'url de l'icône ne convient pas",
+  ICON_TOO_SHORT = "Le nom de l'icône du tag est trop court",
 }
 
 //Category
@@ -97,6 +99,7 @@ export enum CategoryErrorValidator {
   NAME_TOO_SHORT = "La longueur du nom de la catégorie est trop courte. La longueur minimale est de 1 caractère, mais la valeur actuelle est de 0",
   NAME_TOO_LONG = "La longueur du nom de la catégorie est trop longue, elle doit être au maximale de 255 caractères",
   ICON_WRONG_FORMAT = "Le format de l'url de l'icône ne convient pas",
+  ICON_TOO_SHORT = "Le nom de l'icône de la catégorie est trop court",
   ID_NOT_REQUIRED = "L'identifiant de la catégorie n'est pas requis",
   ID_REQUIRED = "L'identifiant de la catégorie est requis",
   COLOR_WRONG_FORMAT = "Le format hexadécimal pour la couleur de la catégorie est incorrect",

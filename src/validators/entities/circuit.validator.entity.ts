@@ -69,6 +69,13 @@ import { setPoiValidator } from "./poi.validator.entity";
    * @throws Error: 400 Bad Request | 422 Unprocessable Entity
    */
   const validatePoisArray = async (arr: PoiType[], city: CityValidator): Promise<PoiValidator[]> => {
+    if (!arr.length) {
+      throw new CustomError(
+        new BadRequestError(),
+        "Un circuit doit inclure des points d'intérêt"
+      )
+    } 
+
     // Check if there is no duplicate in pois array
     if (arr.length > 2) {
       for (let i = 0; i < arr.length - 1; i++) {
@@ -146,7 +153,6 @@ import { setPoiValidator } from "./poi.validator.entity";
       category, 
       pois 
     } = circuit;
-    console.log(circuit);
     
     const circuitValidator = new CircuitValidator();
     if (id !== null && id !== undefined) circuitValidator.id = id;
@@ -154,7 +160,6 @@ import { setPoiValidator } from "./poi.validator.entity";
     circuitValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
     circuitValidator.description = description && description.length > 0 ? description.trim() : "";
     circuitValidator.price = price;
-console.log(circuitValidator);
 
     const cityValidator = new CityValidator();
     cityValidator.id = city.id;
@@ -162,6 +167,7 @@ console.log(circuitValidator);
     cityValidator.latitude = city.latitude;
     cityValidator.longitude = city.longitude;
     cityValidator.picture = city.picture;
+    cityValidator.user = city.user;
     const verifiedCity = await validateData(cityValidator);
     circuitValidator.city = verifiedCity;
   
@@ -172,11 +178,10 @@ console.log(circuitValidator);
     categoryValidator.color = category.color;
     const verifiedCategory = await validateData(categoryValidator);
     circuitValidator.category = verifiedCategory;
-    
+
     const validatedPois = await validatePoisArray(pois, verifiedCity);
-    
     circuitValidator.pois = validatedPois;
-  
+    
     return await validateData(circuitValidator);
   }
   

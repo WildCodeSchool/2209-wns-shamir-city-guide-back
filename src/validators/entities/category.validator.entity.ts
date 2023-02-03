@@ -26,8 +26,8 @@ export class CategoryValidator {
   })
   name: string;
 
-  @Matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/, {
-    message: CategoryErrorValidator.ICON_WRONG_FORMAT,
+  @MinLength(1, {
+    message: CategoryErrorValidator.ICON_TOO_SHORT,
   })
   icon: string;
 

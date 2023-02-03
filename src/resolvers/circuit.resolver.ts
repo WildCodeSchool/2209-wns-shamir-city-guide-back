@@ -28,13 +28,15 @@ export class CicuitResolver {
   }
 
   @Mutation(() => Circuit)
-  async createCircuit(
-    @Arg("circuit") circuit: CircuitType
-  ): Promise<Circuit> {
+  async createCircuit(@Arg("circuit") circuit: CircuitType): Promise<Circuit> {
     const verifiedData = await validateCreationCircuitInput(circuit);
-    const createdData = await CircuitService.create(verifiedData);
-    console.log("resolver output =>", createdData);
-    return createdData;
+    return await CircuitService.create(verifiedData);
+  }
+
+  @Mutation(() => Circuit)
+  async updateCircuit(@Arg("circuit") circuit: CircuitType): Promise<Circuit> {
+    const verifiedData = await validateUpdateCircuitInput(circuit);
+    return await CircuitService.update(verifiedData);
     
   }
   
