@@ -52,13 +52,8 @@ export const validateCreationCategoryInput = async (
       CategoryErrorValidator.ID_NOT_REQUIRED
     );
   }
-  const { name, icon, color } = category;
-  const categoryValidator = new CategoryValidator();
-  categoryValidator.name = name && name.length > 0 ? name.trim() : "";
-  categoryValidator.icon = icon && icon.length > 0 ? icon.trim() : "";
-  categoryValidator.color = color && color.length > 0 ? color.trim() : "";
 
-  return await validateData(categoryValidator);
+  return await setCategoryValidator(category);
 };
 
 /**
@@ -77,12 +72,19 @@ export const validateUpdateCategoryInput = async (
     );
   }
 
-  const { id, name, icon, color } = category;
+  return setCategoryValidator(category);
+};
+
+const setCategoryValidator = async (category: CategoryType): Promise<CategoryValidator> => {
+  let id = null;
+  if (category.id !== null) id = category.id;
+  const { name, icon, color } = category;
+  
   const categoryValidator = new CategoryValidator();
-  categoryValidator.id = id;
+  if (id !== null) categoryValidator.id = id;
   categoryValidator.name = name && name.length > 0 ? name.trim() : "";
   categoryValidator.icon = icon && icon.length > 0 ? icon.trim() : "";
   categoryValidator.color = color && color.length > 0 ? color.trim() : "";
 
   return await validateData(categoryValidator);
-};
+}

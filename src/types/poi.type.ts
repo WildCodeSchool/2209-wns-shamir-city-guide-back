@@ -24,7 +24,7 @@ export class PoiType {
   @Field()
   picture: string;
 
-  @Field()
+  @Field({ nullable: true })
   city: CityType;
 
   @Field()

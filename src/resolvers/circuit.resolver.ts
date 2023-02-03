@@ -27,4 +27,20 @@ export class CicuitResolver {
     return await CircuitService.getByName(verifiedName);
   }
 
+  @Mutation(() => Circuit)
+  async createCircuit(
+    @Arg("circuit") circuit: CircuitType
+  ): Promise<Circuit> {
+    const verifiedData = await validateCreationCircuitInput(circuit);
+    const createdData = await CircuitService.create(verifiedData);
+    console.log("resolver output =>", createdData);
+    return createdData;
+    
+  }
+  
+  @Mutation(() => Circuit)
+  async deleteCircuit(@Arg("id") id: number): Promise<Circuit> {
+    const verifiedId = await validateIdInput(id);
+    return await CircuitService.deleteCircuit(verifiedId);
+  }
 }

@@ -84,7 +84,7 @@ export const getByName = async (name: string): Promise<Poi> => {
 export const create = async (
   data: PoiValidator
 ): Promise<Poi> => {
-  data.name = formatString(data.name)
+  data.name = formatString(data.name);
   let tagIsNotInDB = null;
   
   try {
@@ -98,8 +98,8 @@ export const create = async (
     } 
     if (tagIsNotInDB) throw new Error(PoiErrorsFlag.TAG_NOT_IN_DB);
     
-    const createdCity = await PoiRepository.save(data);    
-    return createdCity;
+    const createdPoi = await PoiRepository.save(data);    
+    return createdPoi;
   } catch (e) {
     if (e instanceof Error && e.message === PoiErrorsFlag.LOCALISATION_ALREADY_USED) handlePoiError(PoiErrorsFlag.LOCALISATION_ALREADY_USED, data);
     if (e instanceof Error && e.message.includes(PoiErrorsFlag.TAG_NOT_IN_DB)) handlePoiError(PoiErrorsFlag.TAG_NOT_IN_DB, tagIsNotInDB);

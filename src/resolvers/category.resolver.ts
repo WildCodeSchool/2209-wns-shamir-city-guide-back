@@ -32,12 +32,6 @@ export class CategoryResolver {
     const verifiedId: number = await validateIdInput(id);
     return await CategoryService.getById(verifiedId);
   }
-  
-  // @Query(() => Category)
-  // async getCategoryByIcon(@Arg("icon") icon: string): Promise<Category> {
-  //   const verifiedIcon: string = await validateIconInput(icon);
-  //   return await CategoryService.getByIcon(verifiedIcon);
-  // }
     
   @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Category)
@@ -50,7 +44,7 @@ export class CategoryResolver {
     return await CategoryService.create(verifiedData);
   }
 
-  @Authorized([UserRoles.CITY_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Category)
   async updateCategory(
     @Arg("category") category: CategoryType
@@ -61,7 +55,7 @@ export class CategoryResolver {
     return await CategoryService.update(verifiedData);
   }
 
-  @Authorized([UserRoles.CITY_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Category)
   async deleteCategory(@Arg("id") id: number): Promise<Category> {
     const verifiedId = await validateIdInput(id);

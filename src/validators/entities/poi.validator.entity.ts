@@ -98,40 +98,15 @@ export const validateCreationPoiInput = async (
       PoiErrorValidator.ID_NOT_REQUIRED
     );
   }
-  const { name, address, latitude, longitude, picture, city, type } = poi;
-  const poiValidator = new PoiValidator();
-  poiValidator.name = name && name.length > 0 ? name.trim() : "";
-  poiValidator.address = address && address.length > 0 ? address.trim() : "";
-  poiValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : "";
-  poiValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : "";
-  poiValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
-  await validateData(poiValidator);
 
-  const cityValidator = new CityValidator();
-  cityValidator.id = city.id;
-  cityValidator.name = city.name;
-  cityValidator.latitude = city.latitude;
-  cityValidator.longitude = city.longitude;
-  cityValidator.picture = city.picture;
-  const verifiedCity = await validateData(cityValidator);
-  poiValidator.city = verifiedCity;
-
-  const typeValidator = new TypeValidator();
-  typeValidator.id = type.id;
-  typeValidator.name = type.name;
-  typeValidator.logo = type.logo;
-  typeValidator.color = type.color;
-  const verifiedType = await validateData(typeValidator);
-  poiValidator.type = verifiedType;
-
-  if (poi.tags !== null && poi.tags !== undefined && poi.tags.length > 0) {
-    const validatedTags = await validateTagsArray(poi.tags);
-    poiValidator.tags = validatedTags;
-  } else {
-    poiValidator.tags = [];
+  if (!Object.keys(poi).includes("city")) {
+    throw new CustomError(
+      new BadRequestError(),
+      PoiErrorValidator.CITY_REQUIRED
+    );
   }
 
-  return poiValidator;
+  return setPoiValidator(poi);
 };
 
 /**
@@ -147,16 +122,32 @@ export const validateUpdatePoiInput = async (
     throw new CustomError(new BadRequestError(), PoiErrorValidator.ID_REQUIRED);
   }
 
-  const { name, address, latitude, longitude, picture, city, type } = poi;
+  return setPoiValidator(poi);
+};
+
+export const setPoiValidator = async (poi: PoiType): Promise<PoiValidator> => {
+  let id = null;
+  if (poi.id !== null) id = poi.id;
+  const { 
+    name, 
+    address, 
+    latitude, 
+    longitude, 
+    picture, 
+    city, 
+    type 
+  } = poi;
+  
   const poiValidator = new PoiValidator();
-  poiValidator.id = poi.id;
+  if (id !== null && id !== undefined) poiValidator.id = id;
+  
   poiValidator.name = name && name.length > 0 ? name.trim() : "";
   poiValidator.address = address && address.length > 0 ? address.trim() : "";
   poiValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : "";
   poiValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : "";
   poiValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
-  await validateData(poiValidator);
 
+  await validateData(poiValidator);
   const cityValidator = new CityValidator();
   cityValidator.id = city.id;
   cityValidator.name = city.name;
@@ -165,6 +156,7 @@ export const validateUpdatePoiInput = async (
   cityValidator.picture = city.picture;
   const verifiedCity = await validateData(cityValidator);
   poiValidator.city = verifiedCity;
+
 
   const typeValidator = new TypeValidator();
   typeValidator.id = type.id;
@@ -181,5 +173,5 @@ export const validateUpdatePoiInput = async (
     poiValidator.tags = [];
   }
 
-  return poiValidator;
-};
+  return await validateData(poiValidator);
+}

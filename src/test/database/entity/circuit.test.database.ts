@@ -7,6 +7,7 @@ import { CategoryRepository } from "../../../repositories/category.repository";
 import { PoiRepository } from "../../../repositories/poi.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 import PointOfInterest from "../../../entities/PointOfInterest.entity";
+import { CircuitRepository } from "../../../repositories/circuit.repository";
 
 
 export const circuitsNames = ["Promenade de Paris", "Une vise bouillabesque"],
@@ -41,15 +42,15 @@ export const loadCircuitData = async () => {
                 Louvre !== null && 
                 TourEiffel !== null &&
                 ArcDeTriomphe !== null
-            ) newCircuit.pois = [Louvre, TourEiffel, ArcDeTriomphe];
+            ) newCircuit.pointsOfInterest = [Louvre, TourEiffel, ArcDeTriomphe];
         } else {
             if (Marseille !== null) newCircuit.city = Marseille;
             if (cat2 !== null) newCircuit.category = cat2;
-            if (GareSaintCharles !== null) newCircuit.pois = [GareSaintCharles];
+            if (GareSaintCharles !== null) newCircuit.pointsOfInterest = [GareSaintCharles];
         } 
         
         try {
-            await PoiRepository.save(newCircuit);
+            await CircuitRepository.save(newCircuit);
         } catch (e) {}
     }));
 

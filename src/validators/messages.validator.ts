@@ -54,6 +54,7 @@ export enum PoiErrorValidator {
   LATITUDE_FORMAT = "La latitude du point d'intêret n'est pas au bon format",
   LONGITUDE_FORMAT = "La longitude du point d'intêret n'est pas au bon format",
   PICTURE_WRONG_FORMAT = "Le format de l'url de l'image ne convient pas",
+  CITY_REQUIRED = "Le point d'intérêt doit être associé à une ville"
 }
 
 //City
@@ -66,7 +67,7 @@ export enum CityErrorValidator {
   LATITUDE_FORMAT = "La latitude de la ville n'est pas au bon format",
   LONGITUDE_FORMAT = "La longitude de la ville n'est pas au bon format",
   PICTURE_WRONG_FORMAT = "Le format de l'url de l'image ne convient pas",
-  USER_REQUIRED = "Un utilisateur doit être associé à cette ville"
+  USER_REQUIRED = "Un utilisateur doit être associé à cette ville",
 }
 
 //Type

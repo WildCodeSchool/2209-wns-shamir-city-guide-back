@@ -13,7 +13,7 @@ import Tag from "../../../entities/Tag.entity";
     poiAddress = ["Rue de Rivoli, 75001 Paris", "Pl. Charles de Gaulle, 75008 Paris", "Champ de Mars, 5 Av. Anatole France, 75007 Paris", "rue saint michel 35000 Rennes", "GARE SAINT CHARLES - 118000 Marseille"],
     poiLatitudes = ["48.8611473", "48.8737791", "48.8582602", "48.1140518", "43.302426"],
     poiLongitudes = ["2.3380277", "2.2950372", "2.2944991", "-1.6813832", "5.3816767"],
-    poiPictures = ["musee-du-louvre.png", "arc-de-triomphe.png", "tour-eiffel.png", "rue-de-la-soif.png", "gare-saint-charles.png"];
+    poiPictures = ["https://musee-du-louvre.png", "https://arc-de-triomphe.png", "https://tour-eiffel.png", "https://rue-de-la-soif.png", "https://gare-saint-charles.png"];
 
 
 export const loadPoiData = async () => {

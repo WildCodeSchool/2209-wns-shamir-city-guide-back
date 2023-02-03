@@ -41,12 +41,8 @@ export const validateCreationTagInput = async (
       TagErrorValidator.ID_NOT_REQUIRED
     );
   }
-
-  const { name, icon } = tag;
-  const tagValidator = new TagValidator();
-  tagValidator.name = name && name.length > 0 ? name.trim() : "";
-  tagValidator.icon = icon && icon.length > 0 ? icon.trim() : "";
-  return await validateData(tagValidator);
+  
+  return await setTagValidator(tag);
 };
 
 /**
@@ -61,11 +57,19 @@ export const validateUpdateTagInput = async (
   if (!Object.keys(tag).includes("id")) {
     throw new CustomError(new BadRequestError(), TagErrorValidator.ID_REQUIRED);
   }
+  
+  return await setTagValidator(tag);
+};
 
-  const { id, name, icon } = tag;
+const setTagValidator = async (tag: TagType): Promise<TagValidator> => {
+  let id = null;
+  if (tag.id !== null) id = tag.id;
+  const { name, icon } = tag;
+  
   const tagValidator = new TagValidator();
-  tagValidator.id = id;
+  if (id !== null) tagValidator.id = id;
   tagValidator.name = name && name.length > 0 ? name.trim() : "";
   tagValidator.icon = icon && icon.length > 0 ? icon.trim() : "";
+
   return await validateData(tagValidator);
-};
+}

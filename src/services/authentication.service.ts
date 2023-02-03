@@ -36,6 +36,8 @@ export const login = async (data: UserValidator): Promise<AuthenticatedUserType>
         }
         
     } catch (e) {
+        console.log("auth error =>", e);
+        
         if(e instanceof Error && e.message === UserErrorsFlag.EMAIL_NOT_FOUND) handleUserError(UserErrorsFlag.EMAIL_NOT_FOUND, data.email);
 
         if(e instanceof Error && e.message === StatusCodeMessage.UNAUTHORIZED) throw new CustomError(

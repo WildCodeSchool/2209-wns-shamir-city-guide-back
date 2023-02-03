@@ -17,6 +17,7 @@ import {
   } from "../../utils/errors/interfaces.utils.error";
 import { PoiValidator } from "./poi.validator.entity";
 import { CircuitType } from "../../types/circuit.type";
+import { setPoiValidator } from "./poi.validator.entity";
   
   
   export class CircuitValidator {
@@ -67,15 +68,17 @@ import { CircuitType } from "../../types/circuit.type";
    * @returns <PoiValidator[]> the verified pois array
    * @throws Error: 400 Bad Request | 422 Unprocessable Entity
    */
-  const validatePoisArray = async (arr: PoiType[]): Promise<PoiValidator[]> => {
+  const validatePoisArray = async (arr: PoiType[], city: CityValidator): Promise<PoiValidator[]> => {
     // Check if there is no duplicate in pois array
-    for (let i = 0; i < arr.length - 1; i++) {
-      for (let j = i; j < arr.length; j++) {
-        if (arr[i].id === arr[j].id) {
-          throw new CustomError(
-            new UnprocessableEntityError(),
-            "Un circuit ne peut pas contenir deux fois le même point d'intérêt"
-          );
+    if (arr.length > 2) {
+      for (let i = 0; i < arr.length - 1; i++) {
+        for (let j = i + 1; j < arr.length; j++) {
+          if (arr[i].id === arr[j].id) {
+            throw new CustomError(
+              new UnprocessableEntityError(),
+              "Un circuit ne peut pas contenir deux fois le même point d'intérêt"
+            );
+          }
         }
       }
     }
@@ -83,17 +86,8 @@ import { CircuitType } from "../../types/circuit.type";
     // Check if the poi is in suitable format
     let returnedPois: PoiValidator[] = [];
     for (let i = 0; i < arr.length; i++) {
-      const poiValidator = new PoiValidator();
-      if (arr[i].id) poiValidator.id = arr[i].id;
-      poiValidator.name = arr[i].name;
-      poiValidator.address = arr[i].address;
-      poiValidator.latitude = arr[i].latitude;
-      poiValidator.longitude = arr[i].longitude;
-      poiValidator.picture = arr[i].picture;
-      poiValidator.city = arr[i].city;
-      poiValidator.type = arr[i].type;
-      poiValidator.tags = arr[i].tags;
-      const verifiedPoi = await validateData(poiValidator);
+      arr[i].city = city;
+      const verifiedPoi = await setPoiValidator(arr[i]);
   
       if (verifiedPoi) returnedPois.push(verifiedPoi);
       else
@@ -120,34 +114,8 @@ import { CircuitType } from "../../types/circuit.type";
         CircuitErrorValidator.ID_NOT_REQUIRED
       );
     }
-    const { name, picture, description, price,  city, category, pois } = circuit;
-    const circuitValidator = new CircuitValidator();
-    circuitValidator.name = name && name.length > 0 ? name.trim() : "";
-    circuitValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
-    circuitValidator.description = description && description.length > 0 ? description.trim() : "";
-    circuitValidator.price = price;
-    await validateData(circuitValidator);
   
-    const cityValidator = new CityValidator();
-    cityValidator.id = city.id;
-    cityValidator.name = city.name;
-    cityValidator.latitude = city.latitude;
-    cityValidator.longitude = city.longitude;
-    cityValidator.picture = city.picture;
-    const verifiedCity = await validateData(cityValidator);
-    circuitValidator.city = verifiedCity;
-  
-    const categoryValidator = new CategoryValidator();
-    categoryValidator.id = category.id;
-    categoryValidator.name = category.name;
-    categoryValidator.color = category.color;
-    const verifiedCategory = await validateData(categoryValidator);
-    circuitValidator.category = verifiedCategory;
-    
-    const validatedPois = await validatePoisArray(pois);
-    circuitValidator.pois = validatedPois;
-  
-    return circuitValidator;
+    return setCircuitValidator(circuit);
   };
   
   /**
@@ -163,14 +131,31 @@ import { CircuitType } from "../../types/circuit.type";
       throw new CustomError(new BadRequestError(), CircuitErrorValidator.ID_REQUIRED);
     }
   
-    const { name, picture, description, price,  city, category, pois } = circuit;
+    return setCircuitValidator(circuit);
+  };
+  
+  const setCircuitValidator = async (circuit: CircuitType): Promise<CircuitValidator> => {
+    let id = null;
+    if (circuit.id !== null) id = circuit.id;
+    const { 
+      name, 
+      picture, 
+      description, 
+      price,  
+      city, 
+      category, 
+      pois 
+    } = circuit;
+    console.log(circuit);
+    
     const circuitValidator = new CircuitValidator();
+    if (id !== null && id !== undefined) circuitValidator.id = id;
     circuitValidator.name = name && name.length > 0 ? name.trim() : "";
     circuitValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
     circuitValidator.description = description && description.length > 0 ? description.trim() : "";
     circuitValidator.price = price;
-    await validateData(circuitValidator);
-  
+console.log(circuitValidator);
+
     const cityValidator = new CityValidator();
     cityValidator.id = city.id;
     cityValidator.name = city.name;
@@ -183,13 +168,15 @@ import { CircuitType } from "../../types/circuit.type";
     const categoryValidator = new CategoryValidator();
     categoryValidator.id = category.id;
     categoryValidator.name = category.name;
+    categoryValidator.icon = category.icon;
     categoryValidator.color = category.color;
     const verifiedCategory = await validateData(categoryValidator);
     circuitValidator.category = verifiedCategory;
     
-    const validatedPois = await validatePoisArray(pois);
+    const validatedPois = await validatePoisArray(pois, verifiedCity);
+    
     circuitValidator.pois = validatedPois;
   
-    return circuitValidator;
-  };
+    return await validateData(circuitValidator);
+  }
   

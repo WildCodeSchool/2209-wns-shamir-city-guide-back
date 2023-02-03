@@ -16,6 +16,7 @@ import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { CategoryValidator } from "../validators/entities/category.validator.entity";
 
+
 /**
  * Returns all categories from database
  * @returns Category[]
@@ -26,7 +27,7 @@ export const getAll = async (): Promise<Category[]> => {
   } catch (e) {
     throw new CustomError(
       new InternalServerError(),
-      `Problème de connexion interne, les catégories n'ont pas été chargés`
+      `Problème de connexion interne, les catégories n'ont pas été chargées`
     );
   }
 };
@@ -77,27 +78,6 @@ export const getById = async (id: number): Promise<Category> => {
 };
 
 /**
- * Returns category by icon
- * @param {string} icon
- * @returns category
- */
-export const getByIcon = async (icon: string): Promise<Category> => {
-  const formatIcon = formatString(icon);
-  try {
-    const isIconExist = await CategoryRepository.findOneBy({ icon });
-    if (isIconExist !== null) return isIconExist;
-    else throw new Error(CategoryErrorsFlag.ICON_NOT_FOUND);
-  } catch (e) {
-    if (e instanceof Error && e.message === CategoryErrorsFlag.ICON_NOT_FOUND)
-      handleCategoryError(CategoryErrorsFlag.ICON_NOT_FOUND, formatIcon);
-    throw new CustomError(
-      new InternalServerError(),
-      `Problème de connexion interne, l'icone ${formatIcon} n'a pas été chargé`
-    );
-  }
-};
-
-/**
  * Create and return a category
  * @param {CategoryValidator} data Category object to create 
  * @returns the created category
@@ -121,7 +101,7 @@ export const create = async (data: CategoryValidator): Promise<Category> => {
     }
     throw new CustomError(
       new InternalServerError(),
-      `Problème de connexion interne, la categorie ${data.name} n'a pas été créée`
+      `Problème de connexion interne, la catégorie ${data.name} n'a pas été créée`
     );
   }
 };

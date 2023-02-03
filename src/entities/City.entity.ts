@@ -47,7 +47,7 @@ export default class City {
   @ManyToOne(() => User, (user) => user.cities, { 
     onDelete: 'SET NULL', 
     eager: true,
-    nullable: false 
+    nullable: true 
   }) 
   @JoinColumn({name: "user_id"})
   user: User;

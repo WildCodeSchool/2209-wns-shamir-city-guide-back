@@ -3,7 +3,7 @@ import { CategoryRepository } from "../../../repositories/category.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 export const categoryNames = ["Cat1", "Cat2", "Cat3"],
-  categoryIcons = ["Cat1.png", "Cat2.png", "Cat3.png"],
+  categoryIcons = ["https://cat1.png", "https://cat2.png", "https://cat3.png"],
   categoryColors = ["#fff", "#000", "#343434"];
   
 export const loadCategoryData = async () => {

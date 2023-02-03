@@ -45,13 +45,8 @@ export const validateCreationTypeInput = async (type: TypeType): Promise<TypeVal
     if (Object.keys(type).includes("id")) {
         throw new CustomError(new BadRequestError(), TypeErrorValidator.ID_NOT_REQUIRED);
     }
-
-    const { name, logo, color } = type;
-    const typeValidator = new TypeValidator();
-    typeValidator.name = name && name.length > 0 ? name.trim() : '';
-    typeValidator.logo = logo && logo.length > 0 ? logo.trim() : '';
-    typeValidator.color = color && color.length > 0 ? color.trim() : '';
-    return await validateData(typeValidator);
+    
+    return await setTypeValidator(type);
 }
 
 
@@ -65,12 +60,21 @@ export const validateUpdateTypeInput = async (type: TypeType): Promise<TypeValid
     if (!Object.keys(type).includes("id")) {
         throw new CustomError(new BadRequestError(), TypeErrorValidator.ID_REQUIRED);
     }
-
-    const { id, name, logo, color } = type;
-    const typeValidator = new TypeValidator();
-    typeValidator.id = id;
-    typeValidator.name = name && name.length > 0 ? name.trim() : '';
-    typeValidator.logo = logo && logo.length > 0 ? logo.trim() : '';
-    typeValidator.color = color && color.length > 0 ? color.trim() : '';
-    return await validateData(typeValidator);
+    
+    return await setTypeValidator(type);
 }
+
+const setTypeValidator = async (type: TypeType): Promise<TypeValidator> => {
+    let id = null;
+    if (type.id !== null) id = type.id;
+    const { name, logo, color } = type;
+    
+    const typeValidator = new TypeValidator();
+    if (id !== null) typeValidator.id = id;
+    typeValidator.name = name && name.length > 0 ? name.trim() : "";
+    typeValidator.logo = logo && logo.length > 0 ? logo.trim() : "";
+    typeValidator.color = color && color.length > 0 ? color.trim() : "";
+  
+    return await validateData(typeValidator);
+  }
+  

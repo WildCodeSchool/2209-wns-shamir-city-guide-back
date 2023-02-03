@@ -57,24 +57,8 @@ export const validateCreationCityInput = async (
     if (!Object.keys(city).includes("user")) {
         throw new CustomError(new BadRequestError(), CityErrorValidator.USER_REQUIRED);
     }
-    const { name, latitude, longitude, picture, user } = city;
-    
-    const cityValidator = new CityValidator();
-    cityValidator.name = name && name.length > 0 ? name.trim() : '';
-    cityValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : '';
-    cityValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : '';
-    cityValidator.picture = picture && picture.length > 0 ? picture.trim() : '';
-    await validateData(cityValidator);
 
-    const userValidator = new UserValidator();
-    userValidator.id = user.id;
-    userValidator.username = user.username;
-    userValidator.email = user.email;
-    
-    const verifiedUser = await validateData(userValidator);
-    cityValidator.user = verifiedUser;
-
-    return cityValidator;
+    return setCityValidator(city);
 }
 
 
@@ -95,15 +79,20 @@ export const validateUpdateCityInput = async (
         throw new CustomError(new BadRequestError(), CityErrorValidator.USER_REQUIRED);
     }
 
-    const { id, name, latitude, longitude, picture, user } = city;
+    return setCityValidator(city);
+}
+
+const setCityValidator = async (city: CityType): Promise<CityValidator> => {
+    let id = null;
+    if (city.id !== null) id = city.id;
+    const { name, latitude, longitude, picture, user } = city;
     
     const cityValidator = new CityValidator();
-    cityValidator.id = id;
-    cityValidator.name = name && name.length > 0 ? name.trim() : '';
-    cityValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : '';
-    cityValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : '';
-    cityValidator.picture = picture && picture.length > 0 ? picture.trim() : '';
-    await validateData(cityValidator);
+    if (id !== null) cityValidator.id = id;
+    cityValidator.name = name && name.length > 0 ? name.trim() : "";
+    cityValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : "";
+    cityValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : "";
+    cityValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
 
     const userValidator = new UserValidator();
     userValidator.id = user.id;
@@ -111,6 +100,6 @@ export const validateUpdateCityInput = async (
     userValidator.email = user.email;
     const verifiedUser = await validateData(userValidator);
     cityValidator.user = verifiedUser;
-
-    return cityValidator;
-}
+  
+    return await validateData(cityValidator);
+  }

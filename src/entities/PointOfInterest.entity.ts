@@ -50,7 +50,7 @@ export default class PointOfInterest {
   @JoinColumn({name: "type_id"})
   type: Type; 
 
-  @ManyToMany(() => Circuit, (circuit) => circuit.pois)
+  @ManyToMany(() => Circuit, (circuit) => circuit.pointsOfInterest)
   circuits?: Circuit[]
   
   @Field(() => [Tag])

@@ -34,7 +34,8 @@ export default class Circuit {
   }) 
   @JoinColumn({ name: "city_id" })
   city: City;
-
+ 
+  @Field()
   @ManyToOne(() => Category, (category) => category.circuits, { 
       eager:true,
       onDelete: 'SET NULL',
@@ -51,5 +52,5 @@ export default class Circuit {
     joinColumn: {name: "circuit_id"},
     inverseJoinColumn: {name: "point_of_interest_id"}
   }) 
-  pois: PointOfInterest[]
+  pointsOfInterest: PointOfInterest[]
 }

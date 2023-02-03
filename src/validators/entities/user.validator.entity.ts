@@ -53,13 +53,8 @@ export const validateCreationUserInput = async (user: UserType): Promise<UserVal
     if (!Object.keys(user).includes("password")) {
         throw new CustomError(new BadRequestError(), UserErrorValidator.PASSWORD_REQUIRED);
     }
-
-    const { username, email, password } = user;
-    const userValidator = new UserValidator();
-    userValidator.username = username && username.length > 0 ? username.trim() : '';
-    userValidator.email = email && email.length > 0 ? email.trim() : '';
-    userValidator.password = password && password.length > 0 ? password.trim() : '';
-    return await validateData(userValidator);
+   
+    return await setUserValidator(user);
 }
 
 
@@ -73,13 +68,8 @@ export const validateUpdateUserInput = async (user: UserType): Promise<UserValid
     if (!Object.keys(user).includes("id")) {
         throw new CustomError(new BadRequestError(), UserErrorValidator.ID_REQUIRED);
     }
-
-    const { id, username, email, password } = user;
-    const userValidator = new UserValidator();
-    userValidator.id = id;
-    userValidator.username = username && username.length > 0 ? username.trim() : '';
-    userValidator.email = email && email.length > 0 ? email.trim() : '';
-    return await validateData(userValidator);
+    
+    return await setUserValidator(user);
 } 
 
 /**
@@ -96,12 +86,23 @@ export const validateLoginUserInput = async (user: UserType): Promise<UserValida
     if (!Object.keys(user).includes("password")) {
         throw new CustomError(new BadRequestError(), UserErrorValidator.PASSWORD_REQUIRED);
     }
+   
+    return await setUserValidator(user);
+} 
 
-    const { id, username, email, password } = user;
+const setUserValidator = async (user: UserType): Promise<UserValidator> => {
+    let id = null,
+        password = null;
+    if (user.id !== null) id = user.id;
+    if (user.password !== null) password = user.password;
+    const { username, email } = user;
+
     const userValidator = new UserValidator();
-    userValidator.id = id;
+    if(id !== null) userValidator.id = id;
     userValidator.username = username && username.length > 0 ? username.trim() : '';
     userValidator.email = email && email.length > 0 ? email.trim() : '';
-    userValidator.password = password && password.length > 0 ? password.trim() : '';
+    if (password !== null) userValidator.password = password;;
+  
     return await validateData(userValidator);
-} 
+  }
+  

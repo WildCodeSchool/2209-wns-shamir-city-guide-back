@@ -4,7 +4,7 @@ import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 
  export const tagNames = ["Concert", "Musées", "Promenade", "Restaurant", "Visite"],
-    tagIcons = ["concert.png", "musées.jpeg", "", "restaurant.jpg", "Visite.png"];
+    tagIcons = ["https://concert.png", "https://musées.jpeg", "https://promenade.pngmusées.jpeg", "https://restaurant.jpg", "https://Visite.png"];
 
 
 export const loadTagData = async () => {

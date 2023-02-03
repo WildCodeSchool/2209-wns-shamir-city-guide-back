@@ -7,7 +7,7 @@ export enum CircuitErrorsFlag {
     ID_NOT_FOUND = "GET_BY_ID",
     NAME_NOT_FOUND = "GET_BY_NAME",
     NAME_ALREADY_USED = "NAME_ALREADY_USED",
-    PICTURE_ALREADY_USER = "PICTURE_ALREADY_USER",
+    PICTURE_ALREADY_USED = "PICTURE_ALREADY_USED",
     CITY_NOT_IN_DB = "CITY_NOT_IN_DB",
     CATEGORY_NOT_IN_DB = "CATEGORY_NOT_IN_DB",
     POI_NOT_IN_DB = "POI_NOT_IN_DB"
@@ -30,10 +30,10 @@ export const handleCircuitError = <T>(flag: string, data: T): void => {
                 new UnprocessableEntityError(), 
                 `Le circuit ${data} est déjà utilisé, vous devez en choisir un autre`
             );
-        case CircuitErrorsFlag.PICTURE_ALREADY_USER:
+        case CircuitErrorsFlag.PICTURE_ALREADY_USED:
             throw new CustomError(
                 new UnprocessableEntityError(), 
-                `L'image ${data} est déjà utilisée, vous devez en choisir une autre`
+                `L'image du circuit est déjà utilisée, vous devez en choisir une autre`
             );
         case CircuitErrorsFlag.CITY_NOT_IN_DB:            
         if (data instanceof CircuitValidator || data instanceof Circuit) {

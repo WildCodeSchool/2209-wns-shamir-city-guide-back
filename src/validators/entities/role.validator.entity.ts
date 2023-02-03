@@ -37,10 +37,7 @@ export const validateCreationRoleInput = async (
     );
   }
 
-  const { name } = role;
-  const roleValidator = new RoleValidator();
-  roleValidator.name = name && name.length > 0 ? name.trim() : "";
-  return await validateData(roleValidator);
+  return await setRoleValidator(role);
 };
 
 /**
@@ -56,11 +53,7 @@ export const validateUpdateRoleInput = async (
     throw new CustomError(new BadRequestError(), RoleErrorValidator.ID_REQUIRED);
   }
 
-  const { id, name } = role;
-  const roleValidator = new RoleValidator();
-  roleValidator.id = id;
-  roleValidator.name = name && name.length > 0 ? name.trim() : "";
-  return await validateData(roleValidator);
+  return await setRoleValidator(role);
 };
 
 
@@ -75,14 +68,21 @@ export const validateRoleArrayInput = async (roles: RoleValidator[]): Promise<Ro
     if (!Object.keys(roles[i]).includes("id")) {
       throw new CustomError(new BadRequestError(), RoleErrorValidator.ID_REQUIRED);
     }
-
-    const { id, name } = roles[i];
-    const roleValidator = new RoleValidator();
-    roleValidator.id = id;
-    roleValidator.name = name && name.length > 0 ? name.trim() : "";
-    await validateData(roleValidator);
+    
+    await setRoleValidator(roles[i]);
   } 
 
   return roles;
 };
 
+const setRoleValidator = async (role: RoleType): Promise<RoleValidator> => {
+  let id = null;
+  if (role.id !== null) id = role.id;
+  const { name } = role;
+  
+  const roleValidator = new RoleValidator();
+  if (id !== null) roleValidator.id = id;
+  roleValidator.name = name && name.length > 0 ? name.trim() : "";
+
+  return await validateData(roleValidator);
+}

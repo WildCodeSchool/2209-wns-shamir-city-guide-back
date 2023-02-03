@@ -4,7 +4,7 @@ import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 
  export const typeNames = ["Type1", "Type2", "Type3"],
-    typeLogos = ["type1.png", "type2.jpeg", "type3.png"],
+    typeLogos = ["https://type1.png", "https://type2.jpeg", "https://type3.png"],
     typeColors = ["#4d5d53", "#ffa500", "#0e3d2b"];
 
 
