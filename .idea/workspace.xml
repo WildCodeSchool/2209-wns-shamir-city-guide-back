@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="ee07706e-73e7-4a2f-8bd6-13a4dc5a7904" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/src/config/typeorm/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/typeorm/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/entities/Category.entity.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/entities/Category.entity.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/authentication.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/authentication.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/category.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/category.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/circuit.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/circuit.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/city.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/city.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/tag.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/tag.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tests/database/entity/user.test.database.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/tests/database/entity/user.test.database.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/errors/handleError/category.utils.error.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/errors/handleError/category.utils.error.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/errors/handleError/circuit.utils.error.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/errors/handleError/circuit.utils.error.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/errors/handleError/city.utils.error.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/errors/handleError/city.utils.error.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/errors/handleError/poi.utils.error.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/errors/handleError/poi.utils.error.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/errors/handleError/role.utils.error.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/errors/handleError/role.utils.error.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/errors/handleError/tag.utils.error.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/errors/handleError/tag.utils.error.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/errors/handleError/type.utils.error.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/errors/handleError/type.utils.error.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2LJQfmjvORyMCAw1CmzTTSaG7a2" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ee07706e-73e7-4a2f-8bd6-13a4dc5a7904" name="Changes" comment="" />
+      <created>1675586819291</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1675586819291</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

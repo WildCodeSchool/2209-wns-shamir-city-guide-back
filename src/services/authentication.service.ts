@@ -3,10 +3,11 @@ import jwt from "jsonwebtoken";
 import configuration from "../config/index";
 import { UserRepository } from "../repositories/user.repository";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
-import { handleUserError, UserErrorsFlag } from "../utils/errors/handleError/user.utils.error";
-import { ForbiddenError, InternalServerError, UnauthorizedError } from "../utils/errors/interfaces.utils.error";
+import { UserErrorsFlag } from "../utils/errors/handleError/user.utils.error";
+import { ForbiddenError, InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { AuthenticatedUserType } from "../types/user.type";
 import { StatusCodeMessage } from "../utils/constants.utils";
+import { handleAuthenticationError } from "../utils/errors/handleError/authentication.utils.error";
 import { UserValidator } from "../validators/entities/user.validator.entity";
 import Role from "../entities/Role.entity";
 import User from "../entities/User.entity";
@@ -37,18 +38,12 @@ export const login = async (data: UserValidator): Promise<AuthenticatedUserType>
         }
         
     } catch (e) {
-        console.log("auth error =>", e);
-        
-        if(e instanceof Error && e.message === UserErrorsFlag.EMAIL_NOT_FOUND) handleUserError(UserErrorsFlag.EMAIL_NOT_FOUND, data.email);
-
-        if(e instanceof Error && e.message === StatusCodeMessage.UNAUTHORIZED) throw new CustomError(
-            new UnauthorizedError(), 
-            `Vos identifiants ne sont pas corrects`
-        );
+        console.log("Authentication error =>", e);
+        if(e instanceof Error) handleAuthenticationError(e, data);
 
         throw new CustomError(
             new InternalServerError(), 
-            `Problème de connexion interne, l'utilisateur n'a pas été chargé`
+            `Problème de connexion interne, l'utilisateur ${data.username} n'a pas pu se connecter`
         );
     }
 };

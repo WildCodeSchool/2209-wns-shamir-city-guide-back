@@ -1,20 +1,16 @@
+import { QueryFailedError } from "typeorm";
+import { CategoryValidator } from "../../../validators/entities/category.validator.entity";
+import { retrieveKeyFromDbErrorMessage } from "../../string.utils";
 import { CustomError } from "../CustomError.utils.error";
-import {
-  NotFoundError,
-  UnprocessableEntityError,
-} from "../interfaces.utils.error";
+import { NotFoundError, UnprocessableEntityError } from "../interfaces.utils.error";
 
 export enum CategoryErrorsFlag {
-  ID_NOT_FOUND = "GET_BY_ID",
-  NAME_NOT_FOUND = "GET_BY_NAME",
-  NAME_ALREADY_USED = "NAME_ALREADY_USED",
-  ICON_NOT_FOUND = "GET_BY_ICON",
-  ICON_ALREADY_USED = "ICON_ALREADY_USED",
-  COLOR_ALREADY_USED = "COLOR_ALREADY_USED",
+  ID_NOT_FOUND = "ID_NOT_FOUND",
+  NAME_NOT_FOUND = "NAME_NOT_FOUND",
 }
 
-export const handleCategoryError = <T>(flag: string, data: T): void => {
-  switch (flag) {
+export const handleCategoryError = <T>(e: Error, data: T): void => {
+  switch (e.message) {
     case CategoryErrorsFlag.ID_NOT_FOUND:
       throw new CustomError(
         new NotFoundError(),
@@ -25,25 +21,32 @@ export const handleCategoryError = <T>(flag: string, data: T): void => {
         new NotFoundError(),
         `La catégorie avec le nom ${data} n'existe pas en base de données`
       );
-    case CategoryErrorsFlag.NAME_ALREADY_USED:
-      throw new CustomError(
-        new UnprocessableEntityError(),
-        `Le nom ${data} est déjà utilisé, vous devez en choisir un autre`
-      );
-    case CategoryErrorsFlag.ICON_NOT_FOUND:
-      throw new CustomError(
-        new NotFoundError(),
-        `L'icone ${data} n'existe pas en base de données`
-      );
-    case CategoryErrorsFlag.ICON_ALREADY_USED:
-      throw new CustomError(
-        new UnprocessableEntityError(),
-        `L'icone ${data} est déjà utilisée, vous devez en choisir une autre`
-      );
-    case CategoryErrorsFlag.COLOR_ALREADY_USED:
-      throw new CustomError(
-        new UnprocessableEntityError(),
-        `La couleur ${data} est déjà utilisée, vous devez en choisir une autre`
-      );
   }
-};
+}
+
+export const handleCategoryObjectError = (e: Error | QueryFailedError, data: CategoryValidator): void => {
+  if (e instanceof Error && e.message === CategoryErrorsFlag.ID_NOT_FOUND) {
+    throw new CustomError(
+      new NotFoundError(),
+      `La catégorie n'existe pas en base de données`
+    );
+} else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
+    switch (retrieveKeyFromDbErrorMessage(e.driverError.detail)) {
+      case "name":
+        throw new CustomError(
+          new UnprocessableEntityError(),
+          `Le nom ${data.name} est déjà utilisé, vous devez en choisir un autre`
+        );
+      case "color":
+        throw new CustomError(
+          new UnprocessableEntityError(),
+          `La couleur ${data.color} est déjà utilisée, vous devez en choisir une autre`
+        );
+      case "icon":
+        throw new CustomError(
+          new UnprocessableEntityError(),
+          `L'icône ${data.icon} est déjà utilisée, vous devez en choisir une autre`
+        );
+    }
+  }
+}

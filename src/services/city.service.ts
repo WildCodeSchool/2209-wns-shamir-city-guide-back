@@ -3,8 +3,8 @@ import City from "../entities/City.entity";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { CityRepository } from "../repositories/city.repository";
 import { QueryFailedError } from "typeorm";
-import { formatString, retrieveKeyFromDbErrorMessage } from "../utils/string.utils";
-import { CityErrorsFlag, handleCityError } from "../utils/errors/handleError/city.utils.error";
+import { formatString } from "../utils/string.utils";
+import { CityErrorsFlag, handleCityError, handleCityObjectError } from "../utils/errors/handleError/city.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { CityValidator } from "../validators/entities/city.validator.entity";
 
@@ -37,8 +37,7 @@ export const getById = async (id: number): Promise<City> => {
     if (isCityExist) return isCityExist;
     else throw new Error(CityErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CityErrorsFlag.ID_NOT_FOUND) handleCityError(CityErrorsFlag.ID_NOT_FOUND, null);
-    throw new CustomError(
+    if (e instanceof Error) handleCityError(e, null);    throw new CustomError(
       new InternalServerError(), 
       `Problème de connexion interne, la ville n'a pas été chargée`
     );
@@ -58,7 +57,7 @@ export const getByName = async (name: string): Promise<City> => {
     if (isCityExist) return isCityExist;
     else throw new Error(CityErrorsFlag.NAME_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CityErrorsFlag.NAME_NOT_FOUND) handleCityError(CityErrorsFlag.NAME_NOT_FOUND, name)
+    if (e instanceof Error) handleCityError(e, formattedName);    
     throw new CustomError(
       new InternalServerError(), 
       `Problème de connexion interne, la ville ${name} n'a pas été chargée`
@@ -84,15 +83,11 @@ export const create = async (
     const createdCity = await CityRepository.save(data);    
     return createdCity;
   } catch (e) {
-    if (e instanceof Error && e.message === CityErrorsFlag.LOCALISATION_ALREADY_USED) handleCityError(CityErrorsFlag.LOCALISATION_ALREADY_USED, data);
-    if (e instanceof QueryFailedError && e.driverError.detail?.length) {      
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "picture") handleCityError(CityErrorsFlag.PICTURE_ALREADY_USED, data.picture);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "user_id") handleCityError(CityErrorsFlag.USER_NOT_IN_DB, data.user.username);
-    } 
-    throw new CustomError(
-      new InternalServerError(), 
-      `Problème de connexion interne, la ville ${data.name} n'a pas été créée`
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleCityObjectError(e, data);
+      } throw new CustomError(
+      new InternalServerError(),
+      `Problème de connexion interne, la ville ${data.name} n'a pas été créé`
     );
   }
 };
@@ -115,7 +110,7 @@ export const update = async (
 
     // Check name the name is already present in database
     const isNameAlreadyInDB = await CityRepository.findByNameAndIfNotID(data.id, data.name);
-    //if (isNameAlreadyInDB) throw new Error(CityErrorsFlag.NAME_ALREADY_USED);
+    // if (isNameAlreadyInDB) throw new Error(CityErrorsFlag.NAME_ALREADY_USED);
     // If the latitude and longitude change we have to verify if the new location isn't stocked in database
     // Check if the latitude and longitude are in database for all different id
     if (isIdExistInDB.latitude !== data.latitude || isIdExistInDB.longitude !== data.longitude) {
@@ -129,19 +124,11 @@ export const update = async (
    
     return await CityRepository.save({ ...isIdExistInDB, ...data });
   } catch (e) {
-    if (e instanceof Error) {
-      if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-        if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
-        if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "picture") handleCityError(CityErrorsFlag.PICTURE_ALREADY_USED, data.picture);
-        if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "user_id") handleCityError(CityErrorsFlag.USER_NOT_IN_DB, data.user.username);
-      } 
-      if (e.message === CityErrorsFlag.ID_NOT_FOUND) handleCityError(CityErrorsFlag.ID_NOT_FOUND, data.id); 
-      else if (e.message === CityErrorsFlag.NAME_ALREADY_USED) handleCityError(CityErrorsFlag.NAME_ALREADY_USED, data.name); 
-      else if (e.message === CityErrorsFlag.LOCALISATION_ALREADY_USED) handleCityError(CityErrorsFlag.LOCALISATION_ALREADY_USED, data);
-    } 
-    throw new CustomError(
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleCityObjectError(e, data);
+      } throw new CustomError(
       new InternalServerError(),
-      `Problème de connexion interne, la ville n'a pas été mise à jour`
+      `Problème de connexion interne, la ville ${data.name} n'a pas été mise à jour`
     );
   }
 };
@@ -160,7 +147,7 @@ export const deleteCity = async (id: number): Promise<City> => {
       return cityToRemove;
     } else throw new Error(CityErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CityErrorsFlag.ID_NOT_FOUND) handleCityError(CityErrorsFlag.ID_NOT_FOUND, id); 
+    if (e instanceof Error) handleCityError(e, null);    
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, la ville n'a pas été supprimée`
