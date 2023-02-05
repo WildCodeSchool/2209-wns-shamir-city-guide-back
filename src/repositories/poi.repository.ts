@@ -1,4 +1,4 @@
-import PointOfInterest from "../entity/PointOfInterest.entity";
+import PointOfInterest from "../entities/PointOfInterest.entity";
 import databaseConfig from "../config/typeorm";
 
 export const PoiRepository = databaseConfig.getRepository(PointOfInterest).extend({
