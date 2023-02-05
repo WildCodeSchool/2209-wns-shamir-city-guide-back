@@ -2,8 +2,8 @@ import "reflect-metadata";
 import Tag from "../entities/Tag.entity";
 import { TagRepository } from "../repositories/tag.repository";
 import { QueryFailedError } from "typeorm";
-import { retrieveKeyFromDbErrorMessage, formatString } from "../utils/string.utils";
-import { TagErrorsFlag, handleTagError } from "../utils/errors/handleError/tag.utils.error";
+import { formatString } from "../utils/string.utils";
+import { TagErrorsFlag, handleTagError, handleTagObjectError } from "../utils/errors/handleError/tag.utils.error";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { TagValidator } from "../validators/entities/tag.validator.entity";
@@ -37,11 +37,11 @@ export const getById = async (id: number): Promise<Tag> => {
     if (isTagExist) return isTagExist;
     else throw new Error(TagErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if(e instanceof Error && e.message === TagErrorsFlag.ID_NOT_FOUND) handleTagError(TagErrorsFlag.ID_NOT_FOUND, id);
+    if (e instanceof Error) handleTagError(e, id);
     throw new CustomError(
       new InternalServerError(), 
       `Problème de connexion interne, le tag n'a pas été chargé`
-  );
+    );
   }
 };
 
@@ -58,7 +58,7 @@ export const getByName = async (name: string): Promise<Tag> => {
     if (isTagExist) return isTagExist;
     else throw new Error(TagErrorsFlag.NAME_NOT_FOUND); 
   } catch (e) {
-    if (e instanceof Error && e.message === TagErrorsFlag.NAME_NOT_FOUND) handleTagError(TagErrorsFlag.NAME_NOT_FOUND, formatName)
+    if (e instanceof Error) handleTagError(e, name);    
     throw new CustomError(
       new InternalServerError(), 
       `Problème de connexion interne, le tag ${formatName} n'a pas été chargé`
@@ -78,11 +78,10 @@ export const create = async (data: TagValidator): Promise<Tag> => {
   try {
     const createdTag = await TagRepository.save(data);
     return createdTag;
-  } catch (e) {
-    if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTagError(TagErrorsFlag.NAME_ALREADY_USED, data.name);
-    } 
-    throw new CustomError(
+  } catch (e) {    
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleTagObjectError(e, data);
+    } throw new CustomError(
       new InternalServerError(), 
       `Problème de connexion interne, le tag ${data.name} n'a pas été créé`
     );
@@ -103,11 +102,9 @@ export const update = async (data: TagValidator): Promise<Tag> => {
       return await TagRepository.save({...tagToUpdate, ...data});
     } else throw new Error(TagErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === TagErrorsFlag.ID_NOT_FOUND) handleTagError(TagErrorsFlag.ID_NOT_FOUND, data.id); 
-    else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTagError(TagErrorsFlag.NAME_ALREADY_USED, data.name);
-    } 
-    throw new CustomError(
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleTagObjectError(e, data);
+    } throw new CustomError(     
       new InternalServerError(),
       `Problème de connexion interne, le tag n'a pas été mis à jour`
     );
@@ -127,7 +124,7 @@ export const deleteTag = async (id: number): Promise<Tag> => {
       return await TagRepository.remove(tagToRemove);
     } else throw new Error(TagErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === TagErrorsFlag.ID_NOT_FOUND) handleTagError(TagErrorsFlag.ID_NOT_FOUND, id);
+    if (e instanceof Error) handleTagError(e, id);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le tag n'a pas été supprimé`

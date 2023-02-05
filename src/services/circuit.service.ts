@@ -1,15 +1,19 @@
 import Circuit from "../entities/Circuit.entity";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
-import { formatString,retrieveKeyFromDbErrorMessage } from "../utils/string.utils";
-import { CircuitErrorsFlag, handleCircuitError} from "../utils/errors/handleError/circuit.utils.error";
+import { formatString } from "../utils/string.utils";
+import { 
+  CircuitErrorsFlag, 
+  handleCircuitError, 
+  handleCircuitObjectError,
+  handleCircuitPoiObjectError
+} from "../utils/errors/handleError/circuit.utils.error";
 import { CircuitRepository } from "../repositories/circuit.repository";
 import { PoiRepository } from "../repositories/poi.repository";
 import { CircuitValidator } from "../validators/entities/circuit.validator.entity";
 import { PoiValidator } from "../validators/entities/poi.validator.entity";
 import { QueryFailedError } from "typeorm";
 import PointOfInterest from "../entities/PointOfInterest.entity";
-import User from "../entities/User.entity";
 import City from "../entities/City.entity";
 import Category from "../entities/Category.entity";
 import { CityRepository } from "../repositories/city.repository";
@@ -46,8 +50,7 @@ export const getById = async (id: number): Promise<Circuit> => {
     if (isCircuitExist) return isCircuitExist;
     else throw new Error(CircuitErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CircuitErrorsFlag.ID_NOT_FOUND)
-      handleCircuitError(CircuitErrorsFlag.ID_NOT_FOUND, null);
+    if (e instanceof Error) handleCircuitError(e, null);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le circuit n'a pas été chargé`
@@ -70,8 +73,7 @@ export const getByName = async (name: string): Promise<Circuit> => {
     if (isCircuitExist) return isCircuitExist;
     else throw new Error(CircuitErrorsFlag.NAME_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CircuitErrorsFlag.NAME_NOT_FOUND)
-      handleCircuitError(CircuitErrorsFlag.NAME_NOT_FOUND, name);
+    if (e instanceof Error) handleCircuitError(e, name);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le circuit ${formatName} n'a pas été chargé`
@@ -104,9 +106,11 @@ export const create = async (data: CircuitValidator): Promise<Circuit> => {
 
     const newCity: City | null = await CityRepository.findOneBy({ id: data.city.id })
     if (newCity) newCircuit.city = newCity;
+    else throw new Error(CircuitErrorsFlag.CITY_NOT_IN_DB);
 
     const newCategory: Category | null = await CategoryRepository.findOneBy({ id: data.category.id })
     if (newCategory) newCircuit.category = newCategory;
+    else throw new Error(CircuitErrorsFlag.CATEGORY_NOT_IN_DB);
     
     let poiArray: PointOfInterest[] = [];
     for (let i = 0; i < data.pois.length; i++) {
@@ -117,17 +121,15 @@ export const create = async (data: CircuitValidator): Promise<Circuit> => {
     newCircuit.pointsOfInterest = poiArray;
     return await CircuitRepository.save(newCircuit);    
   } catch (e) {
-    if (e instanceof Error && e.message.includes(CircuitErrorsFlag.POI_NOT_IN_DB)) handleCircuitError(CircuitErrorsFlag.POI_NOT_IN_DB, poiIsNotInDB);
+    if (
+      e instanceof Error && 
+      e.message === CircuitErrorsFlag.POI_NOT_IN_DB &&
+      poiIsNotInDB !== null
+    ) handleCircuitPoiObjectError(e, poiIsNotInDB);
 
-    if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name")
-        handleCircuitError(CircuitErrorsFlag.NAME_ALREADY_USED, data.name);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "picture")
-        handleCircuitError(CircuitErrorsFlag.PICTURE_ALREADY_USED, null);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "city_id") handleCircuitError(CircuitErrorsFlag.CITY_NOT_IN_DB, data);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "type_id") handleCircuitError(CircuitErrorsFlag.CATEGORY_NOT_IN_DB, data);
-    }
-    throw new CustomError(
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleCircuitObjectError(e, data);
+     } throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le circuit ${data.name} n'a pas été créé`
     );
@@ -161,9 +163,11 @@ export const update = async (data: CircuitValidator): Promise<Circuit> => {
 
     const newCity: City | null = await CityRepository.findOneBy({ id: data.city.id })
     if (newCity) newCircuit.city = newCity;
+    else throw new Error(CircuitErrorsFlag.CITY_NOT_IN_DB);
 
     const newCategory: Category | null = await CategoryRepository.findOneBy({ id: data.category.id })
     if (newCategory) newCircuit.category = newCategory;
+    else throw new Error(CircuitErrorsFlag.CATEGORY_NOT_IN_DB);
     
     let poiArray: PointOfInterest[] = [];
     for (let i = 0; i < data.pois.length; i++) {
@@ -177,20 +181,15 @@ export const update = async (data: CircuitValidator): Promise<Circuit> => {
       return await CircuitRepository.save({ ...circuitToUpdate, ...newCircuit });
     } else throw new Error(CircuitErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CircuitErrorsFlag.ID_NOT_FOUND)
-      handleCircuitError(CircuitErrorsFlag.ID_NOT_FOUND, data.id);
-    if (e instanceof Error && e.message.includes(CircuitErrorsFlag.POI_NOT_IN_DB)) handleCircuitError(CircuitErrorsFlag.POI_NOT_IN_DB, poiIsNotInDB);
+    if (
+      e instanceof Error && 
+      e.message === CircuitErrorsFlag.POI_NOT_IN_DB &&
+      poiIsNotInDB !== null
+    ) handleCircuitPoiObjectError(e, poiIsNotInDB);
 
-    if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name")
-        handleCircuitError(CircuitErrorsFlag.NAME_ALREADY_USED, data.name);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "picture")
-        handleCircuitError(CircuitErrorsFlag.PICTURE_ALREADY_USED, null);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "city_id") handleCircuitError(CircuitErrorsFlag.CITY_NOT_IN_DB, data);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "type_id") handleCircuitError(CircuitErrorsFlag.CATEGORY_NOT_IN_DB, data);
-    }
-
-    throw new CustomError(
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleCircuitObjectError(e, data);
+    } throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le circuit ${data.name} n'a pas été créé`
     );
@@ -211,8 +210,7 @@ export const deleteCircuit = async (id: number): Promise<Circuit> => {
       return circuitToRemove;
     } else throw new Error(CircuitErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CircuitErrorsFlag.ID_NOT_FOUND)
-      handleCircuitError(CircuitErrorsFlag.ID_NOT_FOUND, id);
+    if (e instanceof Error) handleCircuitError(e, null);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le circuit n'a pas été supprimé`

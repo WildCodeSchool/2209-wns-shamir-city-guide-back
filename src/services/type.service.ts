@@ -2,8 +2,12 @@ import "reflect-metadata";
 import Type from "../entities/Type.entity";
 import { TypeRepository } from "../repositories/type.repository";
 import { QueryFailedError } from "typeorm";
-import { retrieveKeyFromDbErrorMessage, formatString } from "../utils/string.utils";
-import { TypeErrorsFlag, handleTypeError } from "../utils/errors/handleError/type.utils.error";
+import { formatString } from "../utils/string.utils";
+import { 
+    TypeErrorsFlag, 
+    handleTypeError, 
+    handleTypeObjectError 
+} from "../utils/errors/handleError/type.utils.error";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { TypeValidator } from "../validators/entities/type.validator.entity";
@@ -37,7 +41,7 @@ export const getById = async (id: number): Promise<Type> => {
         if (isTypeExist) return isTypeExist;
         else throw new Error(TypeErrorsFlag.ID_NOT_FOUND);
     } catch (e) {
-        if(e instanceof Error && e.message === TypeErrorsFlag.ID_NOT_FOUND) handleTypeError(TypeErrorsFlag.ID_NOT_FOUND, id);
+        if (e instanceof Error) handleTypeError(e, null);
         throw new CustomError(
         new InternalServerError(), 
         `Problème de connexion interne, le type n'a pas été chargé`
@@ -58,11 +62,11 @@ export const getByName = async (name: string): Promise<Type> => {
     if (isTypeExist) return isTypeExist;
     else throw new Error(TypeErrorsFlag.NAME_NOT_FOUND); 
     } catch (e) {
-    if (e instanceof Error && e.message === TypeErrorsFlag.NAME_NOT_FOUND) handleTypeError(TypeErrorsFlag.NAME_NOT_FOUND, formatName)
-    throw new CustomError(
-        new InternalServerError(), 
-        `Problème de connexion interne, le type ${formatName} n'a pas été chargé`
-    );
+        if (e instanceof Error) handleTypeError(e, formatName);
+        throw new CustomError(
+            new InternalServerError(), 
+            `Problème de connexion interne, le type ${formatName} n'a pas été chargé`
+        );
     }
 };
 
@@ -79,13 +83,9 @@ export const create = async (data: TypeValidator): Promise<Type> => {
         const createdTag = await TypeRepository.save(data);
         return createdTag;
     } catch (e) {
-        if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTypeError(TypeErrorsFlag.NAME_ALREADY_USED, data.name);
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "logo") handleTypeError(TypeErrorsFlag.LOGO_ALREADY_USED, null);
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "color") handleTypeError(TypeErrorsFlag.COLOR_ALREADY_USED, null);
-        } 
-
-        throw new CustomError(
+        if (e instanceof QueryFailedError || e instanceof Error) {
+            handleTypeObjectError(e, data);
+        } throw new CustomError(
             new InternalServerError(), 
             `Problème de connexion interne, le type ${data.name} n'a pas été créé`
         );
@@ -106,14 +106,9 @@ export const update = async (data: TypeValidator): Promise<Type> => {
             return await TypeRepository.save({...typeToUpdate, ...data});
         } else throw new Error(TypeErrorsFlag.ID_NOT_FOUND);
     } catch (e) {
-        if (e instanceof Error && e.message === TypeErrorsFlag.ID_NOT_FOUND) handleTypeError(TypeErrorsFlag.ID_NOT_FOUND, data.id); 
-        else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name") handleTypeError(TypeErrorsFlag.NAME_ALREADY_USED, data.name);
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "logo") handleTypeError(TypeErrorsFlag.LOGO_ALREADY_USED, null);
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "color") handleTypeError(TypeErrorsFlag.COLOR_ALREADY_USED, null);
-        } 
-
-        throw new CustomError(
+        if (e instanceof QueryFailedError || e instanceof Error) {
+            handleTypeObjectError(e, data);
+        } throw new CustomError(
             new InternalServerError(),
             `Problème de connexion interne, le type n'a pas été mis à jour`
         );
@@ -133,7 +128,7 @@ export const deleteType = async (id: number): Promise<Type> => {
             return await TypeRepository.remove(typeToRemove);
         } else throw new Error(TypeErrorsFlag.ID_NOT_FOUND);
     } catch (e) {
-    if (e instanceof Error && e.message === TypeErrorsFlag.ID_NOT_FOUND) handleTypeError(TypeErrorsFlag.ID_NOT_FOUND, id);
+        if (e instanceof Error) handleTypeError(e, null);
         throw new CustomError(
             new InternalServerError(),
             `Problème de connexion interne, le type n'a pas été supprimé`

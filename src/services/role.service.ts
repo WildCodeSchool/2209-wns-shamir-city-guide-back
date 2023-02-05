@@ -2,10 +2,10 @@ import "reflect-metadata";
 import Role from "../entities/Role.entity";
 import { RoleRepository } from "../repositories/role.repository";
 import { QueryFailedError } from "typeorm";
-import  { retrieveKeyFromDbErrorMessage } from "../utils/string.utils";
 import {
   RoleErrorsFlag,
   handleRoleError,
+  handleRoleObjectError
 } from "../utils/errors/handleError/role.utils.error";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
@@ -40,8 +40,7 @@ export const getById = async (id: number): Promise<Role> => {
       if (isRoleExist !== null) return isRoleExist;
       else throw new Error(RoleErrorsFlag.ID_NOT_FOUND);
     } catch (e) {
-      if (e instanceof Error && e.message === RoleErrorsFlag.ID_NOT_FOUND)
-        handleRoleError(RoleErrorsFlag.ID_NOT_FOUND, id);
+      if (e instanceof Error) handleRoleError(e, null);
       throw new CustomError(
         new InternalServerError(),
         `Problème de connexion interne, le rôle n'a pas été chargé`
@@ -64,8 +63,7 @@ export const getByName = async (name: string): Promise<Role> => {
     if (isRoleNameExist) return isRoleNameExist;
     else throw new Error(RoleErrorsFlag.NAME_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === RoleErrorsFlag.NAME_NOT_FOUND)
-      handleRoleError(RoleErrorsFlag.NAME_NOT_FOUND, formatName);
+    if (e instanceof Error) handleRoleError(e, name);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le rôle ${formatName} n'a pas été chargé`
@@ -87,11 +85,9 @@ export const create = async (data: RoleValidator): Promise<Role> => {
     const createdRole = await RoleRepository.save(data);
     return createdRole;
   } catch (e) {
-    if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name")
-        handleRoleError(RoleErrorsFlag.NAME_ALREADY_USED, data.name);
-    }
-    throw new CustomError(
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleRoleObjectError(e, data);
+    } throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le rôle ${data.name} n'a pas été créé`
     );
@@ -114,13 +110,9 @@ export const update = async (data: RoleValidator): Promise<Role> => {
       return await RoleRepository.save({ ...roleToUpdate, ...data });
     } else throw new Error(RoleErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === RoleErrorsFlag.ID_NOT_FOUND)
-      handleRoleError(RoleErrorsFlag.ID_NOT_FOUND, data.id);
-    else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name")
-        handleRoleError(RoleErrorsFlag.NAME_ALREADY_USED, data.name);
-    }
-    throw new CustomError(
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleRoleObjectError(e, data);
+    } throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le rôle n'a pas été mise à jour`
     );
@@ -140,8 +132,7 @@ export const deleteRole = async (id: number): Promise<Role> => {
       return await RoleRepository.remove(roleToRemove);
     } else throw new Error(RoleErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === RoleErrorsFlag.ID_NOT_FOUND)
-      handleRoleError(RoleErrorsFlag.ID_NOT_FOUND, id);
+    if (e instanceof Error) handleRoleError(e, null);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, le rôle n'a pas été supprimé`

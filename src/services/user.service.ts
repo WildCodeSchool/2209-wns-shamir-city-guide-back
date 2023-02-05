@@ -1,8 +1,13 @@
 import User from "../entities/User.entity";
 import { UserRepository } from "../repositories/user.repository";
 import { QueryFailedError } from "typeorm";
-import { retrieveKeyFromDbErrorMessage, formatString } from "../utils/string.utils";
-import { UserErrorsFlag, handleUserError } from "../utils/errors/handleError/user.utils.error";
+import { formatString } from "../utils/string.utils";
+import { 
+    UserErrorsFlag, 
+    handleUserError, 
+    handleUserObjectError,
+    handleUserRoleObjectError
+} from "../utils/errors/handleError/user.utils.error";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { UserValidator } from "../validators/entities/user.validator.entity";
@@ -44,7 +49,7 @@ export const getById = async (id: number): Promise<User> => {
         if (isUserExist) return isUserExist;
         else throw new Error(UserErrorsFlag.ID_NOT_FOUND);
     } catch (e) {
-        if(e instanceof Error && e.message === UserErrorsFlag.ID_NOT_FOUND) handleUserError(UserErrorsFlag.ID_NOT_FOUND, id);
+        if (e instanceof Error) handleUserError(e, null);
         throw new CustomError(
             new InternalServerError(), 
             `Problème de connexion interne, l'utilisateur n'a pas été chargé`
@@ -64,7 +69,7 @@ export const getByUsername = async (username: string): Promise<User> => {
         if (isUserExist) return isUserExist;
         else throw new Error(UserErrorsFlag.USERNAME_NOT_FOUND);
     } catch (e) {
-        if(e instanceof Error && e.message === UserErrorsFlag.USERNAME_NOT_FOUND) handleUserError(UserErrorsFlag.USERNAME_NOT_FOUND, username);
+        if (e instanceof Error) handleUserError(e, username);
         throw new CustomError(
             new InternalServerError(), 
             `Problème de connexion interne, l'utilisateur n'a pas été chargé`
@@ -84,7 +89,7 @@ export const getByEmail = async (email: string): Promise<User> => {
         if (isUserExist) return isUserExist;
         else throw new Error(UserErrorsFlag.EMAIL_NOT_FOUND);
     } catch (e) {
-        if(e instanceof Error && e.message === UserErrorsFlag.EMAIL_NOT_FOUND) handleUserError(UserErrorsFlag.EMAIL_NOT_FOUND, email);
+        if (e instanceof Error) handleUserError(e, email);
         throw new CustomError(
             new InternalServerError(), 
             `Problème de connexion interne, l'utilisateur n'a pas été chargé`
@@ -102,7 +107,6 @@ export const createUser = async (data: UserValidator): Promise<User> => {
     const newUser = new User();
     newUser.username = formatString(data.username);
     newUser.email = data.email;
-
     try {
         newUser.hashedPassword = await argon2.hash(data.password);
 
@@ -110,11 +114,7 @@ export const createUser = async (data: UserValidator): Promise<User> => {
         if (defaultRole !== null) newUser.roles = [defaultRole];
         return await UserRepository.save(newUser);
     } catch (e) {
-        if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "username") handleUserError(UserErrorsFlag.USERNAME_ALREADY_USED, data.username);
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "email") handleUserError(UserErrorsFlag.EMAIL_ALREADY_USED, data.email);
-        }
-
+        if (e instanceof QueryFailedError || e instanceof Error) handleUserObjectError(e, data);
         throw new CustomError(
             new InternalServerError(),
             `Problème de connexion interne, l'utilisateur ${formatString(data.username)} n'a pas été créé`
@@ -130,19 +130,13 @@ export const createUser = async (data: UserValidator): Promise<User> => {
  */
 export const updateUser = async (data: UserValidator): Promise<User> => {
     data.username = formatString(data.username);
-
     try {
         const userToUpdate = await UserRepository.findOneBy({id: data.id});
         if (userToUpdate) {
             return await UserRepository.save({...userToUpdate, ...data});
         } else throw new Error(UserErrorsFlag.ID_NOT_FOUND);
     } catch (e) {
-        if(e instanceof Error && e.message === UserErrorsFlag.ID_NOT_FOUND) handleUserError(UserErrorsFlag.ID_NOT_FOUND, data.id);
-        if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "username") handleUserError(UserErrorsFlag.USERNAME_ALREADY_USED, data.username);
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "email") handleUserError(UserErrorsFlag.EMAIL_ALREADY_USED, data.email);
-        }
-
+        if (e instanceof QueryFailedError || e instanceof Error) handleUserObjectError(e, data);
         throw new CustomError(
             new InternalServerError(),
             `Problème de connexion interne, l'utilisateur ${formatString(data.username)} n'a pas été mis à jour`
@@ -174,10 +168,12 @@ export const updateUserRoles = async (user: UserValidator, roles: RoleValidator[
             return await UserRepository.save({...userToUpdate});
         } else throw new Error(UserErrorsFlag.ID_NOT_FOUND);
     } catch (e) {
-        if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-            if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "role_id") handleUserError(UserErrorsFlag.USERNAME_ALREADY_USED, user.username);
-        }
-
+        if (
+            e instanceof Error && 
+            e.message === UserErrorsFlag.ROLE_NOT_IN_DB &&
+            roleIsNotInDB !== null
+        ) handleUserRoleObjectError(e, roleIsNotInDB);
+        else if (e instanceof Error) handleUserError(e, null)
         throw new CustomError(
             new InternalServerError(),
             `Problème de connexion interne, l'utilisateur ${formatString(user.username)} n'a pas été mis à jour`
@@ -199,11 +195,11 @@ export const deleteUser = async (id: number): Promise<User> => {
         return userToRemove;
       } else throw new Error(UserErrorsFlag.ID_NOT_FOUND);
     } catch (e) {
-      if (e instanceof Error && e.message === UserErrorsFlag.ID_NOT_FOUND) handleUserError(UserErrorsFlag.ID_NOT_FOUND, id); 
-      throw new CustomError(
-        new InternalServerError(),
-        `Problème de connexion interne, l'utilisateur n'a pas été supprimé`
-      );
+        if (e instanceof Error) handleUserError(e, null);
+        throw new CustomError(
+            new InternalServerError(),
+            `Problème de connexion interne, l'utilisateur n'a pas été supprimé`
+        );
     }
 };
 

@@ -2,14 +2,12 @@ import "reflect-metadata";
 import Category from "../entities/Category.entity";
 import { CategoryRepository } from "../repositories/category.repository";
 import { QueryFailedError } from "typeorm";
-import {
-  retrieveKeyFromDbErrorMessage,
-  formatString,
-} from "../utils/string.utils";
+import { formatString } from "../utils/string.utils";
 
 import {
   CategoryErrorsFlag,
   handleCategoryError,
+  handleCategoryObjectError,
 } from "../utils/errors/handleError/category.utils.error";
 
 import { CustomError } from "../utils/errors/CustomError.utils.error";
@@ -47,8 +45,7 @@ export const getByName = async (name: string): Promise<Category> => {
     if (isCategoryNameExist) return isCategoryNameExist;
     else throw new Error(CategoryErrorsFlag.NAME_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CategoryErrorsFlag.NAME_NOT_FOUND)
-      handleCategoryError(CategoryErrorsFlag.NAME_NOT_FOUND, formatName);
+    if (e instanceof Error) handleCategoryError(e, formatName);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, la catégorie ${formatName} n'a pas été chargée`
@@ -68,8 +65,7 @@ export const getById = async (id: number): Promise<Category> => {
     if (isCategoryExist !== null) return isCategoryExist;
     else throw new Error(CategoryErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CategoryErrorsFlag.ID_NOT_FOUND)
-      handleCategoryError(CategoryErrorsFlag.ID_NOT_FOUND, id);
+    if (e instanceof Error) handleCategoryError(e, null);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, la catégorie n'a pas été chargée`
@@ -82,7 +78,6 @@ export const getById = async (id: number): Promise<Category> => {
  * @param {CategoryValidator} data Category object to create 
  * @returns the created category
  * @throws Error: 500 Internal Server Error | 422 Unprocessable Entity
-
 */
 export const create = async (data: CategoryValidator): Promise<Category> => {
   data.name = formatString(data.name);
@@ -91,15 +86,9 @@ export const create = async (data: CategoryValidator): Promise<Category> => {
     const createdCategory = await CategoryRepository.save(data);
     return createdCategory;
   } catch (e) {
-    if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name")
-        handleCategoryError(CategoryErrorsFlag.NAME_ALREADY_USED, data.name);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "icon")
-        handleCategoryError(CategoryErrorsFlag.ICON_ALREADY_USED, data.icon);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "color")
-        handleCategoryError(CategoryErrorsFlag.COLOR_ALREADY_USED, data.color);
-    }
-    throw new CustomError(
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleCategoryObjectError(e, data);
+    } throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, la catégorie ${data.name} n'a pas été créée`
     );
@@ -122,17 +111,9 @@ export const update = async (data: CategoryValidator): Promise<Category> => {
       return await CategoryRepository.save({ ...categoryToUpdate, ...data });
     } else throw new Error(CategoryErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CategoryErrorsFlag.ID_NOT_FOUND)
-      handleCategoryError(CategoryErrorsFlag.ID_NOT_FOUND, data.id);
-    else if (e instanceof QueryFailedError && e.driverError.detail?.length) {
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "name")
-        handleCategoryError(CategoryErrorsFlag.NAME_ALREADY_USED, data.name);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "icon")
-        handleCategoryError(CategoryErrorsFlag.ICON_ALREADY_USED, data.icon);
-      if (retrieveKeyFromDbErrorMessage(e.driverError.detail) === "color")
-        handleCategoryError(CategoryErrorsFlag.COLOR_ALREADY_USED, data.color);
-    }
-    throw new CustomError(
+    if (e instanceof QueryFailedError || e instanceof Error) {
+      handleCategoryObjectError(e, data);
+    } throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, la catégorie n'a pas été mise à jour`
     );
@@ -152,8 +133,7 @@ export const deleteCategory = async (id: number): Promise<Category> => {
       return await CategoryRepository.remove(categoryToRemove);
     } else throw new Error(CategoryErrorsFlag.ID_NOT_FOUND);
   } catch (e) {
-    if (e instanceof Error && e.message === CategoryErrorsFlag.ID_NOT_FOUND)
-      handleCategoryError(CategoryErrorsFlag.ID_NOT_FOUND, id);
+    if (e instanceof Error) handleCategoryError(e, null);
     throw new CustomError(
       new InternalServerError(),
       `Problème de connexion interne, la catégorie n'a pas été supprimée`
