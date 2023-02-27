@@ -7,6 +7,7 @@ import { NotFoundError, UnauthorizedError } from "../interfaces.utils.error";
 
 export enum AuthenticationErrorsFlag {
   EMAIL_NOT_FOUND = "EMAIL_NOT_FOUND",
+  USERNAME_NOT_FOUND = "USERNAME_NOT_FOUND",
 }
 
 export const handleAuthenticationError = (e: Error | QueryFailedError, data: UserValidator): void => {
@@ -15,6 +16,11 @@ export const handleAuthenticationError = (e: Error | QueryFailedError, data: Use
       throw new CustomError(
         new NotFoundError(),
         `L'utilisateur avec l'email ${data.email} n'existe pas en base de données`
+      );
+    case AuthenticationErrorsFlag.USERNAME_NOT_FOUND:
+      throw new CustomError(
+        new NotFoundError(),
+        `L'utilisateur avec le nom ${data.username} n'existe pas en base de données`
       );
     case StatusCodeMessage.UNAUTHORIZED: 
       throw new CustomError(

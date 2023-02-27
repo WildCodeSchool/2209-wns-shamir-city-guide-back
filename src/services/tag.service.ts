@@ -7,6 +7,7 @@ import { TagErrorsFlag, handleTagError, handleTagObjectError } from "../utils/er
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { TagValidator } from "../validators/entities/tag.validator.entity";
+import { DefaultIconsNames } from "../utils/constants.utils";
 
 
 /**
@@ -76,9 +77,12 @@ export const create = async (data: TagValidator): Promise<Tag> => {
   data.name = formatString(data.name);
     
   try {
+    const tagIconAlreadyInDB = await TagRepository.findByIconAndIfNotID(data.id, data.icon);
+    if (tagIconAlreadyInDB) data.icon = DefaultIconsNames.TAG;
+    
     const createdTag = await TagRepository.save(data);
     return createdTag;
-  } catch (e) {    
+  } catch (e) {        
     if (e instanceof QueryFailedError || e instanceof Error) {
       handleTagObjectError(e, data);
     } throw new CustomError(
@@ -97,6 +101,9 @@ export const create = async (data: TagValidator): Promise<Tag> => {
 export const update = async (data: TagValidator): Promise<Tag> => {
   data.name = formatString(data.name);
   try {
+    const tagIconAlreadyInDB = await TagRepository.findByIconAndIfNotID(data.id, data.icon);    
+    if (tagIconAlreadyInDB) data.icon = DefaultIconsNames.TAG;
+
     const tagToUpdate = await TagRepository.findOneBy({id: data.id});
     if (tagToUpdate) {
       return await TagRepository.save({...tagToUpdate, ...data});

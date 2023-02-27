@@ -43,6 +43,10 @@ export const enum UserRoles {
     USER = "USER"
 }
 
+export const enum DefaultIconsNames {
+    TAG = "LocalOfferOutlined"
+}
+
 
 /* FOR TESTS */ 
 export const strTooLong = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec adipiscing elit. Aenean commodo ligula eget dolor";

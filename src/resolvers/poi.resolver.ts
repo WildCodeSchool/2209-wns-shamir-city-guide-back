@@ -12,7 +12,8 @@ export class PoiResolver {
   @Query(() => [Poi])
   async getAllPoi(): Promise<Poi[]> {
     const pointsOfInterest: Poi[] = await PoiService.getAll();
-    return pointsOfInterest;
+    return pointsOfInterest.sort((a: Poi, b: Poi) => a.name.localeCompare(b.name));
+
   }
 
   @Query(() => Poi)

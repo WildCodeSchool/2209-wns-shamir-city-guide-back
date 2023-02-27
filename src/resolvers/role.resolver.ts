@@ -13,7 +13,8 @@ export class RoleResolver {
   @Authorized([UserRoles.SUPER_ADMIN])
   async getAllRoles(): Promise<Role[]> {
     const roles: Role[] = await RoleService.getAll();
-    return roles;
+    return roles.sort((a: Role, b: Role) => a.name.localeCompare(b.name));
+
   }
 
   @Authorized([UserRoles.SUPER_ADMIN])

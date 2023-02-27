@@ -12,7 +12,7 @@ export class CicuitResolver {
   @Query(() => [Circuit])
   async getAllCircuits(): Promise<Circuit[]> {
     const circuits: Circuit[] = await CircuitService.getAll();
-    return circuits;
+    return circuits.sort((a: Circuit, b: Circuit) => a.name.localeCompare(b.name));
   }
 
   @Query(() => Circuit)

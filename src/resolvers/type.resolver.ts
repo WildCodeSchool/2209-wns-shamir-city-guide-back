@@ -12,7 +12,7 @@ export class TypeResolver {
   @Query(() => [Type])
   async getAllTypes(): Promise<Type[]> {
     const types: Type[] = await TypeService.getAll();
-    return types;
+    return types.sort((a: Type, b: Type) => a.name.localeCompare(b.name));
   }
   
   @Query(() => Type)
