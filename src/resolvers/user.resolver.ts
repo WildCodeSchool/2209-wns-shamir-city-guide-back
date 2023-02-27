@@ -19,11 +19,12 @@ import { UserRoles } from "../utils/constants.utils";
 
 @Resolver(User)
 export class UserResolver { 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  //@Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     const users: User[] = await UserService.getAll();
-    return users;
+    return users.sort((a: User, b: User) => a.username.localeCompare(b.username));
+
   }
 
   @Authorized([UserRoles.SUPER_ADMIN])

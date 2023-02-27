@@ -11,7 +11,7 @@ export class CityResolver {
   @Query(() => [City])
   async getAllCities(): Promise<City[]> {
     const cities: City[] = await CityService.getAll();
-    return cities;
+    return cities.sort((a: City, b: City) => a.name.localeCompare(b.name));
   }
 
   @Query(() => City)

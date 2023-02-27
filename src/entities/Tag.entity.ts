@@ -10,7 +10,7 @@ export default class Tag {
   id?: number;
 
   @Field()
-  @Column({unique: true})
+  @Column({unique: true, length: 255})
   name: string;
 
   @Field()

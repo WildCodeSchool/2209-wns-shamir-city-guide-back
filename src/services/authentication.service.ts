@@ -11,6 +11,7 @@ import { handleAuthenticationError } from "../utils/errors/handleError/authentic
 import { UserValidator } from "../validators/entities/user.validator.entity";
 import Role from "../entities/Role.entity";
 import User from "../entities/User.entity";
+import { formatString } from "../utils/string.utils";
 
 
 /**
@@ -22,6 +23,8 @@ export const login = async (data: UserValidator): Promise<AuthenticatedUserType>
     try {
         const getUserByEmail: User | null = await UserRepository.findOneBy({ email: data.email });
         if (getUserByEmail === null && getUserByEmail !== undefined) throw new Error(UserErrorsFlag.EMAIL_NOT_FOUND);
+        const getUserByName: User | null = await UserRepository.findOneBy({ username: formatString(data.username) });
+        if (getUserByName === null && getUserByName !== undefined) throw new Error(UserErrorsFlag.USERNAME_NOT_FOUND);
 
         const isCorrectPwd = await verifyPassword(data.password, getUserByEmail.hashedPassword);
         if (isCorrectPwd) {

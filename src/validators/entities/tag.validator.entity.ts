@@ -70,6 +70,6 @@ const setTagValidator = async (tag: TagType): Promise<TagValidator> => {
   if (id !== null) tagValidator.id = id;
   tagValidator.name = name && name.length > 0 ? name.trim() : "";
   tagValidator.icon = icon && icon.length > 0 ? icon.trim() : "";
-
+  
   return await validateData(tagValidator);
 }

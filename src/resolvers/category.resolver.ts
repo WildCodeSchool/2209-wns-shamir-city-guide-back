@@ -18,7 +18,7 @@ export class CategoryResolver {
   @Query(() => [Category])
   async getAllCategories(): Promise<Category[]> {
     const categories: Category[] = await CategoryService.getAll();
-    return categories;
+    return categories.sort((a: Category, b: Category) => a.name.localeCompare(b.name));
   }
   
   @Query(() => Category)
