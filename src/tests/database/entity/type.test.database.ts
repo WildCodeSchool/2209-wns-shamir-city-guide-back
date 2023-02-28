@@ -3,9 +3,35 @@ import { TypeRepository } from "../../../repositories/type.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
 
- export const typeNames = ["Type1", "Type2", "Type3"],
-    typeLogos = ["https://type1.png", "https://type2.jpeg", "https://type3.png"],
-    typeColors = ["#4d5d53", "#ffa500", "#0e3d2b"];
+export const 
+    typeNames = [
+        "Histoire", 
+        "Nature", 
+        "Divertissement",
+        "Restauration",
+        "Art",
+        "Évènement",
+        "Vie nocture"
+    ],
+    typeLogos = [
+        "HistoryEduOutlined", 
+        "SpaOutlined", 
+        "AttractionsOutlined", 
+        "LocalDiningOutlined",
+        "PaletteOutlined",
+        "EventOutlined",
+        "NightlifeOutlined"
+    ],
+    typeColors = [
+        "#8b8378", 
+        "#68b253", 
+        "#74267e", 
+        "#26507e",
+        "#a71b29",
+        "#9d9e2e",
+        "#612ead"
+    ];
+
 
 
 export const loadTypeData = async () => {
