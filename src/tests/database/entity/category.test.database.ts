@@ -2,9 +2,28 @@ import Category from "../../../entities/Category.entity";
 import { CategoryRepository } from "../../../repositories/category.repository";
 import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 
-export const categoryNames = ["Cat1", "Cat2", "Cat3"],
-  categoryIcons = ["https://cat1.png", "https://cat2.png", "https://cat3.png"],
-  categoryColors = ["#fff", "#000", "#343434"];
+export const 
+  categoryNames = [
+    "Culturel", 
+    "Nature", 
+    "Gastronomie", 
+    "divertissement",
+    "Sportif"
+  ],
+  categoryIcons = [
+    "ChangeHistoryOutlined", 
+    "EmojiNatureOutlined", 
+    "TableRestaurantOutlined",
+    "TheaterComedyOutlined",
+    "SportsHandballOutlined"
+  ],
+  categoryColors = [
+    "#e06666", 
+    "#5c9665", 
+    "#660033",
+    "#9900ff",
+    "#0066ff"
+  ];
   
 export const loadCategoryData = async () => {
   await Promise.all(
