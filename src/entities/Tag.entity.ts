@@ -14,7 +14,7 @@ export default class Tag {
   name: string;
 
   @Field()
-  @Column()
+  @Column({length: 255})
   icon: string;
   
   @ManyToMany(() => PointOfInterest, (pointOfInterest) => pointOfInterest.tags)

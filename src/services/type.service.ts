@@ -11,6 +11,7 @@ import {
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { TypeValidator } from "../validators/entities/type.validator.entity";
+import { DefaultIconsNames } from "../utils/constants.utils";
 
 
 /**
@@ -80,6 +81,10 @@ export const create = async (data: TypeValidator): Promise<Type> => {
     data.name = formatString(data.name);
     
     try {
+        // To avoid duplicates logos except the default one
+        const typeLogoAlreadyInDB = await TypeRepository.findOneBy({ logo: data.logo});
+        if (typeLogoAlreadyInDB) data.logo = DefaultIconsNames.TYPE;
+
         const createdTag = await TypeRepository.save(data);
         return createdTag;
     } catch (e) {
@@ -101,6 +106,10 @@ export const create = async (data: TypeValidator): Promise<Type> => {
 export const update = async (data: TypeValidator): Promise<Type> => {
     data.name = formatString(data.name);
     try {
+        // To avoid duplicates logos except the default one
+        const typeIconAlreadyInDB = await TypeRepository.findByLogoAndIfNotID(data.id, data.logo);
+        if (typeIconAlreadyInDB) data.logo = DefaultIconsNames.TYPE;
+
         const typeToUpdate = await TypeRepository.findOneBy({id: data.id});
         if (typeToUpdate) {
             return await TypeRepository.save({...typeToUpdate, ...data});

@@ -14,7 +14,7 @@ export default class Type {
   name: string;
 
   @Field()
-  @Column({unique: true, length: 255})
+  @Column({length: 255})
   logo: string;
 
   @Field()

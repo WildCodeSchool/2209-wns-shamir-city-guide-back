@@ -13,6 +13,7 @@ import {
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { CategoryValidator } from "../validators/entities/category.validator.entity";
+import { DefaultIconsNames } from "../utils/constants.utils";
 
 
 /**
@@ -83,6 +84,10 @@ export const create = async (data: CategoryValidator): Promise<Category> => {
   data.name = formatString(data.name);
 
   try {
+    // To avoid duplicates icons except the default one
+    const categoryIconAlreadyInDB = await CategoryRepository.findOneBy({ icon: data.icon });
+      if (categoryIconAlreadyInDB) data.icon = DefaultIconsNames.CATEGORY;
+
     const createdCategory = await CategoryRepository.save(data);
     return createdCategory;
   } catch (e) {
@@ -107,6 +112,10 @@ export const update = async (data: CategoryValidator): Promise<Category> => {
     const categoryToUpdate = await CategoryRepository.findOneBy({
       id: data.id,
     });
+
+    const categoryIconAlreadyInDB = await CategoryRepository.findByIconAndIfNotID(data.id, data.icon);
+        if (categoryIconAlreadyInDB) data.icon = DefaultIconsNames.CATEGORY;
+
     if (categoryToUpdate) {
       return await CategoryRepository.save({ ...categoryToUpdate, ...data });
     } else throw new Error(CategoryErrorsFlag.ID_NOT_FOUND);

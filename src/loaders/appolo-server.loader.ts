@@ -32,6 +32,10 @@ export const startAppoloServer = async (): Promise<ApolloServer> => {
     authChecker: async ({ context }, requiredRoles) => { 
       let isAuthentified = false;
       const userId =  context?.user?.id ? context.user.id : null; 
+      // console.log("Context:", context, " | Required roles:", requiredRoles);
+      // console.log("UserId:", userId);
+      // console.log("User roles:", context.user.roles);
+      
       
       if (userId && await authenticationService.hasRole(userId, requiredRoles)) {  
         isAuthentified = true;
