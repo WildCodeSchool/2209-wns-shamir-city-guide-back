@@ -11,6 +11,7 @@ import {
   validateUpdateTagInput,
 } from "../validators/entities/tag.validator.entity";
 import { TagType } from "../types/tag.type";
+import { UserRoles } from "../utils/constants.utils";
 
 
 @Resolver(Tag)
@@ -33,21 +34,21 @@ export class TagResolver {
     return await TagService.getByName(verifiedName);
   }
 
-  //@Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async createTag(@Arg("tag") tag: TagType): Promise<Tag> {
     const verifiedData: TagValidator = await validateCreationTagInput(tag);
     return await TagService.create(verifiedData);
   }
 
-  //@Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async updateTag(@Arg("tag") tag: TagType): Promise<Tag> {
     const verifiedData: TagValidator = await validateUpdateTagInput(tag);
     return await TagService.update(verifiedData);
   }
-
-  //@Authorized([UserRoles.SUPER_ADMIN])
+  
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async deleteTag(@Arg("id") id: number): Promise<Tag> {
     const verifiedId = await validateIdInput(id);

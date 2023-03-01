@@ -22,7 +22,7 @@ export default class Circuit {
   picture: string;
 
   @Field()
-  @Column()
+  @Column({length: 500})
   description: string;
 
   @Field()

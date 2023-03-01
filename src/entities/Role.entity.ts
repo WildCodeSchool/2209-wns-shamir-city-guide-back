@@ -10,7 +10,7 @@ export default class Role {
   id?: number;
 
   @Field()
-  @Column({unique: true})
+  @Column({unique: true, length: 255})
   name: string;
   
   @ManyToMany(() => User, (user) => user.roles)

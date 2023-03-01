@@ -11,11 +11,11 @@ export default class User {
   id: number;
 
   @Field()
-  @Column({unique: true})
+  @Column({unique: true, length: 255})
   username: string;
 
   @Field()
-  @Column({unique: true})
+  @Column({unique: true, length: 255})
   email: string;
 
   @Column()

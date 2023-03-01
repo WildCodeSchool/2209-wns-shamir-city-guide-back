@@ -77,7 +77,8 @@ export const create = async (data: TagValidator): Promise<Tag> => {
   data.name = formatString(data.name);
     
   try {
-    const tagIconAlreadyInDB = await TagRepository.findByIconAndIfNotID(data.id, data.icon);
+    // To avoid duplicates icons except the default one
+    const tagIconAlreadyInDB = await TagRepository.findOneBy({ icon: data.icon});
     if (tagIconAlreadyInDB) data.icon = DefaultIconsNames.TAG;
     
     const createdTag = await TagRepository.save(data);
@@ -101,7 +102,9 @@ export const create = async (data: TagValidator): Promise<Tag> => {
 export const update = async (data: TagValidator): Promise<Tag> => {
   data.name = formatString(data.name);
   try {
+    // To avoid duplicates icons except the default one
     const tagIconAlreadyInDB = await TagRepository.findByIconAndIfNotID(data.id, data.icon);    
+    
     if (tagIconAlreadyInDB) data.icon = DefaultIconsNames.TAG;
 
     const tagToUpdate = await TagRepository.findOneBy({id: data.id});

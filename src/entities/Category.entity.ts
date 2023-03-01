@@ -11,20 +11,20 @@ export default class Category {
 
   @Field()
   @Column({
-    unique: true
+    unique: true,
+    length: 255
   })
   name: string;
 
   @Field()
   @Column({
-    unique: true
+    unique: true,
+    length: 7
   })
   color: string;
 
   @Field()
-  @Column({
-    unique: true
-  })
+  @Column({length: 255})
   icon: string;
 
 
