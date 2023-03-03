@@ -62,7 +62,7 @@ export class UserResolver {
     return await UserService.updateUser(verifiedData);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  //@Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => User)
   async updateUserRoles(
     @Arg("payload") payload: UpdateUserRoles, 
