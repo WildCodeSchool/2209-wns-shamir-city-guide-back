@@ -215,9 +215,7 @@ describe("unit/validator/validate.validator suite of tests", () => {
         })
         rating: number;
       
-        @IsEmail({
-            message: "L'email doit avoir la forme d'un email"
-        })
+        @IsEmail()
         email: string;
       
         @IsDate({
