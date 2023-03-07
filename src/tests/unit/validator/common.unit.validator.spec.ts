@@ -8,7 +8,7 @@ import { CommonErrorValidator } from "../../../validators/messages.validator";
 describe("unit/validator/common.validator suite of tests", () => {
     it("Should return 1", async () => {
         const result = await validateIdInput(1);
-        expect(result).toBe(2);
+        expect(result).toBe(1);
         expect(typeof result === "number").toBe(true);
     })
 
