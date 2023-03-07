@@ -16,6 +16,7 @@ jobs:
         run: npm i && npm run test:unit
   docker:
     needs: tests-jest-unit
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
