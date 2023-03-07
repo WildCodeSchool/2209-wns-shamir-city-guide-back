@@ -16,7 +16,6 @@ jobs:
         run: npm i && npm run test:unit
   docker:
     needs: tests-jest-unit
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev'
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
@@ -32,4 +31,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/city_guid_back:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/city_guid_backend:latest
