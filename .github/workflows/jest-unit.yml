@@ -13,7 +13,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
       - name: Launch jest unit tests
-        run: npm i && npm run test:unit
+        run: npm i && npm run test:ci:unit
   # docker:
   #   needs: tests-jest-unit
   #   if: github.ref == 'refs/heads/main'
