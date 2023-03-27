@@ -18,6 +18,12 @@ describe("unit/validator/common.validator suite of tests", () => {
         expect(typeof result === "string").toBe(true);
     })
 
+    it("Should return test", async () => {
+        const result = await validateEmailInput("test@gmail.com");
+        expect(result).toBe("test@gmail.com");
+        expect(typeof result === "string").toBe(true);
+    })
+
     it("Should return an error 422 Unprocessable Entity", async () => {
         try {
             await validateNameInput("");
