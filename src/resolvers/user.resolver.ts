@@ -19,7 +19,7 @@ import { UserRoles } from "../utils/constants.utils";
 
 @Resolver(User)
 export class UserResolver { 
-  // @Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     const users: User[] = await UserService.getAll();
@@ -27,35 +27,35 @@ export class UserResolver {
 
   }
 
-  //([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => User)
   async getUserById(@Arg("id") id: number): Promise<User> {
     const verifiedId: number = await validateIdInput(id);
     return await UserService.getById(verifiedId);
   }
 
-  //([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => User)
   async getUserByUsername(@Arg("username") username: string): Promise<User> {
     const verifiedUsername: string = await validateNameInput(username);
     return await UserService.getByUsername(verifiedUsername);
   }
 
-  //([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => User)
   async getUserByEmail(@Arg("email") email: string): Promise<User> {
     const verifiedEmail: string = await validateEmailInput(email);
     return await UserService.getByEmail(verifiedEmail);
   }
 
-  //([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => User)
   async createUser(@Arg("user") user: UserType): Promise<User> {
     const verifiedData: UserValidator = await validateCreationUserInput(user);
     return await UserService.createUser(verifiedData);
   }
 
-  //([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => User)
   async updateUser(@Arg("user") user: UserType): Promise<User> {
     const verifiedData: UserValidator = await validateUpdateUserInput(user);
@@ -72,7 +72,7 @@ export class UserResolver {
     return await UserService.updateUserRoles(verifiedUserData, verifiedUserRoles);
   }
 
-  //([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => User)
   async deleteUser(@Arg("id") id: number): Promise<User> {
     const verifiedId = await validateIdInput(id);

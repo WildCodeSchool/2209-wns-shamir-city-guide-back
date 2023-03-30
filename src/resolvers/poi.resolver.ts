@@ -29,7 +29,7 @@ export class PoiResolver {
     return await PoiService.getByName(verifiedName);
   }
 
-  // @Authorized([UserRoles.CITY_ADMIN])
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Poi)
   async createPoi(
     @Arg("poi") poi: PoiType
@@ -38,7 +38,7 @@ export class PoiResolver {
     return await PoiService.create(verifiedData);
   }
 
-  // @Authorized([UserRoles.CITY_ADMIN])
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Poi)
   async updatePoi(
     @Arg("poi") poi: PoiType,
@@ -47,7 +47,7 @@ export class PoiResolver {
     return await PoiService.update(verifiedData);
   }
 
-  // @Authorized([UserRoles.CITY_ADMIN])
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Poi)
   async deletePoi(@Arg("id") id: number): Promise<Poi> {
     const verifiedId = await validateIdInput(id);

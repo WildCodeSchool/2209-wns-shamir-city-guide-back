@@ -27,7 +27,7 @@ export class TypeResolver {
     return await TypeService.getByName(verifiedName);
   }
   
-  // @Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Type)
   async createType(
     @Arg("type") type: TypeType
@@ -36,7 +36,7 @@ export class TypeResolver {
     return await TypeService.create(verifiedData);
   }
 
-  // @Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Type)
   async updateType(
     @Arg("type") type: TypeType
@@ -45,7 +45,7 @@ export class TypeResolver {
     return await TypeService.update(verifiedData);
   }
 
-  // @Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Type)
   async deleteType(@Arg("id") id: number): Promise<Type> {
     const verifiedId = await validateIdInput(id);
