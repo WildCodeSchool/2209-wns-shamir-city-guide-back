@@ -34,24 +34,32 @@ export class TagResolver {
     return await TagService.getByName(verifiedName);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  // @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async createTag(@Arg("tag") tag: TagType): Promise<Tag> {
     const verifiedData: TagValidator = await validateCreationTagInput(tag);
     return await TagService.create(verifiedData);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  // @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async updateTag(@Arg("tag") tag: TagType): Promise<Tag> {
     const verifiedData: TagValidator = await validateUpdateTagInput(tag);
     return await TagService.update(verifiedData);
   }
   
-  @Authorized([UserRoles.SUPER_ADMIN])
+  // @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Tag)
   async deleteTag(@Arg("id") id: number): Promise<Tag> {
     const verifiedId = await validateIdInput(id);
     return await TagService.deleteTag(verifiedId);
+  }
+
+  // @Authorized([UserRoles.SUPER_ADMIN])
+  @Mutation(() => String)
+  async testTag(@Arg("str") str: string): Promise<string> {
+    console.log("STR RECEIVED =>", str);
+    
+    return "test succed";
   }
 }

@@ -33,7 +33,7 @@ export class CategoryResolver {
     return await CategoryService.getById(verifiedId);
   }
     
-  @Authorized([UserRoles.SUPER_ADMIN])
+  //@Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Category)
   async createCategory(
     @Arg("category") category: CategoryType
@@ -44,7 +44,7 @@ export class CategoryResolver {
     return await CategoryService.create(verifiedData);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  //@Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Category)
   async updateCategory(
     @Arg("category") category: CategoryType
@@ -55,7 +55,7 @@ export class CategoryResolver {
     return await CategoryService.update(verifiedData);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  //@Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => Category)
   async deleteCategory(@Arg("id") id: number): Promise<Category> {
     const verifiedId = await validateIdInput(id);
