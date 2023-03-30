@@ -29,6 +29,7 @@ export const startAppoloServer = async (): Promise<ApolloServer> => {
       CategoryResolver,
       CicuitResolver
     ],
+    validate: { forbidUnknownValues: false },
     authChecker: async ({ context }, requiredRoles) => { 
       let isAuthentified = false;
       const userId =  context?.user?.id ? context.user.id : null; 
