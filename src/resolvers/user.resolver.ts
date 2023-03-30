@@ -19,7 +19,7 @@ import { UserRoles } from "../utils/constants.utils";
 
 @Resolver(User)
 export class UserResolver { 
-  //@Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     const users: User[] = await UserService.getAll();
@@ -62,7 +62,7 @@ export class UserResolver {
     return await UserService.updateUser(verifiedData);
   }
 
-  //@Authorized([UserRoles.SUPER_ADMIN])
+  // /([UserRoles.SUPER_ADMIN])
   @Mutation(() => User)
   async updateUserRoles(
     @Arg("payload") payload: UpdateUserRoles, 

@@ -54,4 +54,12 @@ export class TagResolver {
     const verifiedId = await validateIdInput(id);
     return await TagService.deleteTag(verifiedId);
   }
+
+  @Authorized([UserRoles.SUPER_ADMIN])
+  @Mutation(() => String)
+  async testTag(@Arg("str") str: string): Promise<string> {
+    console.log("STR RECEIVED =>", str);
+    
+    return "test succed";
+  }
 }
