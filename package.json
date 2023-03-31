@@ -7,6 +7,7 @@
     "build": "tsc --project ./",
     "start": "npm run build && node dist/src/server.js",
     "dev": "ts-node-dev src/server.ts",
+    "test:ci:unit": "jest src/tests/unit --verbose --detectOpenHandles --colors --coverage",
     "test:unit": "jest --watchAll src/tests/unit --verbose --detectOpenHandles --colors --coverage",
     "test:integration": "jest --watchAll src/tests/integration --verbose --detectOpenHandles --colors --coverage",
     "test:functionnal": "jest --watchAll src/tests/functionnal --verbose --detectOpenHandles --colors --coverage"
