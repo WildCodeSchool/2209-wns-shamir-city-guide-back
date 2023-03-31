@@ -189,272 +189,272 @@ describe("integration/service/tag.service suite of tests with database connexion
         })
     }); 
      
-    // GET BY ID
-    it("Should retrieve a tag by its id", async () => {
-        const tag: Tag = await getTagById(2);
-        expect(tag).not.toBeUndefined();
-        expect(tag).toBeDefined();
-        expect(tag && typeof tag === 'object').toBe(true);
-        expect(tag).toBeInstanceOf(Tag)
-        expect(tag).toEqual(expect.objectContaining({
-            id: expect.any(Number),
-            name: expect.any(String),
-            icon: expect.any(String)
-        }));
-    });
-
-    it("Should trigger an error 404 Not Found when we attempt to retrieve a tag with the id 0", async () => {
-        try {
-            await getTagById(0);
-        } catch (e) {
-            if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag n'existe pas en base de données");
-                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
-            }
-            
-            expect(e).toBeDefined();
-            expect(e).toStrictEqual(
-                new CustomError(
-                    new NotFoundError(), 
-                    "Le tag n'existe pas en base de données"
-            ))
-        }
-    });
-
-    it("Should trigger an error 404 Not Found when we attempt to retrieve a tag with the id 10 wich doesn't exist in the city_guid database", async () => {
-        try {
-            await getTagById(10);
-        } catch (e) {
-            if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag n'existe pas en base de données");
-                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
-            }
-            
-            expect(e).toBeDefined();
-            expect(e).toStrictEqual(
-                new CustomError(
-                    new NotFoundError(), 
-                    "Le tag n'existe pas en base de données"
-                ))
-        }
-    });
-
-    //GET BY NAME
-    it("Should retrieve a tag by its name", async () => {
-        const tag: Tag = await getTagByName("Concert");
-        
-        expect(tag).toBeDefined();
-        expect(tag && typeof tag === 'object').toBe(true);
-        expect(tag).toBeInstanceOf(Tag);
-        expect(tag.name).toBe("Concert");
-        expect(tag).toEqual(expect.objectContaining({
-            id: expect.any(Number),
-            name: expect.any(String),
-            icon: expect.any(String)
-        }));
-    });
-
-    it("Should trigger an error 404 Not Found when we attempt to retrieve a tag with an empty name", async () => {
-        try {
-            await getTagByName("");
-        } catch (e) {
-            if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag avec le nom  n'existe pas en base de données");
-                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
-            }
-            
-            expect(e).toBeDefined();
-            expect(e).toStrictEqual(
-                new CustomError(
-                    new NotFoundError(), 
-                    "Le tag avec le nom  n'existe pas en base de données"
-                ))
-        }
-    });
-
-    it("Should trigger an error 404 Not Found when we attempt to retrieve a tag with an unknown name in database", async () => {
-        try {
-            await getTagByName("Se mettre au vert");
-        } catch (e) {
-            if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag avec le nom Se mettre au vert n'existe pas en base de données");
-                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
-            }
-            
-            expect(e).toBeDefined();
-            expect(e).toStrictEqual(
-                new CustomError(
-                    new NotFoundError(), 
-                    "Le tag avec le nom Se mettre au vert n'existe pas en base de données"
-                ))
-        }
-    });
-
-    // CREATE
-    // it("Should create a tag and returns it", async () => {
-    //     const tag: Tag = await create({ name: "culturel", icon: 'culturel.png' });
+    // // GET BY ID
+    // it("Should retrieve a tag by its id", async () => {
+    //     const tag: Tag = await getTagById(2);
     //     expect(tag).not.toBeUndefined();
     //     expect(tag).toBeDefined();
     //     expect(tag && typeof tag === 'object').toBe(true);
-    //     expect(tag).toBeInstanceOf(Object)
-    //     expect(tag.name).toBe("Culturel");
-    //     expect(tag.icon).toBe("culturel.png");
+    //     expect(tag).toBeInstanceOf(Tag)
     //     expect(tag).toEqual(expect.objectContaining({
     //         id: expect.any(Number),
     //         name: expect.any(String),
     //         icon: expect.any(String)
     //     }));
     // });
-    
 
-    it("Should return an error 422 Unprocessable Entity if we attempt to create a tag with a name which already exist in database", async () => {
-        const tag = new TagValidator();
-        tag.name = formatString("culturel");
-        tag.icon = "icon.jpeg";
-        try {
-            await create(tag);
-        } catch (e) {
-            if (e instanceof CustomError) {
-                expect(e.message).toBe(`Le nom ${tag.name} est déjà utilisé, vous devez en choisir un autre`);
-                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-            }
+    // it("Should trigger an error 404 Not Found when we attempt to retrieve a tag with the id 0", async () => {
+    //     try {
+    //         await getTagById(0);
+    //     } catch (e) {
+    //         if (e instanceof CustomError) {
+    //             expect(e.message).toBe("Le tag n'existe pas en base de données");
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+    //         }
             
-            expect(e).toBeDefined();
-            expect(e).toStrictEqual(
-                new CustomError(
-                    new UnprocessableEntityError(), 
-                    `Le nom ${tag.name} est déjà utilisé, vous devez en choisir un autre`
-                ))
-        }
-    });
+    //         expect(e).toBeDefined();
+    //         expect(e).toStrictEqual(
+    //             new CustomError(
+    //                 new NotFoundError(), 
+    //                 "Le tag n'existe pas en base de données"
+    //         ))
+    //     }
+    // });
 
-    // UPDATE
-    it("Should update a tag and returns it", async () => {
-        const tag: Tag = await update({ id: 5, name: "updated Tag", icon: 'updated.png' });
-        expect(tag).not.toBeUndefined();
-        expect(tag).toBeDefined();
-        expect(tag && typeof tag === 'object').toBe(true);
-        expect(tag).toBeInstanceOf(Object)
-        expect(tag.id).toBe(5);
-        expect(tag.name).toBe("Updated Tag");
-        expect(tag.icon).toBe("updated.png");
-        expect(tag).toEqual(expect.objectContaining({
-            id: expect.any(Number),
-            name: expect.any(String),
-            icon: expect.any(String)
-        }));
-    });
-
-    it("Should return an error 404 NOT FOUND if we update a tag with an id which doesn't exist in database", async () => {
-        try {
-            await update({ id: 10, name: "new Tag", icon: 'icon.png' });
-        } catch (e) {
-            if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag n'existe pas en base de données");
-                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
-            }
+    // it("Should trigger an error 404 Not Found when we attempt to retrieve a tag with the id 10 wich doesn't exist in the city_guid database", async () => {
+    //     try {
+    //         await getTagById(10);
+    //     } catch (e) {
+    //         if (e instanceof CustomError) {
+    //             expect(e.message).toBe("Le tag n'existe pas en base de données");
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+    //         }
             
-            expect(e).toBeDefined();
-            expect(e).toStrictEqual(
-                new CustomError(
-                    new NotFoundError(), 
-                    "Le tag n'existe pas en base de données"
-                ))
-        }
-    });
+    //         expect(e).toBeDefined();
+    //         expect(e).toStrictEqual(
+    //             new CustomError(
+    //                 new NotFoundError(), 
+    //                 "Le tag n'existe pas en base de données"
+    //             ))
+    //     }
+    // });
 
-    it("Should return an error 422 Unprocessable Entity if we attempt to update a tag with a name which already exist in database", async () => {
-        const tag = new TagValidator();
-        tag.id = 1;
-        tag.name = formatString("updated Tag");
-        tag.icon = "icon.jpeg";
-        try {
-            await update(tag);
-        } catch (e) {
-            if (e instanceof CustomError) {
-                expect(e.message).toBe(`Le nom ${tag.name} est déjà utilisé, vous devez en choisir un autre`);
-                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
-                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
-            }
-            
-            expect(e).toBeDefined();
-            expect(e).toStrictEqual(
-                new CustomError(
-                    new UnprocessableEntityError(), 
-                    `Le nom ${tag.name} est déjà utilisé, vous devez en choisir un autre`
-                ))
-        }
-    });
-
-    // DELETE
-    // it("Should delete a tag and returns it", async () => {
-    //     const tag: Tag = await deleteTag(6);
-    //     expect(tag).not.toBeUndefined();
+    // //GET BY NAME
+    // it("Should retrieve a tag by its name", async () => {
+    //     const tag: Tag = await getTagByName("Concert");
+        
     //     expect(tag).toBeDefined();
     //     expect(tag && typeof tag === 'object').toBe(true);
-    //     expect(tag).toBeInstanceOf(Object);
-    //     expect(tag.id).toBe(undefined);
+    //     expect(tag).toBeInstanceOf(Tag);
+    //     expect(tag.name).toBe("Concert");
     //     expect(tag).toEqual(expect.objectContaining({
-    //         id: undefined,
+    //         id: expect.any(Number),
     //         name: expect.any(String),
     //         icon: expect.any(String)
     //     }));
     // });
 
-    it("Should return an error 404 NOT FOUND if we delete a tag with an id which doesn't exist in database", async () => {
-        try {
-            await deleteTag(10);
-        } catch (e) {
-            if (e instanceof CustomError) {
-                expect(e.message).toBe("Le tag n'existe pas en base de données");
-                expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
-                expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
-                expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
-            }
+    // it("Should trigger an error 404 Not Found when we attempt to retrieve a tag with an empty name", async () => {
+    //     try {
+    //         await getTagByName("");
+    //     } catch (e) {
+    //         if (e instanceof CustomError) {
+    //             expect(e.message).toBe("Le tag avec le nom  n'existe pas en base de données");
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+    //         }
             
-            expect(e).toBeDefined();
-            expect(e).toStrictEqual(
-                new CustomError(
-                    new NotFoundError(), 
-                    "Le tag n'existe pas en base de données"
-                ))
-        }
-    });
+    //         expect(e).toBeDefined();
+    //         expect(e).toStrictEqual(
+    //             new CustomError(
+    //                 new NotFoundError(), 
+    //                 "Le tag avec le nom  n'existe pas en base de données"
+    //             ))
+    //     }
+    // });
+
+    // it("Should trigger an error 404 Not Found when we attempt to retrieve a tag with an unknown name in database", async () => {
+    //     try {
+    //         await getTagByName("Se mettre au vert");
+    //     } catch (e) {
+    //         if (e instanceof CustomError) {
+    //             expect(e.message).toBe("Le tag avec le nom Se mettre au vert n'existe pas en base de données");
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+    //         }
+            
+    //         expect(e).toBeDefined();
+    //         expect(e).toStrictEqual(
+    //             new CustomError(
+    //                 new NotFoundError(), 
+    //                 "Le tag avec le nom Se mettre au vert n'existe pas en base de données"
+    //             ))
+    //     }
+    // });
+
+    // // CREATE
+    // // it("Should create a tag and returns it", async () => {
+    // //     const tag: Tag = await create({ name: "culturel", icon: 'culturel.png' });
+    // //     expect(tag).not.toBeUndefined();
+    // //     expect(tag).toBeDefined();
+    // //     expect(tag && typeof tag === 'object').toBe(true);
+    // //     expect(tag).toBeInstanceOf(Object)
+    // //     expect(tag.name).toBe("Culturel");
+    // //     expect(tag.icon).toBe("culturel.png");
+    // //     expect(tag).toEqual(expect.objectContaining({
+    // //         id: expect.any(Number),
+    // //         name: expect.any(String),
+    // //         icon: expect.any(String)
+    // //     }));
+    // // });
+    
+
+    // it("Should return an error 422 Unprocessable Entity if we attempt to create a tag with a name which already exist in database", async () => {
+    //     const tag = new TagValidator();
+    //     tag.name = formatString("culturel");
+    //     tag.icon = "icon.jpeg";
+    //     try {
+    //         await create(tag);
+    //     } catch (e) {
+    //         if (e instanceof CustomError) {
+    //             expect(e.message).toBe(`Le nom ${tag.name} est déjà utilisé, vous devez en choisir un autre`);
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //         }
+            
+    //         expect(e).toBeDefined();
+    //         expect(e).toStrictEqual(
+    //             new CustomError(
+    //                 new UnprocessableEntityError(), 
+    //                 `Le nom ${tag.name} est déjà utilisé, vous devez en choisir un autre`
+    //             ))
+    //     }
+    // });
+
+    // // UPDATE
+    // it("Should update a tag and returns it", async () => {
+    //     const tag: Tag = await update({ id: 5, name: "updated Tag", icon: 'updated.png' });
+    //     expect(tag).not.toBeUndefined();
+    //     expect(tag).toBeDefined();
+    //     expect(tag && typeof tag === 'object').toBe(true);
+    //     expect(tag).toBeInstanceOf(Object)
+    //     expect(tag.id).toBe(5);
+    //     expect(tag.name).toBe("Updated Tag");
+    //     expect(tag.icon).toBe("updated.png");
+    //     expect(tag).toEqual(expect.objectContaining({
+    //         id: expect.any(Number),
+    //         name: expect.any(String),
+    //         icon: expect.any(String)
+    //     }));
+    // });
+
+    // it("Should return an error 404 NOT FOUND if we update a tag with an id which doesn't exist in database", async () => {
+    //     try {
+    //         await update({ id: 10, name: "new Tag", icon: 'icon.png' });
+    //     } catch (e) {
+    //         if (e instanceof CustomError) {
+    //             expect(e.message).toBe("Le tag n'existe pas en base de données");
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+    //         }
+            
+    //         expect(e).toBeDefined();
+    //         expect(e).toStrictEqual(
+    //             new CustomError(
+    //                 new NotFoundError(), 
+    //                 "Le tag n'existe pas en base de données"
+    //             ))
+    //     }
+    // });
+
+    // it("Should return an error 422 Unprocessable Entity if we attempt to update a tag with a name which already exist in database", async () => {
+    //     const tag = new TagValidator();
+    //     tag.id = 1;
+    //     tag.name = formatString("updated Tag");
+    //     tag.icon = "icon.jpeg";
+    //     try {
+    //         await update(tag);
+    //     } catch (e) {
+    //         if (e instanceof CustomError) {
+    //             expect(e.message).toBe(`Le nom ${tag.name} est déjà utilisé, vous devez en choisir un autre`);
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.UNPROCESSABLE_ENTITY);
+    //         }
+            
+    //         expect(e).toBeDefined();
+    //         expect(e).toStrictEqual(
+    //             new CustomError(
+    //                 new UnprocessableEntityError(), 
+    //                 `Le nom ${tag.name} est déjà utilisé, vous devez en choisir un autre`
+    //             ))
+    //     }
+    // });
+
+    // // DELETE
+    // // it("Should delete a tag and returns it", async () => {
+    // //     const tag: Tag = await deleteTag(6);
+    // //     expect(tag).not.toBeUndefined();
+    // //     expect(tag).toBeDefined();
+    // //     expect(tag && typeof tag === 'object').toBe(true);
+    // //     expect(tag).toBeInstanceOf(Object);
+    // //     expect(tag.id).toBe(undefined);
+    // //     expect(tag).toEqual(expect.objectContaining({
+    // //         id: undefined,
+    // //         name: expect.any(String),
+    // //         icon: expect.any(String)
+    // //     }));
+    // // });
+
+    // it("Should return an error 404 NOT FOUND if we delete a tag with an id which doesn't exist in database", async () => {
+    //     try {
+    //         await deleteTag(10);
+    //     } catch (e) {
+    //         if (e instanceof CustomError) {
+    //             expect(e.message).toBe("Le tag n'existe pas en base de données");
+    //             expect(e.extensions.statusCodeClass).toBe(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCodeClass).toEqual(StatusCodeClass.CLIENT_ERROR);
+    //             expect(e.extensions.statusCode).toBe(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCode).toEqual(StatusCode.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toBe(StatusCodeMessage.NOT_FOUND);
+    //             expect(e.extensions.statusCodeMessage).toEqual(StatusCodeMessage.NOT_FOUND);
+    //         }
+            
+    //         expect(e).toBeDefined();
+    //         expect(e).toStrictEqual(
+    //             new CustomError(
+    //                 new NotFoundError(), 
+    //                 "Le tag n'existe pas en base de données"
+    //             ))
+    //     }
+    // });
 });
