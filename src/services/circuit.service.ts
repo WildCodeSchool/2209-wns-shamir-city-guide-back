@@ -218,6 +218,18 @@ export const deleteCircuit = async (id: number): Promise<Circuit> => {
   }
 };
 
+export const getAllByVilleId = async (villeId : number) : Promise<Circuit> => {
+  try {
+  const circuitsByVilleId = await CircuitRepository.getAllCircuitsByVille({villeId});
+  return circuitsByVilleId;
+} catch (e) {
+    if (e instanceof Error) handleCircuitError(e, null);
+    throw new CustomError(
+        new InternalServerError(),
+        `Aucun circuit n'est relié à cette ville pour le moment`
+    );
+  }
+
 const checkIfPoisAllExist = async (pois: PoiValidator[]): Promise<null | string> => {
   for (let i = 0; i < pois.length; i++) {
     const id = pois[i].id;
