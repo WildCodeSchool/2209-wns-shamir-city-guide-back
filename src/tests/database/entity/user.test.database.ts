@@ -7,9 +7,9 @@ import { emojiTest, emojiAlambic } from "../../../utils/emoji.utils";
 import { UserRoles } from "../../../utils/constants.utils";
 
 
-export const userUsernames = ["Shirley", "Christelle", "Medhi", "Thibault"],
-  userEmails = ["shirley@yopmail.fr", "christelle@gmail.com", "medhi@hotmail.fr", "thibault@gmail.com"],
-  userPwds = ["Shirley2023$", "Christelle2023$", "Medhi2023$", "Thibault2023$"];
+export const userUsernames = ["Shirley", "Christelle", "Mehdi", "Thibault"],
+  userEmails = ["shirley@yopmail.fr", "christelle@gmail.com", "mehdi@hotmail.fr", "thibault@gmail.com"],
+  userPwds = ["Shirley2023$", "Christelle2023$", "Mehdi2023$", "Thibault2023$"];
   
 export const loadUserData = async () => {
     const SUPER_ADMIN: Role | null = await RoleRepository.findOneBy({ name: UserRoles.SUPER_ADMIN });
