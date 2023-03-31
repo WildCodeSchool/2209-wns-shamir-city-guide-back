@@ -46,8 +46,4 @@ export class CicuitResolver {
     return await CircuitService.deleteCircuit(verifiedId);
   }
 
-  @Mutation(() => Circuit)
-  async getAllCircuitsByVille(@Arg("villeId") villeId: number) : Promise<Circuit> {
-    return await CircuitService.getAllByVilleId(villeId)
-  }
 }
