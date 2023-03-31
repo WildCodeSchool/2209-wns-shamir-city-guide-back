@@ -7,7 +7,7 @@ export const
     "Culturel", 
     "Nature", 
     "Gastronomie", 
-    "divertissement",
+    "Divertissement",
     "Sportif"
   ],
   categoryIcons = [

@@ -7,7 +7,7 @@ export const
     typeNames = [
         "Histoire", 
         "Nature", 
-        "Divertissement",
+        "Divertissement",  
         "Restauration",
         "Art",
         "Évènement",
