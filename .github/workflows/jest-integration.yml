@@ -8,13 +8,13 @@
 
 # jobs:
 #   # Label of the container job
-#   container-job:
+#   tests-jest-integration:
 #     # Containers must run in Linux based operating systems
 #     runs-on: ubuntu-latest
-#     # Docker Hub image that `container-job` executes in
+#     # Docker Hub image that `tests-jest-integration` executes in
 #     container: node:18
 
-#     # Service containers to run with `container-job`
+#     # Service containers to run with `tests-jest-integration`
 #     services:
 #       # Label used to access the service container
 #       postgres:
