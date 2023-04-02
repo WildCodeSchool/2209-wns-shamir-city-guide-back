@@ -45,4 +45,5 @@ export class CicuitResolver {
     const verifiedId = await validateIdInput(id);
     return await CircuitService.deleteCircuit(verifiedId);
   }
+
 }
