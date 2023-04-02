@@ -13,7 +13,7 @@ services:
       - NODE_ENV=development
     command: npm run dev
     ports:
-      - 4000:4000
+      - $SERVER_LOCAL_PORT_DEV:$SERVER_DOCKER_PORT_DEV
     depends_on:
       database_dev:
         condition: service_healthy
@@ -23,12 +23,12 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: wilder_dev
-      POSTGRES_PASSWORD: password_dev
-      POSTGRES_DB: city_guid_dev
+      POSTGRES_USER: $DB_USER_DEV
+      POSTGRES_PASSWORD: $DB_PASSWORD_DEV
+      POSTGRES_DB: $DB_NAME_DEV
       PGDATA: /var/lib/postgresql/data/customDataFolder
     ports:
-      - "5432:5432"
+      - $DB_PORT:$DB_DOCKER_PORT
     volumes:
       - ./db_dev:/var/lib/postgresql/data/customDataFolder
     healthcheck:
@@ -43,7 +43,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - $ADMINER_PORT:$ADMINER_DOCKER_PORT
     depends_on:
       database_dev:
         condition: service_healthy
@@ -53,10 +53,10 @@ services:
     image: dpage/pgadmin4
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: dev@dev.com
-      PGADMIN_DEFAULT_PASSWORD: dev
+      PGADMIN_DEFAULT_EMAIL: $PGADMIN_DEFAULT_EMAIL_DEV
+      PGADMIN_DEFAULT_PASSWORD: $PGADMIN_DEFAULT_PASSWORD_DEV
     ports:
-      - "4050:80"
+      - $LOCAL_PORT_LISTENNIG_PGADMIN:$DOCKER_HTTP_PORT
     depends_on:
       database_dev:
         condition: service_healthy
