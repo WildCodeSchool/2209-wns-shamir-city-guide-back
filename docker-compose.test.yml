@@ -13,7 +13,7 @@ services:
       - NODE_ENV=test
     command: npm run dev
     ports:
-      - 4000:4000
+      - $SERVER_LOCAL_PORT_DEV:$SERVER_DOCKER_PORT_DEV
     depends_on:
       database_test:
         condition: service_healthy
@@ -23,12 +23,12 @@ services:
     image: postgres
     restart: always
     environment:
-      POSTGRES_USER: wilder_test
-      POSTGRES_PASSWORD: password_test
-      POSTGRES_DB: city_guid_test
+      POSTGRES_USER: $DB_USER_TEST
+      POSTGRES_PASSWORD: $DB_PASSWORD_TEST
+      POSTGRES_DB: $DB_NAME_TEST
       PGDATA: /var/lib/postgresql/data/customDataFolder
     ports:
-      - "5432:5432"
+      - $DB_PORT:$DB_DOCKER_PORT
     volumes:
       - ./db_test:/var/lib/postgresql/data/customDataFolder
     healthcheck:
@@ -43,7 +43,7 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - $ADMINER_PORT:$ADMINER_DOCKER_PORT
     depends_on:
       database_test:
         condition: service_healthy
@@ -53,10 +53,10 @@ services:
     image: dpage/pgadmin4
     restart: always
     environment:
-      PGADMIN_DEFAULT_EMAIL: test@test.com
-      PGADMIN_DEFAULT_PASSWORD: test
+      PGADMIN_DEFAULT_EMAIL: $PGADMIN_DEFAULT_EMAIL_TEST
+      PGADMIN_DEFAULT_PASSWORD: $PGADMIN_DEFAULT_PASSWORD_TEST
     ports:
-      - "4050:80"
+      - $LOCAL_PORT_LISTENNIG_PGADMIN:$DOCKER_HTTP_PORT
     depends_on:
       database_test:
         condition: service_healthy
