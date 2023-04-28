@@ -7,16 +7,14 @@ import {
 } from "class-validator";
 import { PoiErrorValidator } from "../messages.validator";
 import { validateData } from "../validate.validator";
-import { CityValidator } from "./city.validator.entity";
-import { TypeValidator } from "./type.validator.entity";
 import { PoiType } from "../../types/poi.type";
 import { CustomError } from "../../utils/errors/CustomError.utils.error";
 import {
   BadRequestError,
   UnprocessableEntityError,
 } from "../../utils/errors/interfaces.utils.error";
-import { TagValidator } from "./tag.validator.entity";
-import { TagType } from "../../types/tag.type";
+import { IdValidator } from "../common.validator";
+
 
 export class PoiValidator {
   @IsOptional()
@@ -55,32 +53,45 @@ export class PoiValidator {
     message: PoiErrorValidator.PICTURE_WRONG_FORMAT,
   })
   picture: string;
+  
+  @Min(1, {
+    message: PoiErrorValidator.CITY_ID_EQUAL_0,
+  })
+  cityId: number;
 
-  city: CityValidator;
-
-  type: TypeValidator;
+  @Min(1, {
+    message: PoiErrorValidator.TYPE_ID_EQUAL_0,
+  })
+  typeId: number;
 
   @IsOptional()
-  tags: TagValidator[];
+  tags: number[];
 }
 
-const validateTagsArray = async (arr: TagType[]): Promise<TagValidator[]> => {
-  let returnedTags: TagValidator[] = [];
+const validateIdArray = async (arr: number[]): Promise<IdValidator[]> => {
+  let returnedIds: IdValidator[] = [];
   for (let i = 0; i < arr.length; i++) {
-    const tagValidator = new TagValidator();
-    if (arr[i].id) tagValidator.id = arr[i].id;
-    tagValidator.name = arr[i].name;
-    tagValidator.icon = arr[i].icon;
-    const verifiedTag = await validateData(tagValidator);
+    const idValidator = new IdValidator();
+    if (arr[i]) idValidator.id = arr[i];
+    const verifiedId = await validateData(idValidator);
 
-    if (verifiedTag) returnedTags.push(verifiedTag);
+    if (verifiedId) returnedIds.push(verifiedId);
     else
       throw new CustomError(
         new UnprocessableEntityError(),
-        "Un ou plusieurs tags ne sont pas dans le bon format"
+        "Un ou plusieurs identifiants ne sont pas dans le bon format"
       );
+
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[i]=== arr[j]) {
+        throw new CustomError(
+          new UnprocessableEntityError(),
+          "Un point d'intérêt ne peut pas contenir deux fois le même tag"
+        );
+      }
+    }
   }
-  return returnedTags;
+  return returnedIds;
 };
 
 /**
@@ -99,7 +110,7 @@ export const validateCreationPoiInput = async (
     );
   }
 
-  if (!Object.keys(poi).includes("city")) {
+  if (!Object.keys(poi).includes("cityId")) {
     throw new CustomError(
       new BadRequestError(),
       PoiErrorValidator.CITY_REQUIRED
@@ -134,8 +145,8 @@ export const setPoiValidator = async (poi: PoiType): Promise<PoiValidator> => {
     latitude, 
     longitude, 
     picture, 
-    city, 
-    type 
+    cityId, 
+    typeId 
   } = poi;
   
   const poiValidator = new PoiValidator();
@@ -146,32 +157,16 @@ export const setPoiValidator = async (poi: PoiType): Promise<PoiValidator> => {
   poiValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : "";
   poiValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : "";
   poiValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
+  poiValidator.cityId = cityId;
+  poiValidator.typeId = typeId;
 
   await validateData(poiValidator);
-  const cityValidator = new CityValidator();
-  cityValidator.id = city.id;
-  cityValidator.name = city.name;
-  cityValidator.latitude = city.latitude;
-  cityValidator.longitude = city.longitude;
-  cityValidator.picture = city.picture;
-  const verifiedCity = await validateData(cityValidator);
-  poiValidator.city = verifiedCity;
-
-
-  const typeValidator = new TypeValidator();
-  typeValidator.id = type.id;
-  typeValidator.name = type.name;
-  typeValidator.logo = type.logo;
-  typeValidator.color = type.color;
-  const verifiedType = await validateData(typeValidator);
-  poiValidator.type = verifiedType;
+  
 
   if (poi.tags !== null && poi.tags !== undefined && poi.tags.length > 0) {
-    const validatedTags = await validateTagsArray(poi.tags);
-    poiValidator.tags = validatedTags;
-  } else {
-    poiValidator.tags = [];
-  }
+    await validateIdArray(poi.tags);
+    poiValidator.tags = poi.tags;
+  } else poiValidator.tags = [];
 
   return await validateData(poiValidator);
 }

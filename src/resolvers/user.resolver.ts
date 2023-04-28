@@ -11,7 +11,7 @@ import {
   validateCreationUserInput,
   validateUpdateUserInput,
 } from "../validators/entities/user.validator.entity";
-import { UserType } from "../types/user.type";
+import { CleanedUserType, UserType } from "../types/user.type";
 import { RoleValidator, validateRoleArrayInput } from "../validators/entities/role.validator.entity";
 import { UpdateUserRoles } from "../types/role.type";
 import { UserRoles } from "../utils/constants.utils";
@@ -19,7 +19,7 @@ import { UserRoles } from "../utils/constants.utils";
 
 @Resolver(User)
 export class UserResolver { 
-  //@Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN, UserRoles.CITY_ADMIN])
   @Query(() => [User])
   async getAllUsers(): Promise<User[]> {
     const users: User[] = await UserService.getAll();
@@ -27,21 +27,21 @@ export class UserResolver {
 
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN, UserRoles.CITY_ADMIN])
   @Query(() => User)
   async getUserById(@Arg("id") id: number): Promise<User> {
     const verifiedId: number = await validateIdInput(id);
     return await UserService.getById(verifiedId);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN, UserRoles.CITY_ADMIN])
   @Query(() => User)
   async getUserByUsername(@Arg("username") username: string): Promise<User> {
     const verifiedUsername: string = await validateNameInput(username);
     return await UserService.getByUsername(verifiedUsername);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN, UserRoles.CITY_ADMIN])
   @Query(() => User)
   async getUserByEmail(@Arg("email") email: string): Promise<User> {
     const verifiedEmail: string = await validateEmailInput(email);
@@ -57,12 +57,12 @@ export class UserResolver {
 
   @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => User)
-  async updateUser(@Arg("user") user: UserType): Promise<User> {
+  async updateUser(@Arg("user") user: CleanedUserType): Promise<User> {
     const verifiedData: UserValidator = await validateUpdateUserInput(user);
     return await UserService.updateUser(verifiedData);
   }
 
-  //@Authorized([UserRoles.SUPER_ADMIN])
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => User)
   async updateUserRoles(
     @Arg("payload") payload: UpdateUserRoles, 

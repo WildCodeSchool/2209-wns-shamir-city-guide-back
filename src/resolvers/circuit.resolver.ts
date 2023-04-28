@@ -1,10 +1,11 @@
-import { Resolver, Arg, Mutation, Query } from "type-graphql";
+import { Resolver, Arg, Mutation, Query, Authorized, Ctx } from "type-graphql";
 import Circuit from "../entities/Circuit.entity";
 import * as CircuitService from "../services/circuit.service";
-import { CircuitType } from "../types/circuit.type";
 import { validateIdInput, validateNameInput } from "../validators/common.validator";
 import { validateCreationCircuitInput, validateUpdateCircuitInput } from "../validators/entities/circuit.validator.entity";
 import { UserRoles } from "../utils/constants.utils";
+import { CircuitType } from "../types/circuit.type";
+import { MyAppContext } from "../types/context";
 
 
 @Resolver(Circuit)
@@ -27,23 +28,26 @@ export class CicuitResolver {
     return await CircuitService.getByName(verifiedName);
   }
 
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Circuit)
-  async createCircuit(@Arg("circuit") circuit: CircuitType): Promise<Circuit> {
+  async createCircuit(@Ctx() ctx: MyAppContext, @Arg("circuit") circuit: CircuitType): Promise<Circuit> {
     const verifiedData = await validateCreationCircuitInput(circuit);
-    return await CircuitService.create(verifiedData);
+    return await CircuitService.create(verifiedData, ctx);
   }
 
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Circuit)
-  async updateCircuit(@Arg("circuit") circuit: CircuitType): Promise<Circuit> {
+  async updateCircuit(@Ctx() ctx: MyAppContext, @Arg("circuit") circuit: CircuitType): Promise<Circuit> {
     const verifiedData = await validateUpdateCircuitInput(circuit);
-    return await CircuitService.update(verifiedData);
+    return await CircuitService.update(verifiedData, ctx);
     
   }
   
+  @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Circuit)
-  async deleteCircuit(@Arg("id") id: number): Promise<Circuit> {
+  async deleteCircuit(@Ctx() ctx: MyAppContext, @Arg("id") id: number): Promise<Circuit> {
     const verifiedId = await validateIdInput(id);
-    return await CircuitService.deleteCircuit(verifiedId);
+    return await CircuitService.deleteCircuit(verifiedId, ctx);
   }
 
 }

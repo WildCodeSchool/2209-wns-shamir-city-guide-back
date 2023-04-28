@@ -24,11 +24,7 @@ import { UserRoles } from "../utils/constants.utils";
  */
 export const getAll = async (): Promise<User[]> => {
     try {
-        return await UserRepository.find({
-            relations: {
-                roles: true,
-            }
-          });
+        return await UserRepository.find();
     } catch (e) {
         throw new CustomError(
         new InternalServerError(), 

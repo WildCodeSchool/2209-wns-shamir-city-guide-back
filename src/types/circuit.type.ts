@@ -1,8 +1,6 @@
 import "reflect-metadata";
-import { Field, InputType } from "type-graphql";
-import { CityType } from "./city.type";
-import { CategoryType } from "./category.type";
-import { PoiType } from "./poi.type";
+import { Field, InputType, Int } from "type-graphql";
+
 
 @InputType()
 export class CircuitType {
@@ -22,11 +20,11 @@ export class CircuitType {
   price: number;
 
   @Field()
-  city: CityType;
+  cityId: number;
 
   @Field()
-  category: CategoryType;
+  categoryId: number;
 
-  @Field(() => [PoiType])
-  pois: PoiType[];
+  @Field(() => [Int])
+  pois: number[];
 }

@@ -7,17 +7,13 @@ import {
   } from "class-validator";
   import { CircuitErrorValidator } from "../messages.validator";
   import { validateData } from "../validate.validator";
-  import { CityValidator } from "./city.validator.entity";
-  import { CategoryValidator } from "./category.validator.entity";
-  import { PoiType } from "../../types/poi.type";
   import { CustomError } from "../../utils/errors/CustomError.utils.error";
   import {
     BadRequestError,
     UnprocessableEntityError,
   } from "../../utils/errors/interfaces.utils.error";
-import { PoiValidator } from "./poi.validator.entity";
 import { CircuitType } from "../../types/circuit.type";
-import { setPoiValidator } from "./poi.validator.entity";
+import { IdValidator } from "../common.validator";
   
   
   export class CircuitValidator {
@@ -43,44 +39,57 @@ import { setPoiValidator } from "./poi.validator.entity";
     @MinLength(1, {
       message: CircuitErrorValidator.DESCRIPTION_TOO_SHORT,
     })
-    @MaxLength(500, {
+    @MaxLength(700, {
       message: CircuitErrorValidator.DESCRIPTION_TOO_LONG,
     })
     description: string;
-    
-    @IsOptional()
-    @Min(0, {
-      message: CircuitErrorValidator.PRICE_INFERIOR_TO_0,
-    })
-    price: number;
 
-    city: CityValidator;
+    @Min(1, {
+      message: CircuitErrorValidator.CITY_ID_EQUAL_0,
+    })
+    cityId: number;
   
-    category: CategoryValidator;
+    @Min(1, {
+      message: CircuitErrorValidator.ID_EQUAL_0,
+    })
+    categoryId: number;
     
-    pois: PoiValidator[];
+    pois: number[];
   }
     
   
   /**
-   * Checks the validity of the pois array during the circuit creation
-   * @param {PoiType[]} arr the pois to check before circuit creation
-   * @returns <PoiValidator[]> the verified pois array
+   * Checks the validity of the poi ids array during the circuit creation
+   * @param {number[]} arr the ids array to check before circuit creation
+   * @returns <IdValidator[]> the verified ids array
    * @throws Error: 400 Bad Request | 422 Unprocessable Entity
    */
-  const validatePoisArray = async (arr: PoiType[], city: CityValidator): Promise<PoiValidator[]> => {
+  const validateIdArray = async (arr: number[]): Promise<IdValidator[]> => {
+    let returnedIds: IdValidator[] = [];
+
     if (!arr.length) {
       throw new CustomError(
         new BadRequestError(),
-        "Un circuit doit inclure des points d'intérêt"
+        "Vous devez associez des points d'intérêt au circuit"
       )
     } 
 
-    // Check if there is no duplicate in pois array
+    // Check if there is no duplicate in array
     if (arr.length > 2) {
       for (let i = 0; i < arr.length - 1; i++) {
+        const idValidator = new IdValidator();
+        if (arr[i]) idValidator.id = arr[i];
+        const verifiedId = await validateData(idValidator);
+
+        if (verifiedId) returnedIds.push(verifiedId);
+        else
+          throw new CustomError(
+            new UnprocessableEntityError(),
+            "Un ou plusieurs identifiants ne sont pas dans le bon format"
+          );
+
         for (let j = i + 1; j < arr.length; j++) {
-          if (arr[i].id === arr[j].id) {
+          if (arr[i]=== arr[j]) {
             throw new CustomError(
               new UnprocessableEntityError(),
               "Un circuit ne peut pas contenir deux fois le même point d'intérêt"
@@ -89,21 +98,8 @@ import { setPoiValidator } from "./poi.validator.entity";
         }
       }
     }
-
-    // Check if the poi is in suitable format
-    let returnedPois: PoiValidator[] = [];
-    for (let i = 0; i < arr.length; i++) {
-      arr[i].city = city;
-      const verifiedPoi = await setPoiValidator(arr[i]);
-  
-      if (verifiedPoi) returnedPois.push(verifiedPoi);
-      else
-        throw new CustomError(
-          new UnprocessableEntityError(),
-          "Un ou plusieurs tags ne sont pas dans le bon format"
-        );
-    }
-    return returnedPois;
+   
+    return returnedIds;
   };
   
   /**
@@ -119,6 +115,13 @@ import { setPoiValidator } from "./poi.validator.entity";
       throw new CustomError(
         new BadRequestError(),
         CircuitErrorValidator.ID_NOT_REQUIRED
+      );
+    }
+
+    if (!Object.keys(circuit).includes("cityId")) {
+      throw new CustomError(
+        new BadRequestError(),
+        CircuitErrorValidator.CITY_REQUIRED
       );
     }
   
@@ -149,38 +152,23 @@ import { setPoiValidator } from "./poi.validator.entity";
       picture, 
       description, 
       price,  
-      city, 
-      category, 
+      cityId, 
+      categoryId, 
       pois 
     } = circuit;
     
     const circuitValidator = new CircuitValidator();
     if (id !== null && id !== undefined) circuitValidator.id = id;
+
     circuitValidator.name = name && name.length > 0 ? name.trim() : "";
     circuitValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
     circuitValidator.description = description && description.length > 0 ? description.trim() : "";
-    circuitValidator.price = price;
+    circuitValidator.cityId = cityId;
+    circuitValidator.categoryId = categoryId;
+    
 
-    const cityValidator = new CityValidator();
-    cityValidator.id = city.id;
-    cityValidator.name = city.name;
-    cityValidator.latitude = city.latitude;
-    cityValidator.longitude = city.longitude;
-    cityValidator.picture = city.picture;
-    cityValidator.user = city.user;
-    const verifiedCity = await validateData(cityValidator);
-    circuitValidator.city = verifiedCity;
-  
-    const categoryValidator = new CategoryValidator();
-    categoryValidator.id = category.id;
-    categoryValidator.name = category.name;
-    categoryValidator.icon = category.icon;
-    categoryValidator.color = category.color;
-    const verifiedCategory = await validateData(categoryValidator);
-    circuitValidator.category = verifiedCategory;
-
-    const validatedPois = await validatePoisArray(pois, verifiedCity);
-    circuitValidator.pois = validatedPois;
+    await validateIdArray(pois);
+    circuitValidator.pois = circuit.pois;
     
     return await validateData(circuitValidator);
   }

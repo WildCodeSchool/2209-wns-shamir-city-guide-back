@@ -87,7 +87,7 @@ export const create = async (
       handleCityObjectError(e, data);
       } throw new CustomError(
       new InternalServerError(),
-      `Problème de connexion interne, la ville ${data.name} n'a pas été créé`
+      `Problème de connexion interne, la ville ${data.name} n'a pas été créée`
     );
   }
 };
