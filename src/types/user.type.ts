@@ -17,6 +17,18 @@ export class UserType {
     password: string
 }
 
+@InputType()
+export class CleanedUserType {
+    @Field({nullable: true})
+    id: number
+
+    @Field()
+    username: string
+
+    @Field()
+    email: string
+}
+
 @ObjectType()
 export class AuthenticatedUserType {
     @Field()

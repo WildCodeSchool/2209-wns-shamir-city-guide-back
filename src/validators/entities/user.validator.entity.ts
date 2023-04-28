@@ -2,7 +2,7 @@ import { InputType } from "type-graphql";
 import { Min, MinLength, MaxLength, Matches, IsOptional } from "class-validator";
 import { UserErrorValidator } from "../messages.validator";
 import { validateData } from "../validate.validator";
-import { UserType } from "../../types/user.type";
+import { CleanedUserType, UserType } from "../../types/user.type";
 import { CustomError } from "../../utils/errors/CustomError.utils.error";
 import { BadRequestError } from "../../utils/errors/interfaces.utils.error";
 
@@ -64,12 +64,12 @@ export const validateCreationUserInput = async (user: UserType): Promise<UserVal
  * @returns <UserValidator> the verified data
  * @throws Error: 400 Bad Request | 422 Unprocessable Entity
 */
-export const validateUpdateUserInput = async (user: UserType): Promise<UserValidator> => {
+export const validateUpdateUserInput = async (user: CleanedUserType): Promise<UserValidator> => {
     if (!Object.keys(user).includes("id")) {
         throw new CustomError(new BadRequestError(), UserErrorValidator.ID_REQUIRED);
     }
     
-    return await setUserValidator(user);
+    return await setUpdateUserValidator(user);
 } 
 
 /**
@@ -93,6 +93,7 @@ export const validateLoginUserInput = async (user: UserType): Promise<UserValida
 const setUserValidator = async (user: UserType): Promise<UserValidator> => {
     let id = null,
         password = null;
+
     if (user.id !== null) id = user.id;
     if (user.password !== null) password = user.password;
     const { username, email } = user;
@@ -104,5 +105,16 @@ const setUserValidator = async (user: UserType): Promise<UserValidator> => {
     if (password !== null) userValidator.password = password;;
   
     return await validateData(userValidator);
-  }
+}
+
+const setUpdateUserValidator = async (user: CleanedUserType): Promise<UserValidator> => {
+    const { id, username, email } = user;
+
+    const userValidator = new UserValidator();
+    userValidator.id = id;
+    userValidator.username = username && username.length > 0 ? username.trim() : '';
+    userValidator.email = email && email.length > 0 ? email.trim() : '';
+  
+    return await validateData(userValidator);
+}
   

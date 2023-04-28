@@ -34,12 +34,15 @@ export enum CircuitErrorValidator {
   ID_NOT_REQUIRED = "L'identifiant du circuit n'est pas requis",
   ID_REQUIRED = "L'identifiant du circuit est requis",
   ID_EQUAL_0 = "L'identifiant du circuit doit être supérieur à 0",
+  CITY_ID_EQUAL_0 = "L'identifiant de la ville doit être supérieur à 0",
+  CATEGORY_ID_EQUAL_0 = "L'identifiant de la catégorie doit être supérieur à 0",
   NAME_TOO_SHORT = "La longueur du nom du circuit est trop courte. La longueur minimale est de 1 caractère",
   NAME_TOO_LONG = "La longueur du nom du circuit est trop longue, elle doit être au maximale de 255 caractères",
   PICTURE_WRONG_FORMAT = "Le format de l'url de l'image ne convient pas",
   DESCRIPTION_TOO_SHORT = "La longueur de la description du circuit est trop courte. La longueur minimale est de 1 caractère",
-  DESCRIPTION_TOO_LONG = "La longueur de la description du circuit est trop longue. La valeur maximale est de 500 caractères",
-  PRICE_INFERIOR_TO_0 = "Le prix du circuit ne peut pas être inférieur à 0 euros"
+  DESCRIPTION_TOO_LONG = "La longueur de la description du circuit est trop longue. La valeur maximale est de 700 caractères",
+  PRICE_INFERIOR_TO_0 = "Le prix du circuit ne peut pas être inférieur à 0 euros",
+  CITY_REQUIRED = "Le circuit doit être associé à une ville",
 }
 
 //Poi
@@ -47,6 +50,8 @@ export enum PoiErrorValidator {
   ID_NOT_REQUIRED = "L'identifiant du point d'intêret n'est pas requis",
   ID_REQUIRED = "L'identifiant du point d'intêret est requis",
   ID_EQUAL_0 = "L'identifiant du point d'intêret doit être supérieur à 0",
+  CITY_ID_EQUAL_0 = "L'identifiant de la ville doit être supérieur à 0",
+  TYPE_ID_EQUAL_0 = "L'identifiant du type doit être supérieur à 0",
   NAME_TOO_SHORT = "La longueur du nom du point d'intêret est trop courte. La longueur minimale est de 1 caractère",
   NAME_TOO_LONG = "La longueur du nom du point d'intêret est trop longue, elle doit être au maximale de 255 caractères",
   ADDRESS_TOO_SHORT = "La longueur de l'adresse du point d'intêret est trop courte, La longueur minimale est de 1 caractère",
@@ -54,7 +59,7 @@ export enum PoiErrorValidator {
   LATITUDE_FORMAT = "La latitude du point d'intêret n'est pas au bon format",
   LONGITUDE_FORMAT = "La longitude du point d'intêret n'est pas au bon format",
   PICTURE_WRONG_FORMAT = "Le format de l'url de l'image ne convient pas",
-  CITY_REQUIRED = "Le point d'intérêt doit être associé à une ville"
+  CITY_REQUIRED = "Le point d'intérêt doit être associé à une ville",
 }
 
 //City

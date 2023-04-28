@@ -5,7 +5,7 @@ import {  CommonErrorValidator } from "./messages.validator";
 
 
 @InputType()
-export class IdValidator{
+export class IdValidator {
     @Field()
     @Min(1, {
         message: CommonErrorValidator.ID_EQUAL_0

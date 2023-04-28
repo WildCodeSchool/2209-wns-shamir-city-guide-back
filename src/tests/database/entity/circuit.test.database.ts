@@ -1,5 +1,6 @@
 import Circuit from "../../../entities/Circuit.entity";
 import City from "../../../entities/City.entity";
+import Poi from "../../../entities/PointOfInterest.entity";
 import Category from "../../../entities/Category.entity";
 import { CityRepository } from "../../../repositories/city.repository";
 import { CategoryRepository } from "../../../repositories/category.repository";
@@ -16,8 +17,8 @@ export const circuitsNames = ["Promenade de Paris", "Une visite bouillabesque", 
         "https://metropole.nantes.fr/files/images/emploi/vue-nantes-675.jpg"
     ],
     circuitsdescription = [
-        "Je vous propose une sacré visite de Paris, venez, on est bien!", 
-        "Ha le sud, tant de soleil et biientôt la secheresse, mais que dis-je? Elle est déjà là haha!", 
+        "Je vous propose une sacré visite de Paris, venez, on est bien!",
+        "Ha le sud, tant de soleil et biientôt la secheresse, mais que dis-je? Elle est déjà là haha!",
         "Un petit tour culturel des essentiels de la Nantes"
     ],
     circuitsPrice = [0, 3, 50];
@@ -50,11 +51,11 @@ export const loadCircuitData = async () => {
             if (Paris !== null) newCircuit.city = Paris;
             if (Culturel !== null) newCircuit.category = Culturel;
             if (
-                Louvre !== null &&  
+                Louvre !== null &&
                 TourEiffel !== null &&
                 ArcDeTriomphe !== null
             ) newCircuit.pointsOfInterest = [Louvre, TourEiffel, ArcDeTriomphe];
-        } else if (index === 1) { 
+        } else if (index === 1) {
             if (Marseille !== null) newCircuit.city = Marseille;
             if (Divertissement !== null) newCircuit.category = Divertissement;
             if (GareSaintCharles !== null) newCircuit.pointsOfInterest = [GareSaintCharles];
@@ -65,12 +66,12 @@ export const loadCircuitData = async () => {
                 ChateauDucsDeBretagne !== null &&
                 MuseumHistoireNaturelleNantes &&
                 MuseeArtNantes !== null &&
-                DorcelStoreNantes !== null 
+                DorcelStoreNantes !== null
             ) newCircuit.pointsOfInterest = [
                 ChateauDucsDeBretagne,
                 MuseumHistoireNaturelleNantes,
                 MuseeArtNantes,
-                DorcelStoreNantes 
+                DorcelStoreNantes
             ];
         }
         

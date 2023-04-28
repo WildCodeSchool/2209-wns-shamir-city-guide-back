@@ -1,8 +1,6 @@
 import "reflect-metadata";
-import { Field, InputType } from "type-graphql";
-import { CityType } from "./city.type";
-import { TagType } from "./tag.type";
-import { TypeType } from "./type.type";
+import { Field, InputType, Int } from "type-graphql";
+
 
 @InputType()
 export class PoiType {
@@ -25,11 +23,11 @@ export class PoiType {
   picture: string;
 
   @Field({ nullable: true })
-  city: CityType;
+  cityId: number;
 
   @Field()
-  type: TypeType;
+  typeId: number;
 
-  @Field(() => [TagType], { nullable: true })
-  tags: TagType[];
+  @Field(() => [Int])
+  tags: number[];
 }

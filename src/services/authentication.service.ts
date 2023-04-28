@@ -95,7 +95,6 @@ export const verifyToken = (token: string) => {
 export const hasRole = async (id: number, requiredRoles: string[]) => {
     // Récup le user en DB
     const user = await UserRepository.findOneBy({id});
-    // console.log("USER IN HAS ROLE FUNCTION:", user);
     
     // Vérifier les rôles
     if (
