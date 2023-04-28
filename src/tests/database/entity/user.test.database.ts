@@ -29,7 +29,7 @@ export const loadUserData = async () => {
         else if (index > 0 && index < 2) {
             if (
                 SUPER_ADMIN !== null &&
-                CITY_ADMIN !== null && 
+                CITY_ADMIN !== null &&
                 CONTRIBUTOR !== null && 
                 USER !== null
             ) newUser.roles = [SUPER_ADMIN, CITY_ADMIN, CONTRIBUTOR, USER];

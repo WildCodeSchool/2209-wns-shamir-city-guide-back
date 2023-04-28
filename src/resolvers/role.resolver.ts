@@ -10,7 +10,7 @@ import { UserRoles } from "../utils/constants.utils";
 @Resolver(Role)
 export class RoleResolver {
   @Query(() => [Role])
-  @Authorized([UserRoles.SUPER_ADMIN])
+  //@Authorized([UserRoles.SUPER_ADMIN])
   async getAllRoles(): Promise<Role[]> {
     const roles: Role[] = await RoleService.getAll();
     return roles.sort((a: Role, b: Role) => a.name.localeCompare(b.name));

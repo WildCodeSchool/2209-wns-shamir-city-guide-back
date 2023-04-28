@@ -10,21 +10,21 @@ import Tag from "../../../entities/Tag.entity";
 
 
 export const poiNames = [
-        "Musée du Louvre", 
-        "Arc de Triomphe", 
-        "La Tour Eiffel", 
-        "Rue de la Soif", 
+        "Musée du Louvre",
+        "Arc de Triomphe",
+        "La Tour Eiffel",
+        "Rue de la Soif",
         "Gare Saint Charles",
         "Château des ducs de Bretagne",
         "Muséum d'histoire naturelle de Nantes",
         "Musée d'art de Nantes",
         "Dorcel Store de Nantes"
-    ], 
+    ],
     poiAddress = [
-        "Rue de Rivoli, 75001 Paris", 
-        "Pl. Charles de Gaulle, 75008 Paris", 
-        "Champ de Mars, 5 Av. Anatole France, 75007 Paris", 
-        "rue saint michel 35000 Rennes", 
+        "Rue de Rivoli, 75001 Paris",
+        "Pl. Charles de Gaulle, 75008 Paris",
+        "Champ de Mars, 5 Av. Anatole France, 75007 Paris",
+        "rue saint michel 35000 Rennes",
         "GARE SAINT CHARLES - 118000 Marseille",
         "4 Pl. Marc Elder, 44000 Nantes",
         "12 Rue Voltaire, 44000 Nantes",
@@ -32,10 +32,10 @@ export const poiNames = [
         "10 Av. des Lions, 44800 Saint-Herblain"
     ],
     poiLatitudes = [
-        "48.8611473", 
-        "48.8737791", 
-        "48.8582602", 
-        "48.1140518", 
+        "48.8611473",
+        "48.8737791",
+        "48.8582602",
+        "48.1140518",
         "43.302426",
         "47.2160973",
         "47.2125868",
@@ -43,10 +43,10 @@ export const poiNames = [
         "47.2477162"
     ],
     poiLongitudes = [
-        "2.3380277", 
-        "2.2950372", 
-        "2.2944991", 
-        "-1.6813832", 
+        "2.3380277",
+        "2.2950372",
+        "2.2944991",
+        "-1.6813832",
         "5.3816767",
         "-1.5499959",
         "-1.5647029",
@@ -54,10 +54,10 @@ export const poiNames = [
         "-1.6194985"
     ],
     poiPictures = [
-        "https://thumbs.dreamstime.com/b/louvre-winter-tourism-beautiful-view-tourists-visiting-museum-paris-france-cloudy-day-february-63047601.jpg", 
+        "https://thumbs.dreamstime.com/b/louvre-winter-tourism-beautiful-view-tourists-visiting-museum-paris-france-cloudy-day-february-63047601.jpg",
         "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Arc_Triomphe.jpg/708px-Arc_Triomphe.jpg",
-        "https://thumbs.dreamstime.com/b/paris-france-vue-panoramique-sur-la-tour-eiffel-%C3%A0-237996803.jpg",  
-        "https://img.20mn.fr/CrK2qhx8TbSV0RVbIxfhoA/1200x768_rue-saint-michel-rennes-surnommee-rue-soif-lors-trans-musicales-2014", 
+        "https://thumbs.dreamstime.com/b/paris-france-vue-panoramique-sur-la-tour-eiffel-%C3%A0-237996803.jpg",
+        "https://img.20mn.fr/CrK2qhx8TbSV0RVbIxfhoA/1200x768_rue-saint-michel-rennes-surnommee-rue-soif-lors-trans-musicales-2014",
         "https://img.20mn.fr/ebbf_MCVTL6Ot5tqwY2EGQ/310x190_gare-saint-charles-marseille",
         "https://media.istockphoto.com/id/1433119904/fr/photo/vue-panoramique-du-ch%C3%A2teau-des-ducs-de-bretagne-%C3%A0-nantes-france.jpg?s=612x612&w=0&k=20&c=VLf9Ud2cGqRk5GKepKwCo6_0G4uJg4Dm1qsjn4MCWns=",
         "https://www.francetvinfo.fr/pictures/5IyJZXrQD9wJVx7lvRPHODaAKKw/fit-in/720x/2020/12/01/php4jbGGK.jpg",
