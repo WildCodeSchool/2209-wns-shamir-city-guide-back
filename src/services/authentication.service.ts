@@ -35,7 +35,12 @@ export const login = async (data: UserValidator): Promise<AuthenticatedUserType>
                 email: getUserByEmail.email,
                 roles: roles
             }
-            return {...userPayload, token: signJwt(userPayload)};
+            const userTokenPayload = {
+                id: getUserByEmail.id,
+                username: getUserByEmail.username,
+                email: getUserByEmail.email
+            }
+            return {...userPayload, token: signJwt(userTokenPayload)};
         } else {
             throw new Error(StatusCodeMessage.UNAUTHORIZED);
         }
