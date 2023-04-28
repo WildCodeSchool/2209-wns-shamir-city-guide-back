@@ -82,8 +82,6 @@ export const loadPoiData = async () => {
     const Gallerie: Tag | null = await TagRepository.findOneBy({ name: "Gallerie" });
     const Concert: Tag | null = await TagRepository.findOneBy({ name: "Concert" });
     const Promenade: Tag | null = await TagRepository.findOneBy({ name: "Promenade" });
-
-    console.log(Paris, Rennes, Marseille, Nantes);
     
 
     await Promise.all(poiNames.map(async (name, index) => {

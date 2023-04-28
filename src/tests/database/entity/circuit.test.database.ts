@@ -46,7 +46,6 @@ export const loadCircuitData = async () => {
         newCircuit.name = name;
         newCircuit.picture = circuitsPicture[index],
         newCircuit.description = circuitsdescription[index]; 
-        newCircuit.price = circuitsPrice[index];
         if (index === 0) {
             if (Paris !== null) newCircuit.city = Paris;
             if (Culturel !== null) newCircuit.category = Culturel;
