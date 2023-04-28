@@ -2,13 +2,18 @@ import { QueryFailedError } from "typeorm";
 import { PoiValidator } from "../../../validators/entities/poi.validator.entity";
 import { retrieveKeyFromDbErrorMessage } from "../../string.utils";
 import { CustomError } from "../CustomError.utils.error";
-import { NotFoundError, UnprocessableEntityError } from "../interfaces.utils.error";
+import { ForbiddenError, NotFoundError, UnprocessableEntityError } from "../interfaces.utils.error";
 
 export enum PoiErrorsFlag {
     ID_NOT_FOUND = "ID_NOT_FOUND",
     NAME_NOT_FOUND = "NAME_NOT_FOUND",
     LOCALISATION_ALREADY_USED = "LOCALISATION_ALREADY_USED",
-    TAG_NOT_IN_DB = "TAG_NOT_IN_DB"
+    CITY_NOT_IN_DB = "CITY_NOT_IN_DB",
+    TYPE_NOT_IN_DB = "TYPE_NOT_IN_DB",
+    TAG_NOT_IN_DB = "TAG_NOT_IN_DB",
+    USER_NOT_AUTHORIZED_CREATE = "USER_NOT_AUTHORIZED_CREATE",
+    USER_NOT_AUTHORIZED_UPDATE = "USER_NOT_AUTHORIZED_UPDATE",
+    USER_NOT_AUTHORIZED_DELETE = "USER_NOT_AUTHORIZED_DELETE"
 }
 
 export const handlePoiError = <T>(e: Error, data: T): void => {
@@ -23,17 +28,40 @@ export const handlePoiError = <T>(e: Error, data: T): void => {
                 new NotFoundError(), 
                 `Le point d'intêret avec le nom ${data} n'existe pas en base de données`
             ); 
+        case PoiErrorsFlag.CITY_NOT_IN_DB:
+            throw new CustomError(
+                new NotFoundError(), 
+                `La ville n'existe pas en base de données`
+            );
+        case PoiErrorsFlag.TYPE_NOT_IN_DB:
+            throw new CustomError(
+                new NotFoundError(), 
+                `Le type n'existe pas en base de données`
+            );
+        case PoiErrorsFlag.TAG_NOT_IN_DB:
+            throw new CustomError(
+                new NotFoundError(), 
+                `Un ou plusieurs tags n'existent pas en base de données`
+            );
+        case PoiErrorsFlag.USER_NOT_AUTHORIZED_CREATE:
+            throw new CustomError(
+                new ForbiddenError(), 
+                `Vous n'êtes pas autorisé à créer ce point d'intérêt`
+            );
+        case PoiErrorsFlag.USER_NOT_AUTHORIZED_UPDATE:
+            throw new CustomError(
+                new ForbiddenError(), 
+                `Vous n'êtes pas autorisé à effectuer des actions sur ce point d'intérêt`
+            );
+        case PoiErrorsFlag.USER_NOT_AUTHORIZED_DELETE:
+            throw new CustomError(
+                new ForbiddenError(), 
+                `Vous n'êtes pas autorisé à supprimer ce point d'intérêt`
+            );
     }
 }
 
 export const handlePoiObjectError = (e: Error | QueryFailedError, data: PoiValidator): void => {
-    if (e instanceof Error && e.message === PoiErrorsFlag.ID_NOT_FOUND) {
-      throw new CustomError(
-        new NotFoundError(),
-        `Le point d'intêret n'existe pas en base de données`
-      );
-    }
-
     if (e instanceof Error && e.message === PoiErrorsFlag.LOCALISATION_ALREADY_USED) {             
         throw new CustomError(
             new UnprocessableEntityError(), 
@@ -58,25 +86,6 @@ export const handlePoiObjectError = (e: Error | QueryFailedError, data: PoiValid
                 new UnprocessableEntityError(), 
                 `L'image choisie pour le point d'intérêt est déjà utilisée, vous devez en choisir une autre`
             );
-        case "city_id":            
-            throw new CustomError(
-                new UnprocessableEntityError(), 
-                `La ville ${data.city.name} n'existe pas en base de données`
-            );
-        case "type_id":            
-            throw new CustomError(
-                new UnprocessableEntityError(), 
-                `Le type ${data.type.name} n'existe pas en base de données`
-            );
       }
     }
-}
-
-export const handlePoiTagObjectError = (e: Error, tagName: string): void => {
-    if (e.message === PoiErrorsFlag.TAG_NOT_IN_DB) {
-        throw new CustomError(
-            new NotFoundError(), 
-            `Le tag ${tagName} n'existe pas en base de données`
-        );
-    }         
 }

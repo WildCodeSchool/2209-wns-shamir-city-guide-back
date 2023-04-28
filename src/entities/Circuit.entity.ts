@@ -25,10 +25,7 @@ export default class Circuit {
   @Column({length: 500})
   description: string;
 
-  @Field()
-  @Column({nullable: true})
-  price: number;
-
+  @Field(() => City, {nullable: true})
   @ManyToOne(() => City, (city) => city.circuits, {
     onDelete: 'CASCADE'
   }) 
