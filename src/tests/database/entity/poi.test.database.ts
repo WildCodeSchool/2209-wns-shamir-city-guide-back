@@ -72,8 +72,10 @@ export const loadPoiData = async () => {
     const Marseille: City | null = await CityRepository.findOneBy({ name: "Marseille" });
     const Nantes: City | null = await CityRepository.findOneBy({ name: "Nantes" });
 
+    const Art: Type | null = await TypeRepository.findOneBy({ name: "Art" });
     const Histoire: Type | null = await TypeRepository.findOneBy({ name: "Histoire" });
     const Divertissement: Type | null = await TypeRepository.findOneBy({ name: "Divertissement" });
+    const VieNocturne: Type | null = await TypeRepository.findOneBy({ name: "Vie nocturne" });
 
     const Restaurant: Tag | null = await TagRepository.findOneBy({ name: "Restaurant" });
     const Cafe: Tag | null = await TagRepository.findOneBy({ name: "Café" });
@@ -91,13 +93,18 @@ export const loadPoiData = async () => {
         newPoi.latitude = poiLatitudes[index]; 
         newPoi.longitude = poiLongitudes[index];
         newPoi.picture = poiPictures[index];
-        if (index < 3 ) {
+
+        if (index === 0 ) {
+            if (Paris !== null) newPoi.city = Paris;
+            if (Art !== null) newPoi.type = Art;
+            if (Gallerie !== null && Promenade !== null) newPoi.tags = [Gallerie, Promenade];
+        } else if (index < 3 ) {
             if (Paris !== null) newPoi.city = Paris;
             if (Histoire !== null) newPoi.type = Histoire;
             if (Monument !== null && Promenade !== null) newPoi.tags = [Monument, Promenade];
         } else if (index === 3) {
             if (Rennes !== null) newPoi.city = Rennes;
-            if (Divertissement !== null) newPoi.type = Divertissement;
+            if (VieNocturne !== null) newPoi.type = VieNocturne;
             if (Cafe !== null && Bar !== null && Concert !== null) newPoi.tags = [Cafe, Bar, Concert];
         } else if (index === 4) {
             if (Marseille !== null) newPoi.city = Marseille;
@@ -105,8 +112,8 @@ export const loadPoiData = async () => {
             if (Restaurant !== null && Gallerie !== null) newPoi.tags = [Restaurant, Gallerie]
         } else {
             if (Nantes !== null) newPoi.city = Nantes;
-            if (Histoire !== null) newPoi.type = Histoire;
-            if (Monument !== null && Promenade !== null) newPoi.tags = [Monument, Promenade]
+            if (Divertissement !== null) newPoi.type = Divertissement;
+            if (Cafe !== null && Bar !== null && Promenade !== null) newPoi.tags = [Cafe, Bar, Promenade]
         }
         
         try {

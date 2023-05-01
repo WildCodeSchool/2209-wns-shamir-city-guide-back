@@ -66,6 +66,28 @@ export const getByName = async (name: string): Promise<City> => {
 };
 
 /**
+ * Returns cities which are attached to the user from database
+ * @param {string} username The username to use
+ * @returns City[] cities 
+ * @throws Error: 500 Internal Server Error | 404 Not Found 
+ */
+export const getAllByUsername = async (username: string): Promise<City[]> => {
+  const formattedName = formatString(username);
+
+  try {
+    const citiesInDb = await CityRepository.findAllCitiesByUsername(username);
+    if (citiesInDb) return citiesInDb;
+    else throw new Error(CityErrorsFlag.NAME_NOT_FOUND);
+  } catch (e) {
+    if (e instanceof Error) handleCityError(e, formattedName);    
+    throw new CustomError(
+      new InternalServerError(), 
+      `Problème de connexion interne, les villes liées à l'utilisateur n'ont pas été chargées`
+    );
+  }
+};
+
+/**
  * Create and return a city
  * @param {CityValidator} data City object to create 
  * @returns city the created city 

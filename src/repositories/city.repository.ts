@@ -20,5 +20,11 @@ export const CityRepository = databaseConfig.getRepository(City)
                 .where("latitude = :latitude AND longitude = :longitude", {latitude, longitude})
                 .andWhere("id != :id", {id})
                 .getOne()
+        },
+        async findAllCitiesByUsername(username: string): Promise<City[] | null> {
+            return this.createQueryBuilder("city")
+            .innerJoinAndSelect("city.user", "user")
+            .where("user.username = :username", { username: username })
+            .getMany();
         }
     });

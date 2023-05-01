@@ -1,5 +1,5 @@
 import { Field, InputType } from "type-graphql";
-import { UserType } from "./user.type";
+import { CleanedUserType, UserType } from "./user.type";
 
 
 @InputType()
@@ -13,8 +13,8 @@ export class RoleType {
 
 @InputType()
 export class UpdateUserRoles {
-    @Field(() => UserType)
-    user: UserType
+    @Field()
+    userId: number
 
     @Field(() => [RoleType])
     roles: RoleType[]

@@ -32,7 +32,7 @@ export class UserValidator  {
     email: string
     
     @IsOptional()
-    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&-_]{8,}$/, {
+    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[^\s]{8,}$/, {
         message: UserErrorValidator.PASSWORD_WRONG_FORMAT
     })
     password: string

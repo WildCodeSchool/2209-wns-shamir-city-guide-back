@@ -67,9 +67,9 @@ export class UserResolver {
   async updateUserRoles(
     @Arg("payload") payload: UpdateUserRoles, 
   ): Promise<User> {
-    const verifiedUserData: UserValidator = await validateUpdateUserInput(payload.user);
+    const verifiedUserId: number = await validateIdInput(payload.userId);
     const verifiedUserRoles: RoleValidator[] = await validateRoleArrayInput(payload.roles);
-    return await UserService.updateUserRoles(verifiedUserData, verifiedUserRoles);
+    return await UserService.updateUserRoles(verifiedUserId, verifiedUserRoles);
   }
 
   @Authorized([UserRoles.SUPER_ADMIN])
