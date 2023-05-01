@@ -24,7 +24,7 @@ export const loadUserData = async () => {
         newUser.email = userEmails[index];
         newUser.hashedPassword = await argon2.hash(userPwds[index]);
         if (index === 0) {
-            if (USER !== null && SUPER_ADMIN !== null) newUser.roles = [USER, SUPER_ADMIN];
+            if (USER !== null && SUPER_ADMIN !== null && CITY_ADMIN !== null) newUser.roles = [USER, SUPER_ADMIN, CITY_ADMIN];
         }
         else if (index > 0 && index < 2) {
             if (
@@ -40,7 +40,7 @@ export const loadUserData = async () => {
                 CITY_ADMIN !== null && 
                 CONTRIBUTOR !== null && 
                 USER !== null
-            ) newUser.roles = [SUPER_ADMIN];        
+            ) newUser.roles = [SUPER_ADMIN, CITY_ADMIN];        
         }
             
         try {

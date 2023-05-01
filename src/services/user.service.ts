@@ -147,11 +147,11 @@ export const updateUser = async (data: UserValidator): Promise<User> => {
  * @returns User the updated user
  * @throws Error: 500 Internal Server Error | 422 Unprocessable Entity | 404 Not Found
  */
-export const updateUserRoles = async (user: UserValidator, roles: RoleValidator[]): Promise<User> => {
+export const updateUserRoles = async (userId: number, roles: RoleValidator[]): Promise<User> => {
     let roleIsNotInDB = null;
 
     try {
-        const userToUpdate = await UserRepository.findOneBy({id: user.id});
+        const userToUpdate = await UserRepository.findOneBy({id: userId});
         if (userToUpdate) {
             // Check if all tags are present in database
             if (roles !== null && roles.length > 0) {
@@ -172,7 +172,7 @@ export const updateUserRoles = async (user: UserValidator, roles: RoleValidator[
         else if (e instanceof Error) handleUserError(e, null)
         throw new CustomError(
             new InternalServerError(),
-            `Problème de connexion interne, l'utilisateur ${formatString(user.username)} n'a pas été mis à jour`
+            `Problème de connexion interne, l'utilisateur n'a pas été mis à jour`
         );
     }
 };
