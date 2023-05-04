@@ -28,6 +28,13 @@ export class CicuitResolver {
     return await CircuitService.getByName(verifiedName);
   }
 
+  @Query(() => [Circuit]) 
+  async getCircuitsByCityName(@Arg("name") name: string): Promise<Circuit[]> {
+    const verifiedName = await validateNameInput(name);
+    const circuits = await CircuitService.getAllByCityName(verifiedName)
+    return circuits.sort((a: Circuit, b: Circuit) => a.name.localeCompare(b.name));
+  }
+
   @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Circuit)
   async createCircuit(@Ctx() ctx: MyAppContext, @Arg("circuit") circuit: CircuitType): Promise<Circuit> {

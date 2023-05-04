@@ -30,6 +30,13 @@ export class PoiResolver {
     return await PoiService.getByName(verifiedName);
   }
 
+  @Query(() => [Poi]) 
+  async getPoisByCity(@Arg("cityId") cityId: number): Promise<Poi[]> {
+    const verifiedId = await validateIdInput(cityId);
+    const pois = await PoiService.getAllByCity(verifiedId)
+    return pois.sort((a: Poi, b: Poi) => a.name.localeCompare(b.name));
+  }
+
   @Authorized([UserRoles.CITY_ADMIN])
   @Mutation(() => Poi)
   async createPoi(@Ctx() ctx: MyAppContext, @Arg("poi") poi: PoiType): Promise<Poi> {

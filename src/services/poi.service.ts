@@ -86,6 +86,26 @@ export const getByName = async (name: string): Promise<Poi> => {
 };
 
 /**
+ * Returns pois which are attached to the city from database
+ * @param {number} cityId The city id to use to find pois
+ * @returns Pois[] pois 
+ * @throws Error: 500 Internal Server Error | 404 Not Found 
+ */
+export const getAllByCity = async (cityId: number): Promise<Poi[]> => {
+ try {
+    const poisInDb = await PoiRepository.findAllPoisByCity(cityId);
+    if (poisInDb) return poisInDb;
+    else throw new Error(PoiErrorsFlag.NO_POIS_FOR_CITY);
+  } catch (e) {
+    if (e instanceof Error) handlePoiError(e, cityId);    
+    throw new CustomError(
+      new InternalServerError(), 
+      `Problème de connexion interne, les points d'intérêt liés la ville n'ont pas été chargés`
+    );
+  }
+}
+
+/**
  * Create and return a point of interest
  * @param {PoiValidator} data point of interest object to create 
  * @param {MyAppContext} ctx the app context with the decoded token

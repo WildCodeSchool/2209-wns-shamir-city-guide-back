@@ -18,7 +18,8 @@ export const poiNames = [
         "Château des ducs de Bretagne",
         "Muséum d'histoire naturelle de Nantes",
         "Musée d'art de Nantes",
-        "Dorcel Store de Nantes"
+        "Dorcel Store de Nantes",
+        "Parc du Thabor"
     ],
     poiAddress = [
         "Rue de Rivoli, 75001 Paris",
@@ -29,7 +30,8 @@ export const poiNames = [
         "4 Pl. Marc Elder, 44000 Nantes",
         "12 Rue Voltaire, 44000 Nantes",
         "10 Rue Georges Clemenceau, 44000 Nantes",
-        "10 Av. des Lions, 44800 Saint-Herblain"
+        "10 Av. des Lions, 44800 Saint-Herblain",
+        "Thabor - Saint-Hélier - Alphonse Guérin, Rennes, Ille-et-Vilaine, France"
     ],
     poiLatitudes = [
         "48.8611473",
@@ -40,7 +42,8 @@ export const poiNames = [
         "47.2160973",
         "47.2125868",
         "47.2192783",
-        "47.2477162"
+        "47.2477162",
+        "48.1138888"
     ],
     poiLongitudes = [
         "2.3380277",
@@ -51,7 +54,8 @@ export const poiNames = [
         "-1.5499959",
         "-1.5647029",
         "-1.5470828",
-        "-1.6194985"
+        "-1.6194985",
+        "-1.669803"
     ],
     poiPictures = [
         "https://thumbs.dreamstime.com/b/louvre-winter-tourism-beautiful-view-tourists-visiting-museum-paris-france-cloudy-day-february-63047601.jpg",
@@ -62,28 +66,32 @@ export const poiNames = [
         "https://media.istockphoto.com/id/1433119904/fr/photo/vue-panoramique-du-ch%C3%A2teau-des-ducs-de-bretagne-%C3%A0-nantes-france.jpg?s=612x612&w=0&k=20&c=VLf9Ud2cGqRk5GKepKwCo6_0G4uJg4Dm1qsjn4MCWns=",
         "https://www.francetvinfo.fr/pictures/5IyJZXrQD9wJVx7lvRPHODaAKKw/fit-in/720x/2020/12/01/php4jbGGK.jpg",
         "https://museedartsdenantes.nantesmetropole.fr/files/live/sites/museedarts/files/3-A%20faire%20au%20musee/nocturnes/Nocturne-2019.jpg",
-        "https://media.gettyimages.com/id/133859801/photo/view-of-lingerie-taken-at-a-porno-group-dorcel-store-on-november-19-2011-in-saint-herblain.jpg?s=612x612&w=gi&k=20&c=s0mGyslmXyPlR1gbRkJiCULSV2YTSDQ5EBL_CtpPJEU="
+        "https://media.gettyimages.com/id/133859801/photo/view-of-lingerie-taken-at-a-porno-group-dorcel-store-on-november-19-2011-in-saint-herblain.jpg?s=612x612&w=gi&k=20&c=s0mGyslmXyPlR1gbRkJiCULSV2YTSDQ5EBL_CtpPJEU=",
+        "https://www.jardinez.com/parc/pj/35thabor_1/1.jpg"
     ];
 
 
 export const loadPoiData = async () => {
-    const Paris: City | null = await CityRepository.findOneBy({ name: "Paris" });
-    const Rennes: City | null = await CityRepository.findOneBy({ name: "Rennes" });
     const Marseille: City | null = await CityRepository.findOneBy({ name: "Marseille" });
     const Nantes: City | null = await CityRepository.findOneBy({ name: "Nantes" });
+    const Paris: City | null = await CityRepository.findOneBy({ name: "Paris" });
+    const Rennes: City | null = await CityRepository.findOneBy({ name: "Rennes" });
 
     const Art: Type | null = await TypeRepository.findOneBy({ name: "Art" });
-    const Histoire: Type | null = await TypeRepository.findOneBy({ name: "Histoire" });
     const Divertissement: Type | null = await TypeRepository.findOneBy({ name: "Divertissement" });
+    const Histoire: Type | null = await TypeRepository.findOneBy({ name: "Histoire" });
+    const Nature: Type | null = await TypeRepository.findOneBy({ name: "Nature"  });
     const VieNocturne: Type | null = await TypeRepository.findOneBy({ name: "Vie nocturne" });
 
-    const Restaurant: Tag | null = await TagRepository.findOneBy({ name: "Restaurant" });
-    const Cafe: Tag | null = await TagRepository.findOneBy({ name: "Café" });
     const Bar: Tag | null = await TagRepository.findOneBy({ name: "Bar" });
-    const Monument: Tag | null = await TagRepository.findOneBy({ name: "Monument" });
-    const Gallerie: Tag | null = await TagRepository.findOneBy({ name: "Gallerie" });
+    const Cafe: Tag | null = await TagRepository.findOneBy({ name: "Café" });
     const Concert: Tag | null = await TagRepository.findOneBy({ name: "Concert" });
+    const Gallerie: Tag | null = await TagRepository.findOneBy({ name: "Gallerie" });
+    const Jardin: Tag | null = await TagRepository.findOneBy({ name: "Jardin" });
+    const Monument: Tag | null = await TagRepository.findOneBy({ name: "Monument" });
     const Promenade: Tag | null = await TagRepository.findOneBy({ name: "Promenade" });
+    const Restaurant: Tag | null = await TagRepository.findOneBy({ name: "Restaurant" });
+    const Sports: Tag | null = await TagRepository.findOneBy({ name: "Sports" });
     
 
     await Promise.all(poiNames.map(async (name, index) => {
@@ -110,6 +118,10 @@ export const loadPoiData = async () => {
             if (Marseille !== null) newPoi.city = Marseille;
             if (Histoire !== null) newPoi.type = Histoire;
             if (Restaurant !== null && Gallerie !== null) newPoi.tags = [Restaurant, Gallerie]
+        } else if (index === 9) {
+            if (Rennes !== null) newPoi.city = Rennes;
+            if (Nature !== null) newPoi.type = Nature;
+            if (Jardin !== null && Promenade !== null && Sports !== null) newPoi.tags = [Jardin, Promenade, Sports];
         } else {
             if (Nantes !== null) newPoi.city = Nantes;
             if (Divertissement !== null) newPoi.type = Divertissement;

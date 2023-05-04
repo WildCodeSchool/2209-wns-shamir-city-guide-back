@@ -8,6 +8,7 @@ export enum CircuitErrorsFlag {
     ID_NOT_FOUND = "ID_NOT_FOUND",
     NAME_NOT_FOUND = "NAME_NOT_FOUND",
     CITY_NOT_IN_DB = "CITY_NOT_IN_DB",
+    NO_CIRCUITS_FOR_CITY = "NO_CIRCUITS_FOR_CITY",
     CATEGORY_NOT_IN_DB = "CATEGORY_NOT_IN_DB",
     POI_NOT_IN_DB = "POI_NOT_IN_DB",
     USER_NOT_AUTHORIZED_CREATE = "USER_NOT_AUTHORIZED_CREATE",
@@ -31,6 +32,11 @@ export const handleCircuitError = <T>(e: Error, data: T): void => {
             throw new CustomError(
                 new NotFoundError(), 
                 `La ville n'existe pas en base de données`
+            ); 
+        case CircuitErrorsFlag.NO_CIRCUITS_FOR_CITY:
+            throw new CustomError(
+                new NotFoundError(), 
+                `Cette ville ne contient pas encore de circuits`
             ); 
         case CircuitErrorsFlag.CATEGORY_NOT_IN_DB:
             throw new CustomError(

@@ -85,6 +85,28 @@ export const getByName = async (name: string): Promise<Circuit> => {
 };
 
 /**
+ * Returns circuits which are attached to the city from database
+ * @param {string} name The city name to use to find circuits
+ * @returns Circuit[] circuits 
+ * @throws Error: 500 Internal Server Error | 404 Not Found 
+ */
+export const getAllByCityName = async (name: string): Promise<Circuit[]> => {
+  const formattedName = formatString(name);
+
+  try {
+    const circuitsInDb = await CircuitRepository.findAllCircuitsByCityName(formattedName);
+    if (circuitsInDb) return circuitsInDb;
+    else throw new Error(CircuitErrorsFlag.NO_CIRCUITS_FOR_CITY);
+  } catch (e) {
+    if (e instanceof Error) handleCircuitError(e, formattedName);    
+    throw new CustomError(
+      new InternalServerError(), 
+      `Problème de connexion interne, les circuits liés la ville n'ont pas été chargés`
+    );
+  }
+};
+
+/**
  * Create and return a circuit
  * @param {CircuitValidator} data circuit object to create
  * @param {MyAppContext} ctx the app context with the decoded token
