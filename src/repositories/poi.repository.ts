@@ -19,5 +19,11 @@ export const PoiRepository = databaseConfig.getRepository(PointOfInterest).exten
             .where("latitude = :latitude AND longitude = :longitude", {latitude, longitude})
             .andWhere("id != :id", {id})
             .getOne()
+    },
+    async findAllPoisByCity(cityId: number): Promise<PointOfInterest[] | null> {
+        return this.createQueryBuilder("poi")
+        .innerJoinAndSelect("poi.city", "city")
+        .where("city.id = :id", { id: cityId })
+        .getMany();
     }
 });

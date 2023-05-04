@@ -30,7 +30,7 @@ export const handleCityError = <T>(e: Error, data: T): void => {
         case CityErrorsFlag.USERNAME_NOT_FOUND:
             throw new CustomError(
                 new NotFoundError(),
-                `Il n'y a pas de villes reliés à l'utilisateur en base de données`
+                `Il n'y a pas de villes reliées à l'utilisateur en base de données`
             );
     }
 }

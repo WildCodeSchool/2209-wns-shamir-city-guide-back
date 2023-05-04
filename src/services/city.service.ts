@@ -75,9 +75,9 @@ export const getAllByUsername = async (username: string): Promise<City[]> => {
   const formattedName = formatString(username);
 
   try {
-    const citiesInDb = await CityRepository.findAllCitiesByUsername(username);
+    const citiesInDb = await CityRepository.findAllCitiesByUsername(formattedName);
     if (citiesInDb) return citiesInDb;
-    else throw new Error(CityErrorsFlag.NAME_NOT_FOUND);
+    else throw new Error(CityErrorsFlag.USERNAME_NOT_FOUND);
   } catch (e) {
     if (e instanceof Error) handleCityError(e, formattedName);    
     throw new CustomError(

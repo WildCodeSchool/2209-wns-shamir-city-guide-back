@@ -16,9 +16,6 @@ export class CircuitType {
   @Field()
   description: string;
 
-  @Field({nullable: true})
-  price: number;
-
   @Field()
   cityId: number;
 
