@@ -26,6 +26,13 @@ export class CityResolver {
     return await CityService.getByName(verifiedName);
   }
 
+  @Query(() => [City]) 
+  async getCitiesByUsername(@Arg("username") username: string): Promise<City[]> {
+    const verifiedName = await validateNameInput(username);
+    const cities = await CityService.getAllByUsername(verifiedName)
+    return cities.sort((a: City, b: City) => a.name.localeCompare(b.name));
+  }
+
   @Authorized([UserRoles.SUPER_ADMIN])
   @Mutation(() => City)
   async createCity(

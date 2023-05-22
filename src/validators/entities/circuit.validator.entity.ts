@@ -150,8 +150,7 @@ import { IdValidator } from "../common.validator";
     const { 
       name, 
       picture, 
-      description, 
-      price,  
+      description,  
       cityId, 
       categoryId, 
       pois 

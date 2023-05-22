@@ -10,22 +10,28 @@ export enum CityErrorsFlag {
     NAME_ALREADY_USED = "NAME_ALREADY_USED",
     LOCALISATION_ALREADY_USED = "LOCALISATION_ALREADY_USED",
     PICTURE_ALREADY_USED = "PICTURE_ALREADY_USED",
-    USER_NOT_IN_DB = "USER_NOT_IN_DB"
+    USER_NOT_IN_DB = "USER_NOT_IN_DB",
+    USERNAME_NOT_FOUND = "USERNAME_NOT_FOUND",
 }
 
 
 export const handleCityError = <T>(e: Error, data: T): void => {
     switch (e.message) {
-      case CityErrorsFlag.ID_NOT_FOUND:
-        throw new CustomError(
-          new NotFoundError(),
-          `La ville n'existe pas en base de données`
-        );
-      case CityErrorsFlag.NAME_NOT_FOUND:
-        throw new CustomError(
-          new NotFoundError(),
-          `La ville avec le nom ${data} n'existe pas en base de données`
-        );
+        case CityErrorsFlag.ID_NOT_FOUND:
+            throw new CustomError(
+                new NotFoundError(),
+                `La ville n'existe pas en base de données`
+            );
+        case CityErrorsFlag.NAME_NOT_FOUND:
+            throw new CustomError(
+                new NotFoundError(),
+                `La ville avec le nom ${data} n'existe pas en base de données`
+            );
+        case CityErrorsFlag.USERNAME_NOT_FOUND:
+            throw new CustomError(
+                new NotFoundError(),
+                `Il n'y a pas de villes reliées à l'utilisateur en base de données`
+            );
     }
 }
 

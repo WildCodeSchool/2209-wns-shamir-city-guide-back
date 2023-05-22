@@ -11,7 +11,7 @@ export const
         "Restauration",
         "Art",
         "Évènement",
-        "Vie nocture"
+        "Vie nocturne"
     ],
     typeLogos = [
         "HistoryEduOutlined", 

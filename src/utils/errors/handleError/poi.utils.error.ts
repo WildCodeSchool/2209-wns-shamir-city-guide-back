@@ -9,6 +9,7 @@ export enum PoiErrorsFlag {
     NAME_NOT_FOUND = "NAME_NOT_FOUND",
     LOCALISATION_ALREADY_USED = "LOCALISATION_ALREADY_USED",
     CITY_NOT_IN_DB = "CITY_NOT_IN_DB",
+    NO_POIS_FOR_CITY = "NO_POIS_FOR_CITY",
     TYPE_NOT_IN_DB = "TYPE_NOT_IN_DB",
     TAG_NOT_IN_DB = "TAG_NOT_IN_DB",
     USER_NOT_AUTHORIZED_CREATE = "USER_NOT_AUTHORIZED_CREATE",
@@ -32,6 +33,11 @@ export const handlePoiError = <T>(e: Error, data: T): void => {
             throw new CustomError(
                 new NotFoundError(), 
                 `La ville n'existe pas en base de données`
+            );
+        case PoiErrorsFlag.NO_POIS_FOR_CITY:
+            throw new CustomError(
+                new NotFoundError(), 
+                `Cette ville ne contient pas encore de points d'intérêt`
             );
         case PoiErrorsFlag.TYPE_NOT_IN_DB:
             throw new CustomError(
