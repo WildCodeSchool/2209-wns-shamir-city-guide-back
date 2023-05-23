@@ -37,7 +37,10 @@ export class CityValidator {
     })
     picture: string
 
-    user: UserValidator;
+    @Min(1, {
+        message: CityErrorValidator.USER_ID_EQUAL_0,
+    })
+    userId: number;
 }
 
 
@@ -54,7 +57,7 @@ export const validateCreationCityInput = async (
         throw new CustomError(new BadRequestError(), CityErrorValidator.ID_NOT_REQUIRED);
     }
 
-    if (!Object.keys(city).includes("user")) {
+    if (!Object.keys(city).includes("userId")) {
         throw new CustomError(new BadRequestError(), CityErrorValidator.USER_REQUIRED);
     }
 
@@ -75,7 +78,7 @@ export const validateUpdateCityInput = async (
         throw new CustomError(new BadRequestError(), CityErrorValidator.ID_REQUIRED);
     }
 
-    if (!Object.keys(city).includes("user")) {
+    if (!Object.keys(city).includes("userId")) {
         throw new CustomError(new BadRequestError(), CityErrorValidator.USER_REQUIRED);
     }
 
@@ -85,7 +88,7 @@ export const validateUpdateCityInput = async (
 const setCityValidator = async (city: CityType): Promise<CityValidator> => {
     let id = null;
     if (city.id !== null) id = city.id;
-    const { name, latitude, longitude, picture, user } = city;
+    const { name, latitude, longitude, picture, userId } = city;
     
     const cityValidator = new CityValidator();
     if (id !== null) cityValidator.id = id;
@@ -93,13 +96,8 @@ const setCityValidator = async (city: CityType): Promise<CityValidator> => {
     cityValidator.latitude = latitude && latitude.length > 0 ? latitude.trim() : "";
     cityValidator.longitude = longitude && longitude.length > 0 ? longitude.trim() : "";
     cityValidator.picture = picture && picture.length > 0 ? picture.trim() : "";
-
-    const userValidator = new UserValidator();
-    userValidator.id = user.id;
-    userValidator.username = user.username;
-    userValidator.email = user.email;
-    const verifiedUser = await validateData(userValidator);
-    cityValidator.user = verifiedUser;
+    
+    cityValidator.userId = userId;
   
     return await validateData(cityValidator);
   }

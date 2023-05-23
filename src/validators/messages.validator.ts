@@ -72,6 +72,7 @@ export enum CityErrorValidator {
   LATITUDE_FORMAT = "La latitude de la ville n'est pas au bon format",
   LONGITUDE_FORMAT = "La longitude de la ville n'est pas au bon format",
   PICTURE_WRONG_FORMAT = "Le format de l'url de l'image ne convient pas",
+  USER_ID_EQUAL_0 = "L'identifiant de l'utilisateur doit être supérieur à 0",
   USER_REQUIRED = "Un utilisateur doit être associé à cette ville",
 }
 
