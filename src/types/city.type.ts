@@ -1,5 +1,4 @@
 import { Field, InputType } from "type-graphql";
-import { UserType } from "./user.type";
 
 
 @InputType()
@@ -20,5 +19,5 @@ export class CityType {
     picture: string
 
     @Field({nullable: true})
-    user: UserType
+    userId: number
 }

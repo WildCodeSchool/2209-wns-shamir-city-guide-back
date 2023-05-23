@@ -7,6 +7,7 @@ import { formatString } from "../utils/string.utils";
 import { CityErrorsFlag, handleCityError, handleCityObjectError } from "../utils/errors/handleError/city.utils.error";
 import { InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { CityValidator } from "../validators/entities/city.validator.entity";
+import { UserRepository } from "../repositories/user.repository";
 
 
 /**
@@ -101,10 +102,20 @@ export const create = async (
   try {
     const isLocalisationAlreadyExist = await CityRepository.findByLatitudeAndByLongitude(data.latitude, data.longitude);    
     if (isLocalisationAlreadyExist) throw new Error(CityErrorsFlag.LOCALISATION_ALREADY_USED);
-    
-    const createdCity = await CityRepository.save(data);    
-    return createdCity;
+
+    const userFoundInDb = await UserRepository.findOneBy({ id: data.userId });
+    if (!userFoundInDb) throw new Error(CityErrorsFlag.USER_NOT_IN_DB);
+
+    const newCity = new City();
+    newCity.name = data.name;
+    newCity.latitude = data.latitude;
+    newCity.longitude = data.longitude;
+    newCity.picture = data.picture;
+    newCity.user = userFoundInDb;
+
+    return await CityRepository.save(newCity);   
   } catch (e) {
+    if (e instanceof Error) handleCityError(e, data);
     if (e instanceof QueryFailedError || e instanceof Error) {
       handleCityObjectError(e, data);
       } throw new CustomError(
@@ -127,15 +138,15 @@ export const update = async (
   
   try {
     // Check if the id is present in database
-    const isIdExistInDB = await CityRepository.findOneBy({ id: data.id });
-    if (!isIdExistInDB) throw new Error(CityErrorsFlag.ID_NOT_FOUND) 
+    const cityInDB = await CityRepository.findOneBy({ id: data.id });
+    if (!cityInDB) throw new Error(CityErrorsFlag.ID_NOT_FOUND) 
 
     // Check name the name is already present in database
     const isNameAlreadyInDB = await CityRepository.findByNameAndIfNotID(data.id, data.name);
     // if (isNameAlreadyInDB) throw new Error(CityErrorsFlag.NAME_ALREADY_USED);
     // If the latitude and longitude change we have to verify if the new location isn't stocked in database
     // Check if the latitude and longitude are in database for all different id
-    if (isIdExistInDB.latitude !== data.latitude || isIdExistInDB.longitude !== data.longitude) {
+    if (cityInDB.latitude !== data.latitude || cityInDB.longitude !== data.longitude) {
       const isLocationAlreadyExist = await CityRepository.findByLatitudeAndByLongitudeIfNotID(
         data.id, 
         data.latitude, 
@@ -143,9 +154,20 @@ export const update = async (
       );
       if (isLocationAlreadyExist) throw new Error(CityErrorsFlag.LOCALISATION_ALREADY_USED);
     }
+
+    const userFoundInDb = await UserRepository.findOneBy({ id: data.userId });
+    if (!userFoundInDb) throw new Error(CityErrorsFlag.USER_NOT_IN_DB);
+    
+    const newCity = new City();
+    newCity.name = data.name;
+    newCity.latitude = data.latitude;
+    newCity.longitude = data.longitude;
+    newCity.picture = data.picture;
+    newCity.user = userFoundInDb;
    
-    return await CityRepository.save({ ...isIdExistInDB, ...data });
+    return await CityRepository.save({ ...cityInDB, ...newCity });
   } catch (e) {
+    if (e instanceof Error) handleCityError(e, data);
     if (e instanceof QueryFailedError || e instanceof Error) {
       handleCityObjectError(e, data);
       } throw new CustomError(

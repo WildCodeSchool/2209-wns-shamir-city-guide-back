@@ -32,6 +32,11 @@ export const handleCityError = <T>(e: Error, data: T): void => {
                 new NotFoundError(),
                 `Il n'y a pas de villes reliées à l'utilisateur en base de données`
             );
+        case CityErrorsFlag.USER_NOT_IN_DB:
+            throw new CustomError(
+                new NotFoundError(),
+                `L'utilisateur n'existe pas en base de données`
+            );
     }
 }
 
@@ -65,7 +70,7 @@ export const handleCityObjectError = (e: Error | QueryFailedError, data: CityVal
         case "user_id":            
             throw new CustomError(
                 new NotFoundError(), 
-                `L'utilisateur ${data.user.username} n'existe pas en base de données`
+                `L'utilisateur n'existe pas en base de données`
             );
         }
     }

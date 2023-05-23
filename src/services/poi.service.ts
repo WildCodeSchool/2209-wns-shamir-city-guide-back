@@ -154,7 +154,7 @@ export const create = async (
 
     return await PoiRepository.save(newPoi);    
   } catch (e) {    
-    if (e instanceof Error ) handlePoiError(e, data);
+    if (e instanceof Error) handlePoiError(e, data);
     if (e instanceof QueryFailedError || e instanceof Error) {
       handlePoiObjectError(e, data);
     } throw new CustomError(
