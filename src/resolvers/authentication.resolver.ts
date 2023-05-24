@@ -5,7 +5,7 @@ import {
   UserValidator,
   validateLoginUserInput,
 } from "../validators/entities/user.validator.entity";
-import { AuthenticatedUserType, UserType } from "../types/user.type";
+import { AuthenticatedUserType, RegisteredUserType, UserType } from "../types/user.type";
 
 @Resolver(User)
 export class AuthenticationResolver {
@@ -14,4 +14,11 @@ export class AuthenticationResolver {
     const verifiedUser: UserValidator = await validateLoginUserInput(user);
     return await AuthenticationService.login(verifiedUser);
   }
+
+  @Mutation(() => RegisteredUserType)
+  async register(@Arg("user") user: UserType): Promise<RegisteredUserType> {
+    const verifiedUser: UserValidator = await validateLoginUserInput(user);
+    return await AuthenticationService.register(verifiedUser);
+  }
 }
+

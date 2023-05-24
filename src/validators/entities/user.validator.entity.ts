@@ -102,7 +102,7 @@ const setUserValidator = async (user: UserType): Promise<UserValidator> => {
     if(id !== null) userValidator.id = id;
     userValidator.username = username && username.length > 0 ? username.trim() : '';
     userValidator.email = email && email.length > 0 ? email.trim() : '';
-    if (password !== null) userValidator.password = password;;
+    if (password !== null  && password !== undefined) userValidator.password = password;
   
     return await validateData(userValidator);
 }

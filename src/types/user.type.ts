@@ -14,12 +14,24 @@ export class UserType {
     email: string
 
     @Field({nullable: true})
-    password: string
+    password?: string
 }
 
 @InputType()
 export class CleanedUserType {
     @Field({nullable: true})
+    id: number
+
+    @Field()
+    username: string
+
+    @Field()
+    email: string
+}
+
+@ObjectType()
+export class RegisteredUserType {
+    @Field()
     id: number
 
     @Field()
