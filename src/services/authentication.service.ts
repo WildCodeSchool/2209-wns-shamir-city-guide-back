@@ -5,14 +5,49 @@ import { UserRepository } from "../repositories/user.repository";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
 import { UserErrorsFlag } from "../utils/errors/handleError/user.utils.error";
 import { ForbiddenError, InternalServerError } from "../utils/errors/interfaces.utils.error";
-import { AuthenticatedUserType } from "../types/user.type";
+import { AuthenticatedUserType, RegisteredUserType } from "../types/user.type";
 import { StatusCodeMessage } from "../utils/constants.utils";
 import { handleAuthenticationError } from "../utils/errors/handleError/authentication.utils.error";
 import { UserValidator } from "../validators/entities/user.validator.entity";
 import Role from "../entities/Role.entity";
 import User from "../entities/User.entity";
 import { formatString } from "../utils/string.utils";
+import { UserRoles } from "../utils/constants.utils";
+import { RoleRepository } from "../repositories/role.repository";
 
+
+/**
+ * Registera user 
+ * @param {UserValidator} data the user credentials to register in database
+ * @returns UserType the registered user without its password 
+ */
+export const register = async (data: UserValidator): Promise<RegisteredUserType> => {
+    try {
+        // We already verify if the username or the email already exist in database
+        const getUserByEmail: User | null = await UserRepository.findOneBy({ email: data.email });
+        if (getUserByEmail) throw new Error(UserErrorsFlag.EMAIL_ALREADY_USED);
+        const getUserByUsername: User | null = await UserRepository.findOneBy({ username: formatString(data.username) });
+        if (getUserByUsername) throw new Error(UserErrorsFlag.USERNAME_ALREADY_USED);
+
+        const userRole: Role | null = await RoleRepository.findOneBy({ name: UserRoles.USER });
+        const newUser = new User();
+        newUser.username = data.username;
+        newUser.email = data.email;
+        newUser.hashedPassword = await argon2.hash(data.password);
+        newUser.roles = userRole ? [userRole] : [];
+        
+        const registeredUser = await UserRepository.save(newUser);
+        return { id: registeredUser.id, username: registeredUser.username, email: registeredUser.email };
+    } catch (e) {
+        console.log("Register error =>", e);
+        if(e instanceof Error) handleAuthenticationError(e, data);
+
+        throw new CustomError(
+            new InternalServerError(), 
+            `Problème de connexion interne, l'utilisateur/rice ${data.username} n'a pas été enregistré/e`
+        );
+    }
+};
 
 /**
  * Log a user 
@@ -51,7 +86,7 @@ export const login = async (data: UserValidator): Promise<AuthenticatedUserType>
 
         throw new CustomError(
             new InternalServerError(), 
-            `Problème de connexion interne, l'utilisateur ${data.username} n'a pas pu se connecter`
+            `Problème de connexion interne, l'utilisateur/rice ${data.username} n'a pas pu se connecter`
         );
     }
 };
