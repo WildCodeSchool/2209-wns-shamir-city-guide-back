@@ -2,7 +2,8 @@ import { QueryFailedError } from "typeorm";
 import { UserValidator } from "../../../validators/entities/user.validator.entity";
 import { StatusCodeMessage } from "../../constants.utils";
 import { CustomError } from "../CustomError.utils.error";
-import { NotFoundError, UnauthorizedError } from "../interfaces.utils.error";
+import { NotFoundError, UnauthorizedError, UnprocessableEntityError } from "../interfaces.utils.error";
+import { retrieveKeyFromDbErrorMessage } from "../../string.utils";
 
 
 export enum AuthenticationErrorsFlag {
@@ -39,5 +40,23 @@ export const handleAuthenticationError = (e: Error | QueryFailedError, data: Use
           new UnauthorizedError(), 
           `Vos identifiants ne sont pas corrects`
       );
+  }
+}
+
+
+export const handleAuthObjectError = (e: QueryFailedError, data: any): void => {
+  if (e instanceof QueryFailedError && e.driverError.detail?.length) {
+    switch (retrieveKeyFromDbErrorMessage(e.driverError.detail)) {
+      case "username":
+        throw new CustomError(
+          new UnprocessableEntityError(),
+          `Le nom ${data.username} est déjà utilisé, vous devez en choisir un autre`
+        );
+      case "email":
+        throw new CustomError(
+          new UnprocessableEntityError(),
+          `L'email ${data.email} est déjà utilisé, vous devez en choisir un autre`
+        );
+    }
   }
 }
