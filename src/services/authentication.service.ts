@@ -1,5 +1,6 @@
 import * as argon2 from "argon2";
 import jwt from "jsonwebtoken";
+import { QueryFailedError } from "typeorm";
 import configuration from "../config/index";
 import { UserRepository } from "../repositories/user.repository";
 import { CustomError } from "../utils/errors/CustomError.utils.error";
@@ -7,7 +8,7 @@ import { UserErrorsFlag } from "../utils/errors/handleError/user.utils.error";
 import { ForbiddenError, InternalServerError } from "../utils/errors/interfaces.utils.error";
 import { AuthenticatedUserType, RegisteredUserType } from "../types/user.type";
 import { StatusCodeMessage } from "../utils/constants.utils";
-import { handleAuthenticationError } from "../utils/errors/handleError/authentication.utils.error";
+import { handleAuthObjectError, handleAuthenticationError } from "../utils/errors/handleError/authentication.utils.error";
 import { UserValidator } from "../validators/entities/user.validator.entity";
 import Role from "../entities/Role.entity";
 import User from "../entities/User.entity";
@@ -39,9 +40,8 @@ export const register = async (data: UserValidator): Promise<RegisteredUserType>
         const registeredUser = await UserRepository.save(newUser);
         return { id: registeredUser.id, username: registeredUser.username, email: registeredUser.email };
     } catch (e) {
-        console.log("Register error =>", e);
         if(e instanceof Error) handleAuthenticationError(e, data);
-
+        if (e instanceof QueryFailedError) handleAuthObjectError(e, data);
         throw new CustomError(
             new InternalServerError(), 
             `Problème de connexion interne, l'utilisateur/rice ${data.username} n'a pas été enregistré/e`
