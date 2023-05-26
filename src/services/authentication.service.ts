@@ -23,6 +23,7 @@ import { RoleRepository } from "../repositories/role.repository";
  * @returns UserType the registered user without its password 
  */
 export const register = async (data: UserValidator): Promise<RegisteredUserType> => {
+    data.username = formatString(data.username);
     try {
         // We already verify if the username or the email already exist in database
         const getUserByEmail: User | null = await UserRepository.findOneBy({ email: data.email });
@@ -55,6 +56,7 @@ export const register = async (data: UserValidator): Promise<RegisteredUserType>
  * @returns AuthenticatedUserType the loggued user with a token
  */
 export const login = async (data: UserValidator): Promise<AuthenticatedUserType> => {
+    data.username = formatString(data.username);
     try {
         const getUserByEmail: User | null = await UserRepository.findOneBy({ email: data.email });
         if (getUserByEmail === null && getUserByEmail !== undefined) throw new Error(UserErrorsFlag.EMAIL_NOT_FOUND);
