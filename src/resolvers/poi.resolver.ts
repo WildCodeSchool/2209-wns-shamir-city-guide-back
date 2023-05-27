@@ -10,6 +10,7 @@ import { MyAppContext } from "../types/context";
 
 @Resolver(Poi)
 export class PoiResolver {
+  @Authorized([UserRoles.CITY_ADMIN])
   @Query(() => [Poi])
   async getAllPoi(): Promise<Poi[]> {
     const pointsOfInterest: Poi[] = await PoiService.getAll();
@@ -17,6 +18,7 @@ export class PoiResolver {
 
   }
 
+  @Authorized([UserRoles.CITY_ADMIN])
   @Query(() => Poi)
   async getPoiById(@Arg("id") id: number): Promise<Poi> {
     const verifiedId = await validateIdInput(id);
@@ -24,12 +26,14 @@ export class PoiResolver {
     return await PoiService.getById(verifiedId);
   }
 
+  @Authorized([UserRoles.CITY_ADMIN])
   @Query(() => Poi) 
   async getPoiByName(@Arg("name") name: string): Promise<Poi> {
     const verifiedName = await validateNameInput(name);
     return await PoiService.getByName(verifiedName);
   }
 
+  @Authorized([UserRoles.CITY_ADMIN])
   @Query(() => [Poi]) 
   async getPoisByCity(@Arg("cityId") cityId: number): Promise<Poi[]> {
     const verifiedId = await validateIdInput(cityId);
