@@ -9,18 +9,21 @@ import { UserRoles } from "../utils/constants.utils";
 
 @Resolver(Type)
 export class TypeResolver {
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => [Type])
   async getAllTypes(): Promise<Type[]> {
     const types: Type[] = await TypeService.getAll();
     return types.sort((a: Type, b: Type) => a.name.localeCompare(b.name));
   }
   
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => Type)
   async getTypeById(@Arg("id") id: number): Promise<Type> {
     const verifiedId: number = await validateIdInput(id);
     return await TypeService.getById(verifiedId);
   }
 
+  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => Type) 
   async getTypeByName(@Arg("name") name: string): Promise<Type> {  
     const verifiedName: string = await validateNameInput(name);
