@@ -107,7 +107,7 @@ export const verifyPassword = async (password: string, hashedPassword: string) =
  * @param payload payload to sign
  * @returns
  */
-export const signJwt = (payload: any) => {
+export const signJwt = (payload: Partial<User>) => {
     if (configuration?.jwt_secret_key === undefined) {
         throw new Error();
     }
