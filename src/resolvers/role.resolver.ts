@@ -10,21 +10,18 @@ import { UserRoles } from "../utils/constants.utils";
 @Resolver(Role)
 export class RoleResolver {
   @Query(() => [Role])
-  @Authorized([UserRoles.SUPER_ADMIN])
   async getAllRoles(): Promise<Role[]> {
     const roles: Role[] = await RoleService.getAll();
     return roles.sort((a: Role, b: Role) => a.name.localeCompare(b.name));
 
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => Role)
   async getRoleById(@Arg("id") id: number): Promise<Role> {
     const verifiedId: number = await validateIdInput(id);
     return await RoleService.getById(verifiedId);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => Role) 
   async getRoleByName(@Arg("name") name: string): Promise<Role> {  
     const verifiedName: string = await validateNameInput(name);

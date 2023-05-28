@@ -16,21 +16,18 @@ import { UserRoles } from "../utils/constants.utils";
 
 @Resolver(Tag)
 export class TagResolver {
-  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => [Tag])
   async getAllTags(): Promise<Tag[]> {
     const tags: Tag[] = await TagService.getAll();    
     return tags.sort((a: Tag, b: Tag) => a.name.localeCompare(b.name));
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => Tag)
   async getTagById(@Arg("id") id: number): Promise<Tag> {
     const verifiedId: number = await validateIdInput(id);
     return await TagService.getById(verifiedId);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => Tag)
   async getTagByName(@Arg("name") name: string): Promise<Tag> {
     const verifiedName: string = await validateNameInput(name);
