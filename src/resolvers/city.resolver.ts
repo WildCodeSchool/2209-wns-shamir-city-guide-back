@@ -8,21 +8,18 @@ import { validateCreationCityInput, validateUpdateCityInput } from "../validator
 
 @Resolver(City)
 export class CityResolver {
-  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => [City])
   async getAllCities(): Promise<City[]> {
     const cities: City[] = await CityService.getAll();
     return cities.sort((a: City, b: City) => a.name.localeCompare(b.name));
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => City)
   async getCityById(@Arg("id") id: number): Promise<City> {
     const verifiedId = await validateIdInput(id);
     return await CityService.getById(verifiedId);
   }
 
-  @Authorized([UserRoles.SUPER_ADMIN])
   @Query(() => City) 
   async getCityByName(@Arg("name") name: string): Promise<City> {
     const verifiedName = await validateNameInput(name);

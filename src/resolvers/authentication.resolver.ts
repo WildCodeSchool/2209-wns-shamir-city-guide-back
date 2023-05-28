@@ -1,4 +1,5 @@
-import { Resolver, Arg, Mutation } from "type-graphql";
+import { Resolver, Arg, Mutation, Query } from "type-graphql";
+import { JwtPayload } from "jsonwebtoken";
 import User from "../entities/User.entity";
 import * as AuthenticationService from "../services/authentication.service";
 import {
@@ -19,6 +20,12 @@ export class AuthenticationResolver {
   async register(@Arg("user") user: UserType): Promise<RegisteredUserType> {
     const verifiedUser: UserValidator = await validateLoginUserInput(user);
     return await AuthenticationService.register(verifiedUser);
+  }
+
+  @Query(() => Boolean)
+  async checkToken(@Arg("token") token: string): Promise<Boolean> {
+    AuthenticationService.verifyToken(token);
+    return true;
   }
 }
 

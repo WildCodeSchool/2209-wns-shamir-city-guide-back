@@ -10,21 +10,18 @@ import { MyAppContext } from "../types/context";
 
 @Resolver(Circuit)
 export class CicuitResolver {
-  @Authorized([UserRoles.CITY_ADMIN])
   @Query(() => [Circuit])
   async getAllCircuits(): Promise<Circuit[]> {
     const circuits: Circuit[] = await CircuitService.getAll();
     return circuits.sort((a: Circuit, b: Circuit) => a.name.localeCompare(b.name));
   }
 
-  @Authorized([UserRoles.CITY_ADMIN])
   @Query(() => Circuit)
   async getCircuitById(@Arg("id") id: number): Promise<Circuit> {
     const verifiedId = await validateIdInput(id);
     return await CircuitService.getById(verifiedId);
   }
 
-  @Authorized([UserRoles.CITY_ADMIN])
   @Query(() => Circuit)
   async getCircuitByName(@Arg("name") name: string): Promise<Circuit> {
     const verifiedName = await validateNameInput(name);
